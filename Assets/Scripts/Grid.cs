@@ -344,5 +344,6 @@ public class Grid : MonoBehaviour
         {
             Destroy(go);
         }
+        TileList.Clear();
     }
 }

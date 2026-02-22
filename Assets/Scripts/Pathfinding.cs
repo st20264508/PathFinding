@@ -46,7 +46,11 @@ public class Pathfinding : MonoBehaviour
         }
 
         if (!visited.Contains(start))
+        {
+            Debug.Log("Path not found");
             return null;
+        }
+            
 
         Queue<Node> path = new Queue<Node>();
         Node currentNode = start;
@@ -93,7 +97,10 @@ public class Pathfinding : MonoBehaviour
         }
 
         if (!visited.Contains(start))
+        {
+            Debug.Log("Path not found");
             return null;
+        }
 
         Queue<Node> path = new Queue<Node>();
         Node currentNode = start;
@@ -105,7 +112,7 @@ public class Pathfinding : MonoBehaviour
         }
 
         sw.Stop();
-        Debug.Log("Time to BFSAlgorithmALL(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+        Debug.Log("Time to BFSAlgorithmCROSS(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
 
         return path.ToList();
     }

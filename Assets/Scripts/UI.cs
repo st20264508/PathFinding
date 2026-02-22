@@ -123,27 +123,38 @@ public class UI : MonoBehaviour
 
     public void RunBFSALL()
     {
-        grid.path = pathfinder.BFSAlgorithmALL(grid.startNode, grid.endNode);
-
-        string result = "List contents: ";
-        foreach (var item in grid.path)
+        if (grid.startNode != null && grid.endNode != null)
         {
-            result += item.x.ToString() + "," + item.y.ToString() + " ";
-        }
-        Debug.Log(result);
-        grid.UpdateTiles();
+            grid.path = pathfinder.BFSAlgorithmALL(grid.startNode, grid.endNode);
+            if (grid.path != null)
+            {
+                string result = "List contents: ";
+                foreach (var item in grid.path)
+                {
+                    result += item.x.ToString() + "," + item.y.ToString() + " ";
+                }
+                Debug.Log(result);
+                grid.UpdateTiles();
+            }
+        }       
     }
 
     public void RunBFSCROSS()
     {
-        grid.path = pathfinder.BFSAlgorithmCROSS(grid.startNode, grid.endNode);
-
-        string result = "List contents: ";
-        foreach (var item in grid.path)
+        if (grid.startNode != null && grid.endNode != null)
         {
-            result += item.x.ToString() + "," + item.y.ToString() + " ";
+            grid.path = pathfinder.BFSAlgorithmCROSS(grid.startNode, grid.endNode);
+            if (grid.path != null)
+            {
+                string result = "List contents: ";
+                foreach (var item in grid.path)
+                {
+                    result += item.x.ToString() + "," + item.y.ToString() + " ";
+                }
+                Debug.Log(result);
+                grid.UpdateTiles();
+            }
         }
-        Debug.Log(result);
-        grid.UpdateTiles();
+        
     }
 }
