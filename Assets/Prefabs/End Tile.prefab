@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3958506801650284651}
   - component: {fileID: 5088827033236324782}
   m_Layer: 0
-  m_Name: Unwalkable Tile
+  m_Name: End Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3b6d0a92892c55d4c83e67b29a52202a, type: 2}
+  - {fileID: 2100000, guid: 87f8e8700b39352459399221332a4943, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

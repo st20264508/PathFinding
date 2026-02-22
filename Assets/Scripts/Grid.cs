@@ -17,11 +17,14 @@ public class Grid : MonoBehaviour
 
     float nodeDiameter; //radius * 2
 
-    int gridSizeX; //size of the grid in grid space x dimension
-    int gridSizeY; //size of the grid in grid space y dimension
+    public int gridSizeX; //size of the grid in grid space x dimension
+    public int gridSizeY; //size of the grid in grid space y dimension
 
     Node[,] grid; //node array for the grid
     //Tile[,] tileGrid;
+
+    public Node startNode;
+    public Node endNode;
 
     Vector3 bottomLeft; //bottom left of the grid
 
@@ -36,8 +39,17 @@ public class Grid : MonoBehaviour
         RandomWalls();
         InitTileGrid();
         PopulateNeighbours();//order shouldnt matter but if bugs could check
-        
+
+        startNode = null;
+        endNode = null;
     }
+
+
+    /*private void Update()
+    {
+        Debug.Log(startNode.x.ToString() + "," + startNode.y.ToString()); 
+        Debug.Log(endNode.x.ToString() + "," + endNode.y.ToString()); 
+    }*/
 
     void InitGrid()
     {
@@ -96,9 +108,17 @@ public class Grid : MonoBehaviour
         {
             foreach (Node n in grid)
             {
-                if (n.walkable)
+                if (n == startNode)
                 {
                     Gizmos.color = Color.green;
+                }
+                else if (n == endNode)
+                {
+                    Gizmos.color = Color.red;
+                }
+                else if (n.walkable)
+                {
+                    Gizmos.color = Color.white;
                 }
                 /*if (n.displayNeighbours) //doesnt work for now
                 {
@@ -109,9 +129,10 @@ public class Grid : MonoBehaviour
                 }*/
                 else
                 {
-                    Gizmos.color = Color.red;
+                    Gizmos.color = Color.black;
                 }
-                Gizmos.DrawCube(n.worldPos, Vector3.one * (nodeDiameter * 0.95f)); 
+                Vector3 drawAbove = new Vector3(n.worldPos.x, n.worldPos.y + 0.1f, n.worldPos.z);
+                Gizmos.DrawCube(drawAbove, Vector3.one * (nodeDiameter * 0.95f));
             }
         }
     }

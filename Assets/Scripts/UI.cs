@@ -16,7 +16,12 @@ public class UI : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            DebugNeighbours();
+            SetStartNode();
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            SetEndNode();
         }
     }
 
@@ -38,6 +43,42 @@ public class UI : MonoBehaviour
                 //Gizmos.color = Color.yellow;
             }
             Debug.Log(result);
+        }
+    }
+
+    public void SetStartNode()
+    {
+        RaycastHit hit;
+        Ray mousePos = cam.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(mousePos, out hit))
+        {
+            if (grid.GetGridPosFromWorldPos(hit.point).walkable)
+            {
+                grid.startNode = grid.GetGridPosFromWorldPos(hit.point);
+                Debug.Log("Start Node: " + grid.startNode.x.ToString() + "," + grid.startNode.y.ToString());
+            }
+            else
+            {
+                Debug.Log("Start node has to be walkable");
+            }
+        }
+    }
+
+    public void SetEndNode()
+    {
+        RaycastHit hit;
+        Ray mousePos = cam.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(mousePos, out hit))
+        {
+            if (grid.GetGridPosFromWorldPos(hit.point).walkable)
+            {
+                grid.endNode = grid.GetGridPosFromWorldPos(hit.point);
+                Debug.Log("End Node: " + grid.endNode.x.ToString() + "," + grid.endNode.y.ToString());
+            }
+            else
+            {
+                Debug.Log("End node has to be walkable");
+            }
         }
     }
 }
