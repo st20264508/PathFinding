@@ -163,13 +163,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5483a50f3f74583479cc3e4532848471, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridWorldSize: {x: 11, y: 11}
+  gridWorldSize: {x: 10, y: 10}
   tilePrefab: {fileID: 7054105202854107338, guid: 6ea1d86630d63a94780912fdfdff40b2, type: 3}
   unwalkabletilePrefab: {fileID: 7054105202854107338, guid: 64b2c5e2cd5a15044a399c15d7e1ff85, type: 3}
-  nodeRadius: 0.1
+  startPrefab: {fileID: 7054105202854107338, guid: f9855369c439ed2439a0cdc40e1089df, type: 3}
+  endPrefab: {fileID: 7054105202854107338, guid: 121fdeff652c25a448bf9c5698273490, type: 3}
+  nodeRadius: 0.25
   drawGizmos: 1
+  nodeDiameter: 0
   gridSizeX: 0
   gridSizeY: 0
+  TileList: []
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,7 +235,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -257,7 +261,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 3, y: 10, z: 0}
+  m_LocalPosition: {x: 0, y: 10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -491,7 +495,7 @@ GameObject:
   - component: {fileID: 1177029925}
   m_Layer: 0
   m_Name: Plane
-  m_TagString: Untagged
+  m_TagString: Base
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -513,7 +517,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
@@ -525,7 +529,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1177029924}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -581,7 +585,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -631,6 +635,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid: {fileID: 200884358}
+  test: {fileID: 2737446628098912658, guid: e29088745aee4c84eab5c096b85ab70c, type: 3}
+  pathfinder: {fileID: 2005837050}
 --- !u!1 &2005837048
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -10,12 +11,15 @@ public class Grid : MonoBehaviour
 
     public GameObject tilePrefab;
     public GameObject unwalkabletilePrefab;
+    public GameObject startPrefab;
+    public GameObject endPrefab;
+        
 
     public float nodeRadius; //radius of a node in the grid
 
     [SerializeField] bool drawGizmos; //for drawing the grid
 
-    float nodeDiameter; //radius * 2
+    public float nodeDiameter; //radius * 2
 
     public int gridSizeX; //size of the grid in grid space x dimension
     public int gridSizeY; //size of the grid in grid space y dimension
@@ -26,10 +30,14 @@ public class Grid : MonoBehaviour
     public Node startNode;
     public Node endNode;
 
+    public List<GameObject> TileList;
+    public List<Node> path;
+
     Vector3 bottomLeft; //bottom left of the grid
 
     private void Awake()
     {
+        TileList = new List<GameObject>();
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
@@ -40,16 +48,7 @@ public class Grid : MonoBehaviour
         InitTileGrid();
         PopulateNeighbours();//order shouldnt matter but if bugs could check
 
-        startNode = null;
-        endNode = null;
     }
-
-
-    /*private void Update()
-    {
-        Debug.Log(startNode.x.ToString() + "," + startNode.y.ToString()); 
-        Debug.Log(endNode.x.ToString() + "," + endNode.y.ToString()); 
-    }*/
 
     void InitGrid()
     {
@@ -63,8 +62,6 @@ public class Grid : MonoBehaviour
                 grid[x, y] = new Node(initPoint, true, x, y); //for now all are walkable update in the future
             }
         }
-
-        
     }
 
     void InitTileGrid()
@@ -73,18 +70,102 @@ public class Grid : MonoBehaviour
         {
             for (int y = 0; y < gridSizeY; y++)
             {
+               // Vector3 spawnPos = new Vector3(grid[x, y].worldPos.x, grid[x, y].worldPos.y - nodeRadius * 0.95f, grid[x, y].worldPos.z);
+                Vector3 spawnPos = new Vector3(grid[x, y].worldPos.x, grid[x, y].worldPos.y, grid[x, y].worldPos.z);
                 if (grid[x,y].walkable)
                 {
-                    tilePrefab.transform.localScale = new Vector3(nodeDiameter, nodeDiameter, nodeDiameter);
-                    Instantiate(tilePrefab, grid[x, y].worldPos, Quaternion.identity); //for now all are walkable update in the future
+                    tilePrefab.name = "Tile " + x + "," + y;
+                    tilePrefab.transform.localScale = new Vector3(nodeDiameter, 0.2f, nodeDiameter);
+                    var tile = Instantiate(tilePrefab, spawnPos, Quaternion.identity);
+                    TileList.Add(tile);
+                    //for now all are walkable update in the future
                 }
-                if (!grid[x,y].walkable)
+                else if (!grid[x,y].walkable)
                 {
-                    unwalkabletilePrefab.transform.localScale = new Vector3(nodeDiameter, nodeDiameter, nodeDiameter);
-                    Instantiate(unwalkabletilePrefab, grid[x, y].worldPos, Quaternion.identity);
+                    unwalkabletilePrefab.name = "Tile " + x + "," + y;
+                    unwalkabletilePrefab.transform.localScale = new Vector3(nodeDiameter, 0.2f, nodeDiameter);
+                    var tile = Instantiate(unwalkabletilePrefab, spawnPos, Quaternion.identity);
+                    TileList.Add(tile);
                 }
             }
         }
+    }
+
+    public void UpdateTiles() 
+    {
+        if (TileList != null)
+        {
+            ResetTiles();
+        }
+
+        /*if (grid != null)
+        {
+            foreach (Node n in grid)
+            {
+                if (n == startNode)
+                {
+                    Instantiate(startPrefab, n.worldPos, Quaternion.identity);
+                }
+                else if (n == endNode)
+                {
+                    Instantiate(endPrefab, n.worldPos, Quaternion.identity);
+                }
+                else if (n.walkable)
+                {
+                    Instantiate(tilePrefab, n.worldPos, Quaternion.identity);
+                }
+                else
+                {
+                    Instantiate(unwalkabletilePrefab, n.worldPos, Quaternion.identity);
+                }
+                
+            }
+        }*/
+
+        for (int x = 0; x < gridSizeX; x++)
+        {
+            for (int y = 0; y < gridSizeY; y++)
+            {
+                Vector3 spawnPos = new Vector3(grid[x, y].worldPos.x, grid[x, y].worldPos.y, grid[x, y].worldPos.z);
+                if (grid[x, y] == startNode)
+                {
+                    startPrefab.name = "Tile " + x + "," + y;
+                    startPrefab.transform.localScale = new Vector3(nodeDiameter, 0.2f, nodeDiameter);
+                    var tile = Instantiate(startPrefab, spawnPos, Quaternion.identity);
+                    TileList.Add(tile);
+                }
+                else if (grid[x, y] == endNode)
+                {
+                    endPrefab.name = "Tile " + x + "," + y;
+                    endPrefab.transform.localScale = new Vector3(nodeDiameter, 0.2f, nodeDiameter);
+                    var tile = Instantiate(endPrefab, spawnPos, Quaternion.identity);
+                    TileList.Add(tile);
+                }
+                else if (grid[x, y].walkable)
+                {
+                    tilePrefab.name = "Tile " + x + "," + y;
+                    tilePrefab.transform.localScale = new Vector3(nodeDiameter, 0.2f, nodeDiameter);
+                    var tile = Instantiate(tilePrefab, spawnPos, Quaternion.identity);
+                    TileList.Add(tile);
+                    //for now all are walkable update in the future
+                }
+                else if (!grid[x, y].walkable)
+                {
+                    unwalkabletilePrefab.name = "Tile " + x + "," + y;
+                    unwalkabletilePrefab.transform.localScale = new Vector3(nodeDiameter, 0.2f, nodeDiameter);
+                    var tile = Instantiate(unwalkabletilePrefab, spawnPos, Quaternion.identity);
+                    TileList.Add(tile);
+                }
+                else if (path != null && path.Contains(grid[x, y]))
+                {
+                    startPrefab.name = "Tile " + x + "," + y;
+                    startPrefab.transform.localScale = new Vector3(nodeDiameter, 0.2f, nodeDiameter);
+                    var tile = Instantiate(startPrefab, spawnPos, Quaternion.identity);
+                    TileList.Add(tile);
+                }
+            }
+        }
+
     }
 
     public Node GetGridPosFromWorldPos(Vector3 worldPos)
@@ -95,15 +176,15 @@ public class Grid : MonoBehaviour
         xPercent = Mathf.Clamp01(xPercent);
         yPercent = Mathf.Clamp01(yPercent);
 
-        int gridX = Mathf.RoundToInt((gridSizeX - 1) * xPercent);
-        int gridY = Mathf.RoundToInt((gridSizeY - 1) * yPercent);
+        int gridX = Mathf.FloorToInt((gridSizeX) * xPercent);
+        int gridY = Mathf.FloorToInt((gridSizeY) * yPercent);
 
         return grid[gridX, gridY];
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y)); //draw grid dimensions
+        Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 0, gridWorldSize.y)); //draw grid dimensions
         if (grid != null && drawGizmos)
         {
             foreach (Node n in grid)
@@ -131,8 +212,11 @@ public class Grid : MonoBehaviour
                 {
                     Gizmos.color = Color.black;
                 }
-                Vector3 drawAbove = new Vector3(n.worldPos.x, n.worldPos.y + 0.1f, n.worldPos.z);
-                Gizmos.DrawCube(drawAbove, Vector3.one * (nodeDiameter * 0.95f));
+                Vector3 drawAbove = new Vector3(n.worldPos.x, n.worldPos.y -0.5f, n.worldPos.z);
+                Vector3 size = new Vector3(nodeDiameter, 0.1f, nodeDiameter);
+                Gizmos.DrawCube(drawAbove, size); 
+                //Gizmos.DrawWireCube(n.worldPos, Vector3.one * nodeDiameter);
+                
             }
         }
     }
@@ -191,6 +275,14 @@ public class Grid : MonoBehaviour
         foreach (Node n in grid)
         {
             n.walkable = true;
+        }
+    }
+
+    public void ResetTiles()
+    {
+        foreach(GameObject go in TileList)
+        {
+            Destroy(go);
         }
     }
 }
