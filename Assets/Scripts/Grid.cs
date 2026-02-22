@@ -13,7 +13,8 @@ public class Grid : MonoBehaviour
     public GameObject unwalkabletilePrefab;
     public GameObject startPrefab;
     public GameObject endPrefab;
-        
+    public GameObject pathPrefab;
+
 
     public float nodeRadius; //radius of a node in the grid
 
@@ -48,6 +49,20 @@ public class Grid : MonoBehaviour
         InitTileGrid();
         PopulateNeighbours();//order shouldnt matter but if bugs could check
 
+    }
+
+    private void Update()
+    {
+        if (path != null)
+        {
+            string result = "List contents: ";
+            foreach (var item in path)
+            {
+                result += item.x.ToString() + "," + item.y.ToString() + " ";
+            }
+            Debug.Log(result);
+        }
+       
     }
 
     void InitGrid()
@@ -127,7 +142,14 @@ public class Grid : MonoBehaviour
             for (int y = 0; y < gridSizeY; y++)
             {
                 Vector3 spawnPos = new Vector3(grid[x, y].worldPos.x, grid[x, y].worldPos.y, grid[x, y].worldPos.z);
-                if (grid[x, y] == startNode)
+                if (path != null && path.Contains(grid[x, y]))
+                {
+                    pathPrefab.name = "Tile " + x + "," + y;
+                    pathPrefab.transform.localScale = new Vector3(nodeDiameter, 0.2f, nodeDiameter);
+                    var tile = Instantiate(pathPrefab, spawnPos, Quaternion.identity);
+                    TileList.Add(tile);
+                }
+                else if (grid[x, y] == startNode)
                 {
                     startPrefab.name = "Tile " + x + "," + y;
                     startPrefab.transform.localScale = new Vector3(nodeDiameter, 0.2f, nodeDiameter);
@@ -156,13 +178,7 @@ public class Grid : MonoBehaviour
                     var tile = Instantiate(unwalkabletilePrefab, spawnPos, Quaternion.identity);
                     TileList.Add(tile);
                 }
-                else if (path != null && path.Contains(grid[x, y]))
-                {
-                    startPrefab.name = "Tile " + x + "," + y;
-                    startPrefab.transform.localScale = new Vector3(nodeDiameter, 0.2f, nodeDiameter);
-                    var tile = Instantiate(startPrefab, spawnPos, Quaternion.identity);
-                    TileList.Add(tile);
-                }
+              
             }
         }
 

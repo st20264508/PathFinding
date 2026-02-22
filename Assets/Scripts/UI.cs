@@ -29,16 +29,7 @@ public class UI : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            //Debug.Log("space pressed");
-            List<Node> path = pathfinder.BFSAlgorithm(grid.startNode, grid.endNode);
-            
-            string result = "List contents: ";
-            foreach (var item in path)
-            {
-                result += item.x.ToString() + "," + item.y.ToString() + " ";
-                //Gizmos.color = Color.yellow;
-            }
-            Debug.Log(result);
+            RunBFS();
         }
     }
 
@@ -123,5 +114,18 @@ public class UI : MonoBehaviour
             }
             //Destroy(hit.transform.gameObject);
         }
+    }
+
+    public void RunBFS()
+    {
+        grid.path = pathfinder.BFSAlgorithm(grid.startNode, grid.endNode);
+
+        string result = "List contents: ";
+        foreach (var item in grid.path)
+        {
+            result += item.x.ToString() + "," + item.y.ToString() + " ";
+        }
+        Debug.Log(result);
+        grid.UpdateTiles();
     }
 }
