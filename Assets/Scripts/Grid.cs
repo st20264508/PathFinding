@@ -1,9 +1,11 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Debug = UnityEngine.Debug;
 
 public class Grid : MonoBehaviour
 {
@@ -47,11 +49,11 @@ public class Grid : MonoBehaviour
         InitGrid();
         RandomWalls();
         InitTileGrid();
-        PopulateNeighbours();//order shouldnt matter but if bugs could check
-
+        PopulateNeighboursAll();//order shouldnt matter but if bugs could check
+        PopulateNeighboursCross();
     }
 
-    private void Update()
+    /*private void Update()
     {
         if (path != null)
         {
@@ -63,10 +65,12 @@ public class Grid : MonoBehaviour
             Debug.Log(result);
         }
        
-    }
+    }*/
 
     void InitGrid()
     {
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
         grid = new Node[gridSizeX, gridSizeY];  
 
         for (int x = 0; x < gridSizeX; x++)
@@ -77,10 +81,14 @@ public class Grid : MonoBehaviour
                 grid[x, y] = new Node(initPoint, true, x, y); //for now all are walkable update in the future
             }
         }
+        sw.Stop();
+        Debug.Log("Time to InitGrid(): " + sw.ElapsedMilliseconds + "ms");
     }
 
     void InitTileGrid()
     {
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
         for (int x = 0; x < gridSizeX; x++)
         {
             for (int y = 0; y < gridSizeY; y++)
@@ -104,10 +112,14 @@ public class Grid : MonoBehaviour
                 }
             }
         }
+        sw.Stop();
+        Debug.Log("Time to InitTileGrid(): " + sw.ElapsedMilliseconds + "ms");
     }
 
     public void UpdateTiles() 
     {
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
         if (TileList != null)
         {
             ResetTiles();
@@ -181,7 +193,8 @@ public class Grid : MonoBehaviour
               
             }
         }
-
+        sw.Stop();
+        Debug.Log("Time to UpdateTiles(): " + sw.ElapsedMilliseconds + "ms");
     }
 
     public Node GetGridPosFromWorldPos(Vector3 worldPos)
@@ -237,9 +250,11 @@ public class Grid : MonoBehaviour
         }
     }
 
-    public void PopulateNeighbours()
+    public void PopulateNeighboursAll() //considers all neighbours around not just N S E W
     {
         //List<Node> NeighbourNodes = new List<Node>();
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
 
         foreach (Node node in grid)
         {
@@ -257,7 +272,7 @@ public class Grid : MonoBehaviour
 
                     if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
                     {
-                        node.neighbours.Add(grid[checkX, checkY]);
+                        node.neighboursAll.Add(grid[checkX, checkY]);
                     }
                 }
             }
@@ -265,7 +280,36 @@ public class Grid : MonoBehaviour
             //node.neighbours = NeighbourNodes;
             //NeighbourNodes.Clear(); 
         }
-        
+        sw.Stop();
+        Debug.Log("Time to PopulateNeighboursAll(): " + sw.ElapsedMilliseconds + "ms");
+    }
+
+    public void PopulateNeighboursCross() //x+1,y x-1,y x,y+1 x,y-1 //for use with unweighted due to diag, only considers N S E W
+    {
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+
+        foreach (Node node in grid)
+        {
+            if (node.x - 1 >= 0)//left
+            {
+                node.neighboursCross.Add(grid[node.x - 1, node.y]); 
+            }
+            if (node.x + 1 < gridSizeX)//right
+            {
+                node.neighboursCross.Add(grid[node.x + 1, node.y]); 
+            }
+            if (node.y - 1 >= 0) //down
+            {
+                node.neighboursCross.Add(grid[node.x, node.y - 1]);
+            }
+            if (node.y + 1 < gridSizeY) //up
+            {
+                node.neighboursCross.Add(grid[node.x, node.y + 1]);
+            }
+        }
+        sw.Stop();
+        Debug.Log("Time to PopulateNeighboursCross(): " + sw.ElapsedMilliseconds + "ms");
     }
 
     public void RandomWalls()

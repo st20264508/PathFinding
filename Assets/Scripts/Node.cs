@@ -14,7 +14,8 @@ public class Node
 
     public Node parent; //used for parenting nodes to create a path
 
-    public List<Node> neighbours; //could be used if neighbours are pre calculated in grid init, could be a hashset? 
+    public List<Node> neighboursAll; //could be used if neighbours are pre calculated in grid init, could be a hashset? 
+    public List<Node> neighboursCross;
 
     public Node(Vector3 worldPos, bool walkable, int x, int y)
     {
@@ -23,16 +24,25 @@ public class Node
         this.x = x;
         this.y = y;
         displayNeighbours = false;
-        neighbours = new List<Node>();
+        neighboursAll = new List<Node>();
+        neighboursCross = new List<Node>();
     }
-
-    public List<Node> GetNeighbours()
+    
+    public List<Node> GetNeighboursAll()
     {
-        if (neighbours != null)
+        if (neighboursAll != null)
         {
-            return neighbours;
+            return neighboursAll;
         }
         return null;
     }
      
+    public List <Node> GetNeighboursCross()
+    {
+        if (neighboursCross != null)
+        {
+            return neighboursCross;
+        }
+        return null;
+    }
 }

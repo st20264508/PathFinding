@@ -27,9 +27,14 @@ public class UI : MonoBehaviour
             SetEndNode();
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            RunBFS();
+            RunBFSCROSS(); 
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            RunBFSALL(); 
         }
     }
 
@@ -45,7 +50,7 @@ public class UI : MonoBehaviour
             //Debug.Log(n.GetNeighbours());
             Debug.Log(n.x.ToString() + "," + n.y.ToString());
             string result = "List contents: ";
-            foreach (var item in n.neighbours)
+            foreach (var item in n.neighboursAll)
             {
                 result += item.x.ToString() + "," + item.y.ToString() + " ";
                 //Gizmos.color = Color.yellow;
@@ -116,9 +121,22 @@ public class UI : MonoBehaviour
         }
     }
 
-    public void RunBFS()
+    public void RunBFSALL()
     {
-        grid.path = pathfinder.BFSAlgorithm(grid.startNode, grid.endNode);
+        grid.path = pathfinder.BFSAlgorithmALL(grid.startNode, grid.endNode);
+
+        string result = "List contents: ";
+        foreach (var item in grid.path)
+        {
+            result += item.x.ToString() + "," + item.y.ToString() + " ";
+        }
+        Debug.Log(result);
+        grid.UpdateTiles();
+    }
+
+    public void RunBFSCROSS()
+    {
+        grid.path = pathfinder.BFSAlgorithmCROSS(grid.startNode, grid.endNode);
 
         string result = "List contents: ";
         foreach (var item in grid.path)
