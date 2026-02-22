@@ -2,10 +2,14 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Grid : MonoBehaviour
 {
     public Vector2 gridWorldSize; //size of the grid in unity world space
+
+    public GameObject tilePrefab;
+    public GameObject unwalkabletilePrefab;
 
     public float nodeRadius; //radius of a node in the grid
 
@@ -17,6 +21,7 @@ public class Grid : MonoBehaviour
     int gridSizeY; //size of the grid in grid space y dimension
 
     Node[,] grid; //node array for the grid
+    //Tile[,] tileGrid;
 
     Vector3 bottomLeft; //bottom left of the grid
 
@@ -28,8 +33,10 @@ public class Grid : MonoBehaviour
         bottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
 
         InitGrid();
-        PopulateNeighbours();//order shouldnt matter but if bugs could check
         RandomWalls();
+        InitTileGrid();
+        PopulateNeighbours();//order shouldnt matter but if bugs could check
+        
     }
 
     void InitGrid()
@@ -46,6 +53,26 @@ public class Grid : MonoBehaviour
         }
 
         
+    }
+
+    void InitTileGrid()
+    {
+        for (int x = 0; x < gridSizeX; x++)
+        {
+            for (int y = 0; y < gridSizeY; y++)
+            {
+                if (grid[x,y].walkable)
+                {
+                    tilePrefab.transform.localScale = new Vector3(nodeDiameter, nodeDiameter, nodeDiameter);
+                    Instantiate(tilePrefab, grid[x, y].worldPos, Quaternion.identity); //for now all are walkable update in the future
+                }
+                if (!grid[x,y].walkable)
+                {
+                    unwalkabletilePrefab.transform.localScale = new Vector3(nodeDiameter, nodeDiameter, nodeDiameter);
+                    Instantiate(unwalkabletilePrefab, grid[x, y].worldPos, Quaternion.identity);
+                }
+            }
+        }
     }
 
     public Node GetGridPosFromWorldPos(Vector3 worldPos)

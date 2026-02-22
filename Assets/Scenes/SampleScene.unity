@@ -164,6 +164,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridWorldSize: {x: 11, y: 11}
+  tilePrefab: {fileID: 7054105202854107338, guid: 6ea1d86630d63a94780912fdfdff40b2, type: 3}
+  unwalkabletilePrefab: {fileID: 7054105202854107338, guid: 64b2c5e2cd5a15044a399c15d7e1ff85, type: 3}
   nodeRadius: 0.1
   drawGizmos: 1
 --- !u!1 &330585543

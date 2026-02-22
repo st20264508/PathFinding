@@ -2,7 +2,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Node
+public class Node 
 {
     public Vector3 worldPos;
 
