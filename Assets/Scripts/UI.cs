@@ -36,6 +36,15 @@ public class UI : MonoBehaviour
         {
             RunBFSALL(); 
         }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            SetUnwalkable();
+        }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            SetWalkable();
+        }
     }
 
     void DebugNeighbours()
@@ -56,6 +65,48 @@ public class UI : MonoBehaviour
                 //Gizmos.color = Color.yellow;
             }
             Debug.Log(result);
+        }
+    }
+
+    public void SetWalkable()
+    {
+        RaycastHit hit;
+        Ray mousePos = cam.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(mousePos, out hit))
+        {
+            Node hitNode = grid.GetGridPosFromWorldPos(hit.point);
+            if (hitNode.walkable)
+            {
+                Debug.Log("Already Walkable");
+            }
+            else
+            {
+                grid.TileList.Remove(hit.transform.gameObject);
+                Destroy(hit.transform.gameObject);
+                grid.PlaceTile(grid.tilePrefab, hitNode.x, hitNode.y);
+                grid.GetNode(hitNode.x, hitNode.y).walkable = true;
+            }
+        }
+    }
+
+    public void SetUnwalkable()
+    {
+        RaycastHit hit;
+        Ray mousePos = cam.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(mousePos, out hit))
+        {
+            Node hitNode = grid.GetGridPosFromWorldPos(hit.point);
+            if (!hitNode.walkable)
+            {
+                Debug.Log("Already Unwalkable");
+            }
+            else
+            {
+                grid.TileList.Remove(hit.transform.gameObject);
+                Destroy(hit.transform.gameObject);
+                grid.PlaceTile(grid.unwalkabletilePrefab, hitNode.x, hitNode.y);
+                grid.GetNode(hitNode.x, hitNode.y).walkable = false;
+            }
         }
     }
 
