@@ -101,6 +101,7 @@ public class Grid : MonoBehaviour
                     tilePrefab.transform.localScale = new Vector3(nodeDiameter, tileHeight, nodeDiameter);
                     var tile = Instantiate(tilePrefab, spawnPos, Quaternion.identity);
                     TileList.Add(tile);
+                    grid[x,y].prefab = tile;
                     //for now all are walkable update in the future
                 }
                 else if (!grid[x,y].walkable)
@@ -109,6 +110,7 @@ public class Grid : MonoBehaviour
                     unwalkabletilePrefab.transform.localScale = new Vector3(nodeDiameter, tileHeight, nodeDiameter);
                     var tile = Instantiate(unwalkabletilePrefab, spawnPos, Quaternion.identity);
                     TileList.Add(tile);
+                    grid[x, y].prefab = tile;
                 }
             }
         }
@@ -160,6 +162,7 @@ public class Grid : MonoBehaviour
                     pathPrefab.transform.localScale = new Vector3(nodeDiameter, tileHeight, nodeDiameter);
                     var tile = Instantiate(pathPrefab, spawnPos, Quaternion.identity);
                     TileList.Add(tile);
+                    grid[x, y].prefab = tile;
                 }
                 else if (grid[x, y] == startNode)
                 {
@@ -167,6 +170,7 @@ public class Grid : MonoBehaviour
                     startPrefab.transform.localScale = new Vector3(nodeDiameter, tileHeight, nodeDiameter);
                     var tile = Instantiate(startPrefab, spawnPos, Quaternion.identity);
                     TileList.Add(tile);
+                    grid[x, y].prefab = tile;
                 }
                 else if (grid[x, y] == endNode)
                 {
@@ -174,6 +178,7 @@ public class Grid : MonoBehaviour
                     endPrefab.transform.localScale = new Vector3(nodeDiameter, tileHeight, nodeDiameter);
                     var tile = Instantiate(endPrefab, spawnPos, Quaternion.identity);
                     TileList.Add(tile);
+                    grid[x, y].prefab = tile;
                 }
                 else if (grid[x, y].walkable)
                 {
@@ -189,6 +194,7 @@ public class Grid : MonoBehaviour
                     unwalkabletilePrefab.transform.localScale = new Vector3(nodeDiameter, tileHeight, nodeDiameter);
                     var tile = Instantiate(unwalkabletilePrefab, spawnPos, Quaternion.identity);
                     TileList.Add(tile);
+                    grid[x, y].prefab = tile;
                 }
               
             }
@@ -222,7 +228,8 @@ public class Grid : MonoBehaviour
         newtile.name = "Tile " + x + "," + y;
         newtile.transform.localScale = new Vector3(nodeDiameter, tileHeight, nodeDiameter);
         var tile = Instantiate(newtile, spawnPos, Quaternion.identity);
-        TileList.Add(tile); 
+        TileList.Add(tile);
+        grid[x, y].prefab = tile;
     }
 
     private void OnDrawGizmos()
@@ -354,6 +361,11 @@ public class Grid : MonoBehaviour
 
     public void ResetTiles()
     {
+        foreach(Node n in grid)
+        {
+            n.prefab = null;
+        }
+
         foreach(GameObject go in TileList)
         {
             Destroy(go);

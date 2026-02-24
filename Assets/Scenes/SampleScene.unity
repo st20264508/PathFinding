@@ -169,6 +169,7 @@ MonoBehaviour:
   startPrefab: {fileID: 7054105202854107338, guid: f9855369c439ed2439a0cdc40e1089df, type: 3}
   endPrefab: {fileID: 7054105202854107338, guid: 121fdeff652c25a448bf9c5698273490, type: 3}
   pathPrefab: {fileID: 7054105202854107338, guid: df0be94624aa03f4f986a41eba76b9ec, type: 3}
+  tileHeight: 0.2
   nodeRadius: 0.25
   drawGizmos: 1
   nodeDiameter: 0

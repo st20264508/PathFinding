@@ -119,10 +119,36 @@ public class UI : MonoBehaviour
             Node hitNode = grid.GetGridPosFromWorldPos(hit.point);
             if (hitNode.walkable && hitNode != grid.startNode && hitNode != grid.endNode)
             {
+                int oldX = 0;
+                int oldY = 0;
+
+                if (grid.startNode != null)
+                {
+                    oldX = grid.startNode.x;
+                    oldY = grid.startNode.y;
+                }
+                Debug.Log(oldX + " " + oldY);
+
+                grid.TileList.Remove(hit.transform.gameObject);
+                Destroy(hit.transform.gameObject);
+                grid.PlaceTile(grid.startPrefab, hitNode.x, hitNode.y);
+                //grid.GetNode(hitNode.x, hitNode.y).walkable = false;
+
                 grid.startNode = grid.GetGridPosFromWorldPos(hit.point);
-                grid.UpdateTiles(); 
+
+                
+                grid.TileList.Remove(grid.GetNode(oldX, oldY).prefab);
+                Destroy(grid.GetNode(oldX, oldY).prefab); 
+                grid.PlaceTile(grid.tilePrefab, oldX, oldY);
+                grid.GetNode(oldX, oldY).walkable = true;
+
+              
+
                 Debug.Log("Start Node: " + grid.startNode.x.ToString() + "," + grid.startNode.y.ToString());
                 Debug.DrawRay(mousePos.origin, mousePos.direction * 1000, Color.red, 10);
+                //grid.startNode = grid.GetGridPosFromWorldPos(hit.point);
+                //grid.UpdateTiles();
+                //Debug.Log("Start Node: " + grid.startNode.x.ToString() + "," + grid.startNode.y.ToString());
             }
             else if (!hitNode.walkable)
             {
@@ -152,8 +178,31 @@ public class UI : MonoBehaviour
             Node hitNode = grid.GetGridPosFromWorldPos(hit.point);
             if (hitNode.walkable && hitNode != grid.endNode && hitNode != grid.startNode)
             {
+                //grid.endNode = grid.GetGridPosFromWorldPos(hit.point);
+                //grid.UpdateTiles();
+
+                int oldX = 0;
+                int oldY = 0;
+
+                if (grid.endNode != null)
+                {
+                    oldX = grid.endNode.x;
+                    oldY = grid.endNode.y;
+                }
+                Debug.Log(oldX + " " + oldY);
+
+                grid.TileList.Remove(hit.transform.gameObject);
+                Destroy(hit.transform.gameObject);
+                grid.PlaceTile(grid.endPrefab, hitNode.x, hitNode.y);
+                //grid.GetNode(hitNode.x, hitNode.y).walkable = false;
+
                 grid.endNode = grid.GetGridPosFromWorldPos(hit.point);
-                grid.UpdateTiles();
+
+
+                grid.TileList.Remove(grid.GetNode(oldX, oldY).prefab);
+                Destroy(grid.GetNode(oldX, oldY).prefab);
+                grid.PlaceTile(grid.tilePrefab, oldX, oldY);
+                grid.GetNode(oldX, oldY).walkable = true;
                 Debug.Log("End Node: " + grid.endNode.x.ToString() + "," + grid.endNode.y.ToString());
             }
             else if (!hitNode.walkable)
