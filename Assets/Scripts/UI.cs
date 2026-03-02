@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -45,6 +46,26 @@ public class UI : MonoBehaviour
         {
             SetWalkable();
         }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            SetSlow();
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            DebugNode();
+        }
+    }
+
+    void DebugNode()
+    {
+        RaycastHit hit;
+        Ray mousePos = cam.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(mousePos, out hit))
+        {
+            Node n = grid.GetGridPosFromWorldPos(hit.point);
+            Debug.Log("Node: " + n.x.ToString() + "," + n.y.ToString() + " Node cost: " + n.cost + " Node walkable: " + n.walkable);
+        }
     }
 
     void DebugNeighbours()
@@ -75,7 +96,7 @@ public class UI : MonoBehaviour
         if (Physics.Raycast(mousePos, out hit))
         {
             Node hitNode = grid.GetGridPosFromWorldPos(hit.point);
-            if (hitNode.walkable)
+            if (hitNode.walkable && hitNode.cost < grid.slowcost)
             {
                 Debug.Log("Already Walkable");
             }
@@ -85,6 +106,7 @@ public class UI : MonoBehaviour
                 Destroy(hit.transform.gameObject);
                 grid.PlaceTile(grid.tilePrefab, hitNode.x, hitNode.y);
                 grid.GetNode(hitNode.x, hitNode.y).walkable = true;
+                grid.GetNode(hitNode.x, hitNode.y).cost = grid.normalcost;
             }
         }
     }
@@ -106,6 +128,29 @@ public class UI : MonoBehaviour
                 Destroy(hit.transform.gameObject);
                 grid.PlaceTile(grid.unwalkabletilePrefab, hitNode.x, hitNode.y);
                 grid.GetNode(hitNode.x, hitNode.y).walkable = false;
+                grid.GetNode(hitNode.x, hitNode.y).cost = grid.normalcost;
+            }
+        }
+    }
+
+    public void SetSlow()
+    {
+        RaycastHit hit;
+        Ray mousePos = cam.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(mousePos, out hit))
+        {
+            Node hitNode = grid.GetGridPosFromWorldPos(hit.point);
+            if (hitNode.cost > grid.normalcost)
+            {
+                Debug.Log("Already Slow");
+            }
+            else
+            {
+                grid.TileList.Remove(hit.transform.gameObject);
+                Destroy(hit.transform.gameObject);
+                grid.PlaceTile(grid.slowPrefab, hitNode.x, hitNode.y);
+                grid.GetNode(hitNode.x, hitNode.y).walkable = true;
+                grid.GetNode(hitNode.x, hitNode.y).cost = grid.slowcost;
             }
         }
     }

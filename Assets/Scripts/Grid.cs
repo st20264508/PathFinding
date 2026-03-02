@@ -16,6 +16,7 @@ public class Grid : MonoBehaviour
     public GameObject startPrefab;
     public GameObject endPrefab;
     public GameObject pathPrefab;
+    public GameObject slowPrefab;
 
     [SerializeField] float tileHeight;
     public float nodeRadius; //radius of a node in the grid
@@ -27,6 +28,8 @@ public class Grid : MonoBehaviour
     public int gridSizeX; //size of the grid in grid space x dimension
     public int gridSizeY; //size of the grid in grid space y dimension
 
+    public int slowcost;
+    public int normalcost;
     Node[,] grid; //node array for the grid
     //Tile[,] tileGrid;
 
@@ -40,6 +43,7 @@ public class Grid : MonoBehaviour
 
     private void Awake()
     {
+        slowcost = 5;
         TileList = new List<GameObject>();
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
@@ -78,7 +82,7 @@ public class Grid : MonoBehaviour
             for (int y = 0; y < gridSizeY; y++)
             {
                 Vector3 initPoint = bottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
-                grid[x, y] = new Node(initPoint, true, x, y); //for now all are walkable update in the future
+                grid[x, y] = new Node(initPoint, true, x, y, normalcost); //for now all are walkable update in the future
             }
         }
         sw.Stop();
@@ -179,6 +183,14 @@ public class Grid : MonoBehaviour
                     var tile = Instantiate(endPrefab, spawnPos, Quaternion.identity);
                     TileList.Add(tile);
                     grid[x, y].prefab = tile;
+                }
+                else if (grid[x, y].walkable && grid[x,y].cost > normalcost)
+                {
+                    tilePrefab.name = "Tile " + x + "," + y;
+                    tilePrefab.transform.localScale = new Vector3(nodeDiameter, tileHeight, nodeDiameter);
+                    var tile = Instantiate(slowPrefab, spawnPos, Quaternion.identity);
+                    TileList.Add(tile);
+                    //for now all are walkable update in the future
                 }
                 else if (grid[x, y].walkable)
                 {
@@ -347,6 +359,7 @@ public class Grid : MonoBehaviour
             else
             {
                 n.walkable = true;
+                n.cost = normalcost;
             }
         }
     }
