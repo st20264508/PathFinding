@@ -35,21 +35,29 @@ public class UI : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            RunBFSALL(); 
+            RunDijkstraCROSS();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            RunBFSALL();
         }
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
             SetUnwalkable();
         }
+
         if (Input.GetKeyDown(KeyCode.W))
         {
             SetWalkable();
         }
+
         if (Input.GetKeyDown(KeyCode.E))
         {
             SetSlow();
         }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             DebugNode();
@@ -279,6 +287,8 @@ public class UI : MonoBehaviour
                     result += item.x.ToString() + "," + item.y.ToString() + " ";
                 }
                 Debug.Log(result);
+                Debug.Log("Path length in Nodes: " + grid.path.Count);
+                Debug.Log("Path cost: " + CalculatePathCost());
                 grid.UpdateTiles();
             }
         }       
@@ -297,9 +307,42 @@ public class UI : MonoBehaviour
                     result += item.x.ToString() + "," + item.y.ToString() + " ";
                 }
                 Debug.Log(result);
+                Debug.Log("Path length in Nodes: " + grid.path.Count);
+                Debug.Log("Path cost: " + CalculatePathCost());
                 grid.UpdateTiles();
             }
         }
         
+    }
+
+    public void RunDijkstraCROSS()
+    {
+        if (grid.startNode != null && grid.endNode != null)
+        {
+            grid.path = pathfinder.DijkstraAlgorithmCROSS(grid.startNode, grid.endNode);
+            if (grid.path != null)
+            {
+                string result = "List contents: ";
+                foreach (var item in grid.path)
+                {
+                    result += item.x.ToString() + "," + item.y.ToString() + " ";
+                }
+                Debug.Log(result);
+                Debug.Log("Path length in Nodes: " + grid.path.Count);
+                Debug.Log("Path cost: " + CalculatePathCost());
+                grid.UpdateTiles();
+            }
+        }
+
+    }
+
+    int CalculatePathCost()
+    {
+        int pathCost = 0;
+        foreach (var node in grid.path)
+        {
+            pathCost += node.cost;
+        }
+        return pathCost;
     }
 }

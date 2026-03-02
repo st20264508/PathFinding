@@ -28,6 +28,12 @@ public class Pathfinding : MonoBehaviour
         while (frontier.Count > 0)
         {
             Node current = frontier.Dequeue();
+            if (current == start)
+            {
+                visited.Add(current);
+                Debug.Log("broke");
+                break;
+            }
 
             foreach (Node neighbour in current.neighboursAll)
             {
@@ -38,9 +44,7 @@ public class Pathfinding : MonoBehaviour
                         frontier.Enqueue(neighbour);
                         neighbour.parent = current;
                     }
-                    
-                }
-                
+                } 
             }
             visited.Add(current);
         }
@@ -50,7 +54,8 @@ public class Pathfinding : MonoBehaviour
             Debug.Log("Path not found");
             return null;
         }
-            
+
+        sw.Stop();
 
         Queue<Node> path = new Queue<Node>();
         Node currentNode = start;
@@ -61,7 +66,6 @@ public class Pathfinding : MonoBehaviour
             path.Enqueue(currentNode);
         }
 
-        sw.Stop();
         Debug.Log("Time to BFSAlgorithmALL(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
 
         return path.ToList();
@@ -75,10 +79,15 @@ public class Pathfinding : MonoBehaviour
         List<Node> visited = new List<Node>();
 
         frontier.Enqueue(end);
-
         while (frontier.Count > 0)
         {
             Node current = frontier.Dequeue();
+            if (current == start)
+            {
+                visited.Add(current);
+                Debug.Log("broke");
+                break;
+            }
 
             foreach (Node neighbour in current.neighboursCross)
             {
@@ -91,7 +100,6 @@ public class Pathfinding : MonoBehaviour
                     }
 
                 }
-
             }
             visited.Add(current);
         }
@@ -102,6 +110,8 @@ public class Pathfinding : MonoBehaviour
             return null;
         }
 
+        sw.Stop();
+        
         Queue<Node> path = new Queue<Node>();
         Node currentNode = start;
 
@@ -111,8 +121,61 @@ public class Pathfinding : MonoBehaviour
             path.Enqueue(currentNode);
         }
 
-        sw.Stop();
         Debug.Log("Time to BFSAlgorithmCROSS(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+
+        return path.ToList();
+    }
+    public List<Node> DijkstraAlgorithmCROSS(Node start, Node end)
+    {
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+        PriorityQueue<Node> frontier = new PriorityQueue<Node>(); //class taken from C# .net
+        Dictionary<Node, int> costToTile = new Dictionary<Node, int>(); 
+        
+        frontier.Enqueue(end, 0);
+        costToTile[end] = 0;
+
+        while (frontier.Count > 0)
+        {
+            Node current = frontier.Dequeue();
+            if (current == start)
+            { 
+                break;
+            }
+
+            foreach (Node neighbour in current.neighboursCross)
+            {
+                int newCost = costToTile[current] + neighbour.cost;
+                if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
+                {
+                    if (neighbour.walkable)
+                    {
+                        costToTile[neighbour] = newCost;
+                        frontier.Enqueue(neighbour, newCost);
+                        neighbour.parent = current;
+                    }
+                }
+            }   
+        }
+
+        if (!costToTile.ContainsKey(start))
+        {
+            Debug.Log("Path not found");
+            return null;
+        }
+        sw.Stop();
+
+        Queue<Node> path = new Queue<Node>();
+        Node currentNode = start;
+
+        while (currentNode != end)
+        {
+            currentNode = currentNode.parent;
+            path.Enqueue(currentNode);
+        }
+
+        
+        Debug.Log("Time to DijkstraAlgorithmCROSS(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
 
         return path.ToList();
     }

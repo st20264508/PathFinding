@@ -22,7 +22,7 @@ public class Grid : MonoBehaviour
     public float nodeRadius; //radius of a node in the grid
 
     [SerializeField] bool drawGizmos; //for drawing the grid
-
+    [SerializeField] bool randomWallsOnStart;
     public float nodeDiameter; //radius * 2
 
     public int gridSizeX; //size of the grid in grid space x dimension
@@ -51,7 +51,11 @@ public class Grid : MonoBehaviour
         bottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
 
         InitGrid();
-        RandomWalls();
+        if (randomWallsOnStart)
+        {
+            RandomWalls();
+        }
+        
         InitTileGrid();
         PopulateNeighboursAll();//order shouldnt matter but if bugs could check
         PopulateNeighboursCross();
