@@ -173,7 +173,7 @@ MonoBehaviour:
   tileHeight: 0.2
   nodeRadius: 0.25
   drawGizmos: 1
-  randomWallsOnStart: 0
+  randomWallsOnStart: 1
   nodeDiameter: 0
   gridSizeX: 0
   gridSizeY: 0

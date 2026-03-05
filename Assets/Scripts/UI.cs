@@ -40,7 +40,7 @@ public class UI : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            RunBFSALL();
+            RunDijkstra();
         }
 
         if (Input.GetKeyDown(KeyCode.Q))
@@ -148,7 +148,7 @@ public class UI : MonoBehaviour
         if (Physics.Raycast(mousePos, out hit))
         {
             Node hitNode = grid.GetGridPosFromWorldPos(hit.point);
-            if (hitNode.cost > grid.normalcost)
+            if (hitNode.cost == grid.slowcost)
             {
                 Debug.Log("Already Slow");
             }
@@ -174,11 +174,13 @@ public class UI : MonoBehaviour
             {
                 int oldX = 0;
                 int oldY = 0;
+                int oldCost = 0;
 
                 if (grid.startNode != null)
                 {
                     oldX = grid.startNode.x;
                     oldY = grid.startNode.y;
+                    oldCost = grid.startNode.cost;
                 }
                 Debug.Log(oldX + " " + oldY);
 
@@ -192,7 +194,14 @@ public class UI : MonoBehaviour
                 
                 grid.TileList.Remove(grid.GetNode(oldX, oldY).prefab);
                 Destroy(grid.GetNode(oldX, oldY).prefab); 
-                grid.PlaceTile(grid.tilePrefab, oldX, oldY);
+                if (oldCost == grid.slowcost)
+                {
+                    grid.PlaceTile(grid.slowPrefab, oldX, oldY);
+                }
+                else
+                {
+                    grid.PlaceTile(grid.tilePrefab, oldX, oldY);
+                }
                 grid.GetNode(oldX, oldY).walkable = true;
 
               
@@ -231,16 +240,15 @@ public class UI : MonoBehaviour
             Node hitNode = grid.GetGridPosFromWorldPos(hit.point);
             if (hitNode.walkable && hitNode != grid.endNode && hitNode != grid.startNode)
             {
-                //grid.endNode = grid.GetGridPosFromWorldPos(hit.point);
-                //grid.UpdateTiles();
-
                 int oldX = 0;
                 int oldY = 0;
+                int oldCost = 0;
 
                 if (grid.endNode != null)
                 {
                     oldX = grid.endNode.x;
                     oldY = grid.endNode.y;
+                    oldCost = grid.endNode.cost;
                 }
                 Debug.Log(oldX + " " + oldY);
 
@@ -254,7 +262,14 @@ public class UI : MonoBehaviour
 
                 grid.TileList.Remove(grid.GetNode(oldX, oldY).prefab);
                 Destroy(grid.GetNode(oldX, oldY).prefab);
-                grid.PlaceTile(grid.tilePrefab, oldX, oldY);
+                if (oldCost == grid.slowcost)
+                {
+                    grid.PlaceTile(grid.slowPrefab, oldX, oldY);
+                }
+                else
+                {
+                    grid.PlaceTile(grid.tilePrefab, oldX, oldY);
+                }
                 grid.GetNode(oldX, oldY).walkable = true;
                 Debug.Log("End Node: " + grid.endNode.x.ToString() + "," + grid.endNode.y.ToString());
             }
@@ -320,6 +335,27 @@ public class UI : MonoBehaviour
         if (grid.startNode != null && grid.endNode != null)
         {
             grid.path = pathfinder.DijkstraAlgorithmCROSS(grid.startNode, grid.endNode);
+            if (grid.path != null)
+            {
+                string result = "List contents: ";
+                foreach (var item in grid.path)
+                {
+                    result += item.x.ToString() + "," + item.y.ToString() + " ";
+                }
+                Debug.Log(result);
+                Debug.Log("Path length in Nodes: " + grid.path.Count);
+                Debug.Log("Path cost: " + CalculatePathCost());
+                grid.UpdateTiles();
+            }
+        }
+
+    }
+
+    public void RunDijkstra()
+    {
+        if (grid.startNode != null && grid.endNode != null)
+        {
+            grid.path = pathfinder.DijkstraAlgorithm(grid.startNode, grid.endNode);
             if (grid.path != null)
             {
                 string result = "List contents: ";

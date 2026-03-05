@@ -43,7 +43,8 @@ public class Grid : MonoBehaviour
 
     private void Awake()
     {
-        slowcost = 5;
+        slowcost *= 10;
+        normalcost *= 10;
         TileList = new List<GameObject>();
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
@@ -188,7 +189,7 @@ public class Grid : MonoBehaviour
                     TileList.Add(tile);
                     grid[x, y].prefab = tile;
                 }
-                else if (grid[x, y].walkable && grid[x,y].cost > normalcost)
+                else if (grid[x, y].walkable && grid[x,y].cost == slowcost)
                 {
                     tilePrefab.name = "Tile " + x + "," + y;
                     tilePrefab.transform.localScale = new Vector3(nodeDiameter, tileHeight, nodeDiameter);
