@@ -19,6 +19,7 @@ public class Node
 
     public List<Node> neighboursAll; //could be used if neighbours are pre calculated in grid init, could be a hashset? 
     public List<Node> neighboursCross;
+    public List<Node> neighboursDiagSafe;
 
     public Node(Vector3 worldPos, bool walkable, int x, int y, int cost)
     {
@@ -30,6 +31,7 @@ public class Node
         displayNeighbours = false;
         neighboursAll = new List<Node>();
         neighboursCross = new List<Node>();
+        neighboursDiagSafe = new List<Node>();
     }
     
     public List<Node> GetNeighboursAll()

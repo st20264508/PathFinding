@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.ConstrainedExecution;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -30,7 +31,7 @@ public class Grid : MonoBehaviour
 
     public int slowcost;
     public int normalcost;
-    Node[,] grid; //node array for the grid
+    public Node[,] grid; //node array for the grid
     //Tile[,] tileGrid;
 
     public Node startNode;
@@ -236,7 +237,22 @@ public class Grid : MonoBehaviour
 
     public Node GetNode(int x, int y)
     {
-        return grid[x, y];
+        Debug.Log(x + " " + y);
+
+        if (x >= gridSizeX || x < 0)
+            return null;
+        if (y >= gridSizeY || y < 0)
+            return null;
+        /*if (grid[x, y] == null)
+            return null;*/
+        if (grid[x,y] != null)
+        {
+            return grid[x, y];
+        }
+        else { return null; }
+
+        
+
     }
 
     public void PlaceTile(GameObject newtile, int x, int y)
@@ -320,6 +336,56 @@ public class Grid : MonoBehaviour
         }
         sw.Stop();
         Debug.Log("Time to PopulateNeighboursAll(): " + sw.ElapsedMilliseconds + "ms");
+    }
+
+    public void PopulateNeighboursDiagExcept()
+    {
+        //List<Node> filteredlist = new List<Node> ();
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+
+        foreach (Node cur in grid)
+        {
+            cur.neighboursDiagSafe = cur.neighboursAll;
+            if (GetNode(cur.x, cur.y + 1) != null && !GetNode(cur.x, cur.y + 1).walkable)
+            {
+                if (GetNode(cur.x + 1, cur.y) != null && !GetNode(cur.x + 1, cur.y).walkable)
+                {
+                    if (cur.neighboursDiagSafe.Contains(GetNode(cur.x + 1, cur.y + 1)))
+                    {
+                        cur.neighboursDiagSafe.Remove(GetNode(cur.x + 1, cur.y + 1));
+                    }
+                }
+                if (GetNode(cur.x - 1, cur.y) != null && !GetNode(cur.x - 1, cur.y).walkable)
+                {
+                    if (cur.neighboursDiagSafe.Contains(GetNode(cur.x - 1, cur.y + 1)))
+                    {
+                        cur.neighboursDiagSafe.Remove(GetNode(cur.x - 1, cur.y + 1));
+                    }
+
+                }
+            }
+            if (GetNode(cur.x, cur.y - 1) != null && !GetNode(cur.x, cur.y - 1).walkable)
+            {
+                if (GetNode(cur.x + 1, cur.y) != null && ! GetNode(cur.x + 1, cur.y).walkable)
+                {
+                    if (cur.neighboursDiagSafe.Contains(GetNode(cur.x + 1, cur.y - 1)))
+                    {
+                        cur.neighboursDiagSafe.Remove(GetNode(cur.x + 1, cur.y - 1));
+                    }
+                }
+                if (GetNode(cur.x - 1, cur.y) != null && !GetNode(cur.x - 1, cur.y).walkable)
+                {
+                    if (cur.neighboursDiagSafe.Contains(GetNode(cur.x - 1, cur.y - 1)))
+                    {
+                        cur.neighboursDiagSafe.Remove(GetNode(cur.x - 1, cur.y - 1));
+                    }
+
+                }
+            }
+        }
+        sw.Stop();
+        Debug.Log("Time to PopulateNeighboursDiagExcept(): " + sw.ElapsedMilliseconds + "ms");
     }
 
     public void PopulateNeighboursCross() //x+1,y x-1,y x,y+1 x,y-1 //for use with unweighted due to diag, only considers N S E W

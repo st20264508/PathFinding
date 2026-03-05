@@ -43,6 +43,11 @@ public class UI : MonoBehaviour
             RunDijkstra();
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            RunDijkstraFiltered();
+        }
+
         if (Input.GetKeyDown(KeyCode.Q))
         {
             SetUnwalkable();
@@ -58,9 +63,15 @@ public class UI : MonoBehaviour
             SetSlow();
         }
 
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            DebugFilter();
+        }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             DebugNode();
+            DebugNeighbours();
         }
     }
 
@@ -73,6 +84,18 @@ public class UI : MonoBehaviour
         {
             Node n = grid.GetGridPosFromWorldPos(hit.point);
             Debug.Log("Node: " + n.x.ToString() + "," + n.y.ToString() + " Node cost: " + n.cost + " Node walkable: " + n.walkable);
+        }
+    }
+
+    private void DebugFilter()
+    {
+        RaycastHit hit;
+        Ray mousePos = cam.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(mousePos, out hit))
+        {
+            Node n = grid.GetGridPosFromWorldPos(hit.point);
+            pathfinder.FilteredNeighbours(n);
         }
     }
 
@@ -356,6 +379,27 @@ public class UI : MonoBehaviour
         if (grid.startNode != null && grid.endNode != null)
         {
             grid.path = pathfinder.DijkstraAlgorithm(grid.startNode, grid.endNode);
+            if (grid.path != null)
+            {
+                string result = "List contents: ";
+                foreach (var item in grid.path)
+                {
+                    result += item.x.ToString() + "," + item.y.ToString() + " ";
+                }
+                Debug.Log(result);
+                Debug.Log("Path length in Nodes: " + grid.path.Count);
+                Debug.Log("Path cost: " + CalculatePathCost());
+                grid.UpdateTiles();
+            }
+        }
+
+    }
+
+    public void RunDijkstraFiltered()
+    {
+        if (grid.startNode != null && grid.endNode != null)
+        {
+            grid.path = pathfinder.DijkstraAlgorithmFiltered(grid.startNode, grid.endNode);
             if (grid.path != null)
             {
                 string result = "List contents: ";
