@@ -237,7 +237,7 @@ public class Grid : MonoBehaviour
 
     public Node GetNode(int x, int y)
     {
-        Debug.Log(x + " " + y);
+        //Debug.Log(x + " " + y);
 
         if (x >= gridSizeX || x < 0)
             return null;
@@ -346,7 +346,20 @@ public class Grid : MonoBehaviour
 
         foreach (Node cur in grid)
         {
-            cur.neighboursDiagSafe = cur.neighboursAll;
+            cur.neighboursDiagSafe.Clear();
+            cur.neighboursDiagSafe.AddRange(cur.neighboursAll);
+            /*Debug.Log(cur.x + "," + cur.y);
+            if (cur.neighboursDiagSafe != null)
+            {
+                string result = "List contents: ";
+                foreach (var item in cur.neighboursDiagSafe)
+                {
+                    result += item.x.ToString() + "," + item.y.ToString() + " ";
+                }
+                Debug.Log(result);
+
+
+            }*/
             if (GetNode(cur.x, cur.y + 1) != null && !GetNode(cur.x, cur.y + 1).walkable)
             {
                 if (GetNode(cur.x + 1, cur.y) != null && !GetNode(cur.x + 1, cur.y).walkable)

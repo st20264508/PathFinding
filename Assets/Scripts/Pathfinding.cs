@@ -19,13 +19,7 @@ public class Pathfinding : MonoBehaviour
         
     }
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.L))
-        {
-            FilteredNeighbours(grid.GetNode(0, 10));
-        }
-    }
+   
 
     public List<Node> BFSAlgorithmALL(Node start, Node end)
     {
@@ -319,120 +313,5 @@ public class Pathfinding : MonoBehaviour
         }
     }
 
-    public List<Node> FilteredNeighbours(Node cur) //make temp list an remove the non accessible so it doesnt effect the neighbours
-    {
-        List<Node> filteredlist = cur.neighboursAll;
-        //Node temp = null;
-
-        if (grid.GetNode(cur.x, cur.y + 1) != null && !grid.GetNode(cur.x, cur.y + 1).walkable)
-        {
-            if (grid.GetNode(cur.x + 1, cur.y) != null && !grid.GetNode(cur.x + 1, cur.y).walkable)
-            {
-                if(filteredlist.Contains(grid.GetNode(cur.x + 1, cur.y + 1)))
-                {
-                    filteredlist.Remove(grid.GetNode(cur.x + 1, cur.y + 1));
-                }
-                
-            }
-            if (grid.GetNode(cur.x - 1, cur.y) != null && !grid.GetNode(cur.x - 1, cur.y).walkable)
-            {
-                if (filteredlist.Contains(grid.GetNode(cur.x - 1, cur.y + 1)))
-                {
-                    filteredlist.Remove(grid.GetNode(cur.x - 1, cur.y + 1));
-                }
-                
-            }
-        }
-        if (grid.GetNode(cur.x, cur.y - 1) != null && !grid.GetNode(cur.x, cur.y - 1).walkable)
-        {
-            if (grid.GetNode(cur.x + 1, cur.y) != null && !grid.GetNode(cur.x + 1, cur.y).walkable)
-            {
-                if (filteredlist.Contains(grid.GetNode(cur.x + 1, cur.y - 1)))
-                {
-                    filteredlist.Remove(grid.GetNode(cur.x + 1, cur.y - 1));
-                }
-                
-            }
-            if (grid.GetNode(cur.x - 1, cur.y) != null && !grid.GetNode(cur.x - 1, cur.y).walkable)
-            {
-                if (filteredlist.Contains(grid.GetNode(cur.x - 1, cur.y - 1)))
-                {
-                    filteredlist.Remove(grid.GetNode(cur.x - 1, cur.y - 1));
-                }
-                
-            }
-        }
-        /*if (filteredlist.Contains(grid.GetNode(cur.x, cur.y + 1)))
-        {
-            temp = grid.GetNode(cur.x, cur.y + 1);
-            if (!temp.walkable)
-            {
-                if (filteredlist.Contains(grid.GetNode(cur.x + 1, cur.y)))
-                {
-                    temp = grid.GetNode(cur.x + 1, cur.y);
-                    if (!temp.walkable)
-                    {
-                        if (filteredlist.Contains(grid.GetNode(cur.x + 1, cur.y + 1)))
-                        {
-                            filteredlist.Remove(grid.GetNode(cur.x + 1, cur.y + 1));
-                        }
-                    }
-                }
-            }
-            temp = grid.GetNode(cur.x, cur.y + 1);
-            if (filteredlist.Contains(grid.GetNode(cur.x - 1, cur.y)))
-            {
-                temp = grid.GetNode(cur.x - 1, cur.y);
-                if (!temp.walkable)
-                {
-                    if (filteredlist.Contains(grid.GetNode(cur.x - 1, cur.y + 1)))
-                    {
-                        filteredlist.Remove(grid.GetNode(cur.x - 1, cur.y + 1));
-                    }
-                }
-            }
-        }
-        if (filteredlist.Contains(grid.GetNode(cur.x, cur.y - 1)))
-        {
-            temp = grid.GetNode(cur.x, cur.y - 1);
-            if (!temp.walkable)
-            {
-                if (filteredlist.Contains(grid.GetNode(cur.x + 1, cur.y)))
-                {
-                    temp = grid.GetNode(cur.x + 1, cur.y);
-                    if (!temp.walkable)
-                    {
-                        if (filteredlist.Contains(grid.GetNode(cur.x + 1, cur.y - 1)))
-                        {
-                            filteredlist.Remove(grid.GetNode(cur.x + 1, cur.y - 1));
-                        }
-                    }
-                }
-            }
-            temp = grid.GetNode(cur.x, cur.y - 1);
-            if (filteredlist.Contains(grid.GetNode(cur.x - 1, cur.y)))
-            {
-                temp = grid.GetNode(cur.x - 1, cur.y);
-                if (!temp.walkable)
-                {
-                    if (filteredlist.Contains(grid.GetNode(cur.x - 1, cur.y - 1)))
-                    {
-                        filteredlist.Remove(grid.GetNode(cur.x - 1, cur.y - 1));
-                    }
-                }
-            }
-        }*/
-        /*if (filteredlist != null)
-        {
-            string result = "List contents: ";
-            foreach (var item in filteredlist)
-            {
-                result += item.x.ToString() + "," + item.y.ToString() + " ";
-            }
-            Debug.Log(result);
-            
-           
-        }*/
-        return filteredlist;
-    }
+    
 }
