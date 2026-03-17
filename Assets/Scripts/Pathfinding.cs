@@ -26,6 +26,7 @@ public class Pathfinding : MonoBehaviour
     public List<Node> BFSAlgorithmALL(Node start, Node end)
     {
         int count = 0;
+        grid.frontierList.Clear();
         Stopwatch sw = new Stopwatch();
         sw.Start();
         Queue<Node> frontier = new Queue<Node>();
@@ -49,6 +50,10 @@ public class Pathfinding : MonoBehaviour
                 {
                     if (neighbour.walkable)
                     {
+                        if (grid.showfrontier)
+                        {
+                            grid.frontierList.Add(neighbour);
+                        }
                         frontier.Enqueue(neighbour);
                         neighbour.parent = current;
                     }
@@ -83,6 +88,7 @@ public class Pathfinding : MonoBehaviour
     public List<Node> BFSAlgorithmCROSS(Node start, Node end)
     {
         int count = 0;
+        grid.frontierList.Clear();
         Stopwatch sw = new Stopwatch();
         sw.Start();
         Queue<Node> frontier = new Queue<Node>();
@@ -105,6 +111,10 @@ public class Pathfinding : MonoBehaviour
                 {
                     if (neighbour.walkable)
                     {
+                        if (grid.showfrontier)
+                        {
+                            grid.frontierList.Add(neighbour);
+                        }
                         frontier.Enqueue(neighbour);
                         neighbour.parent = current;
                     }
@@ -139,6 +149,7 @@ public class Pathfinding : MonoBehaviour
     public List<Node> DijkstraAlgorithmCROSS(Node start, Node end)
     {
         int count = 0;
+        grid.frontierList.Clear();
         Stopwatch sw = new Stopwatch();
         sw.Start();
         PriorityQueue<Node> frontier = new PriorityQueue<Node>(); //class taken from C# .net
@@ -162,6 +173,10 @@ public class Pathfinding : MonoBehaviour
                 {
                     if (neighbour.walkable)
                     {
+                        if (grid.showfrontier)
+                        {
+                            grid.frontierList.Add(neighbour);
+                        }
                         costToTile[neighbour] = newCost;
                         frontier.Enqueue(neighbour, newCost);
                         neighbour.parent = current;
@@ -195,7 +210,7 @@ public class Pathfinding : MonoBehaviour
 
     public List<Node> DijkstraAlgorithm(Node start, Node end)
     {
-        Node temp = grid.GetNode(-3, 123123);
+        grid.frontierList.Clear();
         int count = 0;
         Stopwatch sw = new Stopwatch();
         sw.Start();
@@ -220,6 +235,10 @@ public class Pathfinding : MonoBehaviour
                 {
                     if (neighbour.walkable)
                     {
+                        if (grid.showfrontier)
+                        {
+                            grid.frontierList.Add(neighbour);
+                        }
                         costToTile[neighbour] = newCost;
                         frontier.Enqueue(neighbour, newCost);
                         neighbour.parent = current;
@@ -282,9 +301,10 @@ public class Pathfinding : MonoBehaviour
                 {
                     if (neighbour.walkable)
                     {
-                        //TestCube.transform.localScale = new Vector3(grid.nodeDiameter, 1, grid.nodeDiameter);
-                        //var tile = Instantiate(TestCube, neighbour.worldPos, Quaternion.identity);
-                        grid.frontierList.Add(neighbour);
+                        if (grid.showfrontier)
+                        {
+                            grid.frontierList.Add(neighbour);
+                        }
                         costToTile[neighbour] = newCost;
                         frontier.Enqueue(neighbour, newCost);
                         neighbour.parent = current;
@@ -349,9 +369,10 @@ public class Pathfinding : MonoBehaviour
                 {
                     if (neighbour.walkable)
                     {
-                        //TestCube.transform.localScale = new Vector3(grid.nodeDiameter, 1, grid.nodeDiameter);
-                        //var tile = Instantiate(TestCube, neighbour.worldPos, Quaternion.identity);
-                        grid.frontierList.Add(neighbour);
+                        if (grid.showfrontier)
+                        {
+                            grid.frontierList.Add(neighbour);
+                        }
                         costToTile[neighbour] = newCost;
                         int fCost = newCost + DistanceBetweenNodes(start, neighbour);
                         frontier.Enqueue(neighbour, fCost);

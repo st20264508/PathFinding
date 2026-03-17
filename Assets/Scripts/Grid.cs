@@ -26,7 +26,7 @@ public class Grid : MonoBehaviour
 
     [SerializeField] bool drawGizmos; //for drawing the grid
     [SerializeField] bool randomWallsOnStart;
-    [SerializeField] bool showfrontier;
+    [SerializeField] public bool showfrontier;
     public float nodeDiameter; //radius * 2
 
     public int gridSizeX; //size of the grid in grid space x dimension
@@ -133,7 +133,7 @@ public class Grid : MonoBehaviour
         Debug.Log("Time to InitTileGrid(): " + sw.ElapsedMilliseconds + "ms");
     }
 
-    public void UpdateTiles() 
+    public void UpdateTiles() //TODO MAKE THIS BETTER FOR VISUALISING THE FRONTIER AND PATH
     {
         Stopwatch sw = new Stopwatch();
         sw.Start();
