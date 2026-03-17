@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5483a50f3f74583479cc3e4532848471, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridWorldSize: {x: 10, y: 10}
+  gridWorldSize: {x: 20, y: 20}
   tilePrefab: {fileID: 7054105202854107338, guid: 6ea1d86630d63a94780912fdfdff40b2, type: 3}
   unwalkabletilePrefab: {fileID: 7054105202854107338, guid: 64b2c5e2cd5a15044a399c15d7e1ff85, type: 3}
   startPrefab: {fileID: 7054105202854107338, guid: f9855369c439ed2439a0cdc40e1089df, type: 3}
@@ -171,9 +171,9 @@ MonoBehaviour:
   pathPrefab: {fileID: 7054105202854107338, guid: df0be94624aa03f4f986a41eba76b9ec, type: 3}
   slowPrefab: {fileID: 7054105202854107338, guid: af90d4a3c42d1a24781f86affbe8e97e, type: 3}
   tileHeight: 0.2
-  nodeRadius: 0.25
+  nodeRadius: 0.05
   drawGizmos: 1
-  randomWallsOnStart: 0
+  randomWallsOnStart: 1
   nodeDiameter: 0
   gridSizeX: 0
   gridSizeY: 0
@@ -239,10 +239,10 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 25.63
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 10.53
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

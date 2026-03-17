@@ -48,6 +48,11 @@ public class UI : MonoBehaviour
             RunDijkstraFiltered();
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            RunAstarFiltered();
+        }
+
         if (Input.GetKeyDown(KeyCode.Q))
         {
             SetUnwalkable();
@@ -414,6 +419,26 @@ public class UI : MonoBehaviour
             }
         }
 
+    }
+
+    public void RunAstarFiltered()
+    {
+        if (grid.startNode != null && grid.endNode != null)
+        {
+            grid.path = pathfinder.AstarAlgorithmFiltered(grid.startNode, grid.endNode);
+            if (grid.path != null)
+            {
+                string result = "List contents: ";
+                foreach (var item in grid.path)
+                {
+                    result += item.x.ToString() + "," + item.y.ToString() + " ";
+                }
+                Debug.Log(result);
+                Debug.Log("Path length in Nodes: " + grid.path.Count);
+                Debug.Log("Path cost: " + CalculatePathCost());
+                grid.UpdateTiles();
+            }
+        }
     }
 
     List<Node> FilteredNeighbours(Node cur) //make temp list an remove the non accessible so it doesnt effect the neighbours

@@ -298,6 +298,65 @@ public class Pathfinding : MonoBehaviour
 
         return path.ToList();
     }
+
+    public List<Node> AstarAlgorithmFiltered(Node start, Node end)
+    {
+        grid.PopulateNeighboursDiagExcept();
+
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+        PriorityQueue<Node> frontier = new PriorityQueue<Node>(); //class taken from C# .net
+        Dictionary<Node, int> costToTile = new Dictionary<Node, int>();
+
+        frontier.Enqueue(end, 0);
+        costToTile[end] = 0;
+
+        while (frontier.Count > 0)
+        {
+            Node current = frontier.Dequeue();
+            if (current == start)
+            {
+                break;
+            }
+
+            foreach (Node neighbour in current.neighboursDiagSafe)
+            {
+                int newCost = costToTile[current] + neighbour.cost + DistanceBetweenNodes(current, neighbour);
+                if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
+                {
+                    if (neighbour.walkable)
+                    {
+                        costToTile[neighbour] = newCost;
+                        int fCost = newCost + DistanceBetweenNodes(neighbour, start);
+                        frontier.Enqueue(neighbour, fCost);
+                        neighbour.parent = current;
+                    }
+                }
+            }
+        }
+
+        if (!costToTile.ContainsKey(start))
+        {
+            Debug.Log("Path not found - AstarAlgorithmFiltered");
+            return null;
+        }
+        sw.Stop();
+
+        Queue<Node> path = new Queue<Node>();
+        Node currentNode = start;
+
+        while (currentNode != end)
+        {
+            currentNode = currentNode.parent;
+            path.Enqueue(currentNode);
+        }
+
+
+        Debug.Log("Time to AstarAlgorithmFiltered(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+
+        return path.ToList();
+    }
+
     int DistanceBetweenNodes(Node nodeA, Node nodeB)
     {
         int Xdist = Mathf.Abs(nodeA.x - nodeB.x);
