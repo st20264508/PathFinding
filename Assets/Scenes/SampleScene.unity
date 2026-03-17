@@ -170,10 +170,11 @@ MonoBehaviour:
   endPrefab: {fileID: 7054105202854107338, guid: 121fdeff652c25a448bf9c5698273490, type: 3}
   pathPrefab: {fileID: 7054105202854107338, guid: df0be94624aa03f4f986a41eba76b9ec, type: 3}
   slowPrefab: {fileID: 7054105202854107338, guid: af90d4a3c42d1a24781f86affbe8e97e, type: 3}
+  visitedPrefab: {fileID: 7054105202854107338, guid: d334dbcdaf5f1924d8c4ad55b4c9c7c7, type: 3}
   tileHeight: 0.2
-  nodeRadius: 0.05
+  nodeRadius: 0.25
   drawGizmos: 1
-  randomWallsOnStart: 1
+  randomWallsOnStart: 0
   nodeDiameter: 0
   gridSizeX: 0
   gridSizeY: 0
@@ -688,6 +689,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid: {fileID: 200884358}
+  TestCube: {fileID: 2737446628098912658, guid: e29088745aee4c84eab5c096b85ab70c, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

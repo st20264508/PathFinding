@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.ConstrainedExecution;
 using Unity.VisualScripting;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Debug = UnityEngine.Debug;
@@ -18,12 +19,14 @@ public class Grid : MonoBehaviour
     public GameObject endPrefab;
     public GameObject pathPrefab;
     public GameObject slowPrefab;
+    public GameObject visitedPrefab;
 
     [SerializeField] float tileHeight;
     public float nodeRadius; //radius of a node in the grid
 
     [SerializeField] bool drawGizmos; //for drawing the grid
     [SerializeField] bool randomWallsOnStart;
+    [SerializeField] bool showfrontier;
     public float nodeDiameter; //radius * 2
 
     public int gridSizeX; //size of the grid in grid space x dimension
@@ -39,6 +42,7 @@ public class Grid : MonoBehaviour
 
     public List<GameObject> TileList;
     public List<Node> path;
+    public List<Node> frontierList;
 
     Vector3 bottomLeft; //bottom left of the grid
 
@@ -47,6 +51,7 @@ public class Grid : MonoBehaviour
         slowcost *= 10;
         normalcost *= 10;
         TileList = new List<GameObject>();
+        frontierList = new List<Node>();
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
@@ -174,6 +179,14 @@ public class Grid : MonoBehaviour
                     TileList.Add(tile);
                     grid[x, y].prefab = tile;
                 }
+                else if (showfrontier && frontierList != null && frontierList.Contains(grid[x, y]))
+                {
+                    visitedPrefab.name = "Tile " + x + "," + y;
+                    visitedPrefab.transform.localScale = new Vector3(nodeDiameter, tileHeight, nodeDiameter);
+                    var tile = Instantiate(visitedPrefab, spawnPos, Quaternion.identity);
+                    TileList.Add(tile);
+                    grid[x, y].prefab = tile;
+                }
                 else if (grid[x, y] == startNode)
                 {
                     startPrefab.name = "Tile " + x + "," + y;
@@ -190,7 +203,7 @@ public class Grid : MonoBehaviour
                     TileList.Add(tile);
                     grid[x, y].prefab = tile;
                 }
-                else if (grid[x, y].walkable && grid[x,y].cost == slowcost)
+                else if (grid[x, y].walkable && grid[x, y].cost == slowcost)
                 {
                     tilePrefab.name = "Tile " + x + "," + y;
                     tilePrefab.transform.localScale = new Vector3(nodeDiameter, tileHeight, nodeDiameter);

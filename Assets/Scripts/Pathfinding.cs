@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -12,17 +13,19 @@ using Debug = UnityEngine.Debug;
 public class Pathfinding : MonoBehaviour
 {
     public Grid grid;
-
+    Node highlighttile;
+    public GameObject TestCube;
     private void Start()
     {
         //grid = GetComponent<Grid>();
-        
+        highlighttile = null;
     }
 
    
 
     public List<Node> BFSAlgorithmALL(Node start, Node end)
     {
+        int count = 0;
         Stopwatch sw = new Stopwatch();
         sw.Start();
         Queue<Node> frontier = new Queue<Node>();
@@ -52,6 +55,7 @@ public class Pathfinding : MonoBehaviour
                 } 
             }
             visited.Add(current);
+            count++;
         }
 
         if (!visited.Contains(start))
@@ -72,12 +76,13 @@ public class Pathfinding : MonoBehaviour
         }
 
         Debug.Log("Time to BFSAlgorithmALL(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
-
+        Debug.Log("While loop iterations: " + count);
         return path.ToList();
     }
 
     public List<Node> BFSAlgorithmCROSS(Node start, Node end)
     {
+        int count = 0;
         Stopwatch sw = new Stopwatch();
         sw.Start();
         Queue<Node> frontier = new Queue<Node>();
@@ -107,6 +112,7 @@ public class Pathfinding : MonoBehaviour
                 }
             }
             visited.Add(current);
+            count++;
         }
 
         if (!visited.Contains(start))
@@ -127,11 +133,12 @@ public class Pathfinding : MonoBehaviour
         }
 
         Debug.Log("Time to BFSAlgorithmCROSS(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
-
+        Debug.Log("While loop iterations: " + count);
         return path.ToList();
     }
     public List<Node> DijkstraAlgorithmCROSS(Node start, Node end)
     {
+        int count = 0;
         Stopwatch sw = new Stopwatch();
         sw.Start();
         PriorityQueue<Node> frontier = new PriorityQueue<Node>(); //class taken from C# .net
@@ -161,6 +168,7 @@ public class Pathfinding : MonoBehaviour
                     }
                 }
             }   
+            count++;
         }
 
         if (!costToTile.ContainsKey(start))
@@ -181,14 +189,14 @@ public class Pathfinding : MonoBehaviour
 
         
         Debug.Log("Time to DijkstraAlgorithmCROSS(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
-
+        Debug.Log("While loop iterations: " + count);
         return path.ToList();
     }
 
     public List<Node> DijkstraAlgorithm(Node start, Node end)
     {
         Node temp = grid.GetNode(-3, 123123);
-
+        int count = 0;
         Stopwatch sw = new Stopwatch();
         sw.Start();
         PriorityQueue<Node> frontier = new PriorityQueue<Node>(); //class taken from C# .net
@@ -218,6 +226,7 @@ public class Pathfinding : MonoBehaviour
                     }
                 }
             }
+            count++;
         }
 
         if (!costToTile.ContainsKey(start))
@@ -238,6 +247,7 @@ public class Pathfinding : MonoBehaviour
 
 
         Debug.Log("Time to DijkstraAlgorithm(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+        Debug.Log("While loop iterations: " + count);
 
         return path.ToList();
     }
@@ -245,6 +255,8 @@ public class Pathfinding : MonoBehaviour
     public List<Node> DijkstraAlgorithmFiltered(Node start, Node end)
     {
         grid.PopulateNeighboursDiagExcept();
+        grid.frontierList.Clear();
+        int count = 0;
 
         Stopwatch sw = new Stopwatch();
         sw.Start();
@@ -257,6 +269,7 @@ public class Pathfinding : MonoBehaviour
         while (frontier.Count > 0)
         {
             Node current = frontier.Dequeue();
+            highlighttile = current;
             if (current == start)
             {
                 break;
@@ -269,12 +282,17 @@ public class Pathfinding : MonoBehaviour
                 {
                     if (neighbour.walkable)
                     {
+                        //TestCube.transform.localScale = new Vector3(grid.nodeDiameter, 1, grid.nodeDiameter);
+                        //var tile = Instantiate(TestCube, neighbour.worldPos, Quaternion.identity);
+                        grid.frontierList.Add(neighbour);
                         costToTile[neighbour] = newCost;
                         frontier.Enqueue(neighbour, newCost);
                         neighbour.parent = current;
+                        
                     }
                 }
             }
+            count++;
         }
 
         if (!costToTile.ContainsKey(start))
@@ -295,6 +313,7 @@ public class Pathfinding : MonoBehaviour
 
 
         Debug.Log("Time to DijkstraAlgorithmFiltered(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+        Debug.Log("While loop iterations " + count);
 
         return path.ToList();
     }
@@ -302,6 +321,9 @@ public class Pathfinding : MonoBehaviour
     public List<Node> AstarAlgorithmFiltered(Node start, Node end)
     {
         grid.PopulateNeighboursDiagExcept();
+        
+        grid.frontierList.Clear();
+        int count = 0;
 
         Stopwatch sw = new Stopwatch();
         sw.Start();
@@ -321,18 +343,24 @@ public class Pathfinding : MonoBehaviour
 
             foreach (Node neighbour in current.neighboursDiagSafe)
             {
+                
                 int newCost = costToTile[current] + neighbour.cost + DistanceBetweenNodes(current, neighbour);
                 if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
                 {
                     if (neighbour.walkable)
                     {
+                        //TestCube.transform.localScale = new Vector3(grid.nodeDiameter, 1, grid.nodeDiameter);
+                        //var tile = Instantiate(TestCube, neighbour.worldPos, Quaternion.identity);
+                        grid.frontierList.Add(neighbour);
                         costToTile[neighbour] = newCost;
-                        int fCost = newCost + DistanceBetweenNodes(neighbour, start);
+                        int fCost = newCost + DistanceBetweenNodes(start, neighbour);
                         frontier.Enqueue(neighbour, fCost);
                         neighbour.parent = current;
+                        count++;
                     }
                 }
             }
+            count++;
         }
 
         if (!costToTile.ContainsKey(start))
@@ -353,6 +381,7 @@ public class Pathfinding : MonoBehaviour
 
 
         Debug.Log("Time to AstarAlgorithmFiltered(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+        Debug.Log("While loop iterations: " + count);
 
         return path.ToList();
     }
@@ -372,5 +401,20 @@ public class Pathfinding : MonoBehaviour
         }
     }
 
-    
+    /*int ManhattanDistance(Node nodeA, Node nodeB)
+    {
+        int distance = Mathf.Abs(nodeA.x - nodeB.x) + Mathf.Abs(nodeA.y - nodeB.y);
+
+        return distance; 
+    }*/
+
+    /*private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.magenta;
+        if (highlighttile != null)
+        {
+            Gizmos.DrawCube(highlighttile.worldPos, new Vector3(grid.nodeDiameter, 0.1f, grid.nodeDiameter));
+        }
+        
+    }*/
 }
