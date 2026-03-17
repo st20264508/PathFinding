@@ -40,7 +40,7 @@ public class UI : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            RunDijkstra();
+            RunGreedyBFS();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha4))
@@ -426,6 +426,26 @@ public class UI : MonoBehaviour
         if (grid.startNode != null && grid.endNode != null)
         {
             grid.path = pathfinder.AstarAlgorithmFiltered(grid.startNode, grid.endNode);
+            if (grid.path != null)
+            {
+                string result = "List contents: ";
+                foreach (var item in grid.path)
+                {
+                    result += item.x.ToString() + "," + item.y.ToString() + " ";
+                }
+                Debug.Log(result);
+                Debug.Log("Path length in Nodes: " + grid.path.Count);
+                Debug.Log("Path cost: " + CalculatePathCost());
+                grid.UpdateTiles();
+            }
+        }
+    }
+
+    public void RunGreedyBFS()
+    {
+        if (grid.startNode != null && grid.endNode != null)
+        {
+            grid.path = pathfinder.GreedyBFSAlgorithm(grid.startNode, grid.endNode);
             if (grid.path != null)
             {
                 string result = "List contents: ";

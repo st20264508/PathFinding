@@ -13,12 +13,12 @@ using Debug = UnityEngine.Debug;
 public class Pathfinding : MonoBehaviour
 {
     public Grid grid;
-    Node highlighttile;
+    //Node highlighttile;
     public GameObject TestCube;
     private void Start()
     {
         //grid = GetComponent<Grid>();
-        highlighttile = null;
+        
     }
 
    
@@ -146,6 +146,72 @@ public class Pathfinding : MonoBehaviour
         Debug.Log("While loop iterations: " + count);
         return path.ToList();
     }
+
+    public List<Node> GreedyBFSAlgorithm(Node start, Node end)
+    {
+        int count = 0;
+        grid.frontierList.Clear();
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+        PriorityQueue<Node> frontier = new PriorityQueue<Node>(); //class taken from C# .net
+        //Dictionary<Node, int> costToTile = new Dictionary<Node, int>();
+        List<Node> visited = new List<Node>();
+
+        frontier.Enqueue(end, 0);
+        
+
+        while (frontier.Count > 0)
+        {
+            Node current = frontier.Dequeue();
+            if (current == start)
+            {
+                visited.Add(current);
+                break;
+            }
+
+            foreach (Node neighbour in current.neighboursCross)
+            {
+                //int newCost = costToTile[current] + neighbour.cost;
+                if (!visited.Contains(neighbour))
+                {
+                    if (neighbour.walkable)
+                    {
+                        if (grid.showfrontier)
+                        {
+                            grid.frontierList.Add(neighbour);
+                        }
+                        int priority = DistanceBetweenNodes(neighbour, start);
+                        frontier.Enqueue(neighbour, priority);
+                        neighbour.parent = current;
+                    }
+                }
+            }
+            visited.Add(current);
+            count++;
+        }
+
+        if (!visited.Contains(start))
+        {
+            Debug.Log("Path not found - GreedyBFSAlgorithm");
+            return null;
+        }
+        sw.Stop();
+
+        Queue<Node> path = new Queue<Node>();
+        Node currentNode = start;
+
+        while (currentNode != end)
+        {
+            currentNode = currentNode.parent;
+            path.Enqueue(currentNode);
+        }
+
+
+        Debug.Log("Time to GreedyBFSAlgorithm(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+        Debug.Log("While loop iterations: " + count);
+        return path.ToList();
+    }
+
     public List<Node> DijkstraAlgorithmCROSS(Node start, Node end)
     {
         int count = 0;
@@ -288,7 +354,6 @@ public class Pathfinding : MonoBehaviour
         while (frontier.Count > 0)
         {
             Node current = frontier.Dequeue();
-            highlighttile = current;
             if (current == start)
             {
                 break;
