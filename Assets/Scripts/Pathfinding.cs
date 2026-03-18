@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using Unity.IO.LowLevel.Unsafe;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
@@ -406,7 +407,6 @@ public class Pathfinding : MonoBehaviour
     public List<Node> AstarAlgorithmFiltered(Node start, Node end)
     {
         grid.PopulateNeighboursDiagExcept();
-        
         grid.frontierList.Clear();
         int count = 0;
 
@@ -428,21 +428,21 @@ public class Pathfinding : MonoBehaviour
 
             foreach (Node neighbour in current.neighboursDiagSafe)
             {
-                
-                int newCost = costToTile[current] + neighbour.cost + DistanceBetweenNodes(current, neighbour);
+                //int newCost = costToTile[current] + neighbour.cost + DistanceBetweenNodes(current, neighbour);
+                int newCost = DistanceBetweenNodes(end, current) + neighbour.cost + DistanceBetweenNodes(current, neighbour);
                 if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
                 {
                     if (neighbour.walkable)
                     {
-                        if (grid.showfrontier)
+                        if (grid.showfrontier && !grid.frontierList.Contains(neighbour))
                         {
                             grid.frontierList.Add(neighbour);
                         }
                         costToTile[neighbour] = newCost;
-                        int fCost = newCost + DistanceBetweenNodes(start, neighbour);
-                        frontier.Enqueue(neighbour, fCost);
+                        int priority = newCost + DistanceBetweenNodes(start, neighbour);
+                        frontier.Enqueue(neighbour, priority);
                         neighbour.parent = current;
-                        count++;
+
                     }
                 }
             }

@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 2272631096611591682}
   - component: {fileID: 3958506801650284651}
   - component: {fileID: 5088827033236324782}
-  m_Layer: 0
-  m_Name: Path Tile
+  m_Layer: 4
+  m_Name: Path Marker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.2, z: 0.5}
+  m_LocalScale: {x: 0.25, y: 0.2, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

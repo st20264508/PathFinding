@@ -9,10 +9,13 @@ public class UI : MonoBehaviour
     public Grid grid;
     public GameObject test;
     public Pathfinding pathfinder;
+    int defualtLayer;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         cam = Camera.main;
+        defualtLayer = LayerMask.GetMask("Default");
     }
 
     // Update is called once per frame
@@ -129,7 +132,7 @@ public class UI : MonoBehaviour
     {
         RaycastHit hit;
         Ray mousePos = cam.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(mousePos, out hit))
+        if (Physics.Raycast(mousePos, out hit, 200f, defualtLayer))
         {
             Node hitNode = grid.GetGridPosFromWorldPos(hit.point);
             if (hitNode.walkable && hitNode.cost < grid.slowcost)
@@ -151,7 +154,7 @@ public class UI : MonoBehaviour
     {
         RaycastHit hit;
         Ray mousePos = cam.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(mousePos, out hit))
+        if (Physics.Raycast(mousePos, out hit, 200f, defualtLayer))
         {
             Node hitNode = grid.GetGridPosFromWorldPos(hit.point);
             if (!hitNode.walkable)
@@ -173,7 +176,7 @@ public class UI : MonoBehaviour
     {
         RaycastHit hit;
         Ray mousePos = cam.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(mousePos, out hit))
+        if (Physics.Raycast(mousePos, out hit, 200f, defualtLayer))
         {
             Node hitNode = grid.GetGridPosFromWorldPos(hit.point);
             if (hitNode.cost == grid.slowcost)
@@ -195,7 +198,7 @@ public class UI : MonoBehaviour
     {
         RaycastHit hit;
         Ray mousePos = cam.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(mousePos, out hit))
+        if (Physics.Raycast(mousePos, out hit, 200f, defualtLayer))
         {
             Node hitNode = grid.GetGridPosFromWorldPos(hit.point);
             if (hitNode.walkable && hitNode != grid.startNode && hitNode != grid.endNode)
@@ -263,7 +266,7 @@ public class UI : MonoBehaviour
     {
         RaycastHit hit;
         Ray mousePos = cam.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(mousePos, out hit))
+        if (Physics.Raycast(mousePos, out hit, 200f, defualtLayer))
         {
             Node hitNode = grid.GetGridPosFromWorldPos(hit.point);
             if (hitNode.walkable && hitNode != grid.endNode && hitNode != grid.startNode)

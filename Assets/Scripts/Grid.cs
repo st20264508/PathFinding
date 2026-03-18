@@ -17,9 +17,9 @@ public class Grid : MonoBehaviour
     public GameObject unwalkabletilePrefab;
     public GameObject startPrefab;
     public GameObject endPrefab;
-    public GameObject pathPrefab;
+    public GameObject pathMarkerPrefab;
     public GameObject slowPrefab;
-    public GameObject visitedPrefab;
+    public GameObject visitedMarkerPrefab;
 
     [SerializeField] float tileHeight;
     public float nodeRadius; //radius of a node in the grid
@@ -43,6 +43,8 @@ public class Grid : MonoBehaviour
     public List<GameObject> TileList;
     public List<Node> path;
     public List<Node> frontierList;
+    public List<GameObject> frontierObjects;
+    public List<GameObject> pathObjects;
 
     Vector3 bottomLeft; //bottom left of the grid
 
@@ -142,6 +144,25 @@ public class Grid : MonoBehaviour
             ResetTiles();
         }
 
+        foreach (GameObject g in pathObjects)
+        {
+            Destroy(g);
+        }
+
+        foreach (GameObject g in frontierObjects)
+        {
+            Destroy(g);
+        }
+
+        if (pathObjects != null)
+        {
+            pathObjects.Clear();
+        }
+
+        if (frontierObjects != null)
+        {
+            frontierObjects.Clear();
+        }
         /*if (grid != null)
         {
             foreach (Node n in grid)
@@ -171,23 +192,24 @@ public class Grid : MonoBehaviour
             for (int y = 0; y < gridSizeY; y++)
             {
                 Vector3 spawnPos = new Vector3(grid[x, y].worldPos.x, grid[x, y].worldPos.y, grid[x, y].worldPos.z);
+                Vector3 spawnPosMarker = new Vector3(grid[x, y].worldPos.x, grid[x, y].worldPos.y + tileHeight, grid[x, y].worldPos.z);
                 if (path != null && path.Contains(grid[x, y]))
                 {
-                    pathPrefab.name = "Tile " + x + "," + y;
-                    pathPrefab.transform.localScale = new Vector3(nodeDiameter, tileHeight, nodeDiameter);
-                    var tile = Instantiate(pathPrefab, spawnPos, Quaternion.identity);
-                    TileList.Add(tile);
-                    grid[x, y].prefab = tile;
+                    pathMarkerPrefab.name = "Tile " + x + "," + y;
+                    pathMarkerPrefab.transform.localScale = new Vector3(nodeDiameter * 0.5f, tileHeight, nodeDiameter * 0.5f);
+                    var tile = Instantiate(pathMarkerPrefab, spawnPosMarker, Quaternion.identity);
+                    pathObjects.Add(tile);
+                    //grid[x, y].prefab = tile;
                 }
-                else if (showfrontier && frontierList != null && frontierList.Contains(grid[x, y]))
+                if (showfrontier && frontierList != null && frontierList.Contains(grid[x, y]))
                 {
-                    visitedPrefab.name = "Tile " + x + "," + y;
-                    visitedPrefab.transform.localScale = new Vector3(nodeDiameter, tileHeight, nodeDiameter);
-                    var tile = Instantiate(visitedPrefab, spawnPos, Quaternion.identity);
-                    TileList.Add(tile);
-                    grid[x, y].prefab = tile;
+                    visitedMarkerPrefab.name = "Tile " + x + "," + y;
+                    visitedMarkerPrefab.transform.localScale = new Vector3(nodeDiameter * 0.5f, tileHeight, nodeDiameter * 0.5f);
+                    var tile = Instantiate(visitedMarkerPrefab, spawnPosMarker, Quaternion.identity);
+                    frontierObjects.Add(tile);
+                    //grid[x, y].prefab = tile;
                 }
-                else if (grid[x, y] == startNode)
+                if (grid[x, y] == startNode)
                 {
                     startPrefab.name = "Tile " + x + "," + y;
                     startPrefab.transform.localScale = new Vector3(nodeDiameter, tileHeight, nodeDiameter);
