@@ -56,6 +56,11 @@ public class UI : MonoBehaviour
             RunAstarFiltered();
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            RunAstarCross();
+        }
+
         if (Input.GetKeyDown(KeyCode.Q))
         {
             SetUnwalkable();
@@ -335,7 +340,7 @@ public class UI : MonoBehaviour
                 Debug.Log(result);
                 Debug.Log("Path length in Nodes: " + grid.path.Count);
                 Debug.Log("Path cost: " + CalculatePathCost());
-                grid.UpdateTiles();
+                grid.ShowPathAndFrontier();
             }
         }       
     }
@@ -355,7 +360,7 @@ public class UI : MonoBehaviour
                 Debug.Log(result);
                 Debug.Log("Path length in Nodes: " + grid.path.Count);
                 Debug.Log("Path cost: " + CalculatePathCost());
-                grid.UpdateTiles();
+                grid.ShowPathAndFrontier();
             }
         }
         
@@ -376,7 +381,7 @@ public class UI : MonoBehaviour
                 Debug.Log(result);
                 Debug.Log("Path length in Nodes: " + grid.path.Count);
                 Debug.Log("Path cost: " + CalculatePathCost());
-                grid.UpdateTiles();
+                grid.ShowPathAndFrontier();
             }
         }
 
@@ -397,7 +402,7 @@ public class UI : MonoBehaviour
                 Debug.Log(result);
                 Debug.Log("Path length in Nodes: " + grid.path.Count);
                 Debug.Log("Path cost: " + CalculatePathCost());
-                grid.UpdateTiles();
+                grid.ShowPathAndFrontier();
             }
         }
 
@@ -418,7 +423,7 @@ public class UI : MonoBehaviour
                 Debug.Log(result);
                 Debug.Log("Path length in Nodes: " + grid.path.Count);
                 Debug.Log("Path cost: " + CalculatePathCost());
-                grid.UpdateTiles();
+                grid.ShowPathAndFrontier();
             }
         }
 
@@ -439,7 +444,7 @@ public class UI : MonoBehaviour
                 Debug.Log(result);
                 Debug.Log("Path length in Nodes: " + grid.path.Count);
                 Debug.Log("Path cost: " + CalculatePathCost());
-                grid.UpdateTiles();
+                grid.ShowPathAndFrontier();
             }
         }
     }
@@ -459,7 +464,27 @@ public class UI : MonoBehaviour
                 Debug.Log(result);
                 Debug.Log("Path length in Nodes: " + grid.path.Count);
                 Debug.Log("Path cost: " + CalculatePathCost());
-                grid.UpdateTiles();
+                grid.ShowPathAndFrontier();
+            }
+        }
+    }
+
+    public void RunAstarCross()
+    {
+        if (grid.startNode != null && grid.endNode != null)
+        {
+            grid.path = pathfinder.AstarAlgorithmCross(grid.startNode, grid.endNode);
+            if (grid.path != null)
+            {
+                string result = "List contents: ";
+                foreach (var item in grid.path)
+                {
+                    result += item.x.ToString() + "," + item.y.ToString() + " ";
+                }
+                Debug.Log(result);
+                Debug.Log("Path length in Nodes: " + grid.path.Count);
+                Debug.Log("Path cost: " + CalculatePathCost());
+                grid.ShowPathAndFrontier();
             }
         }
     }

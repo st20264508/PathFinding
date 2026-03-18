@@ -192,7 +192,7 @@ public class Grid : MonoBehaviour
             for (int y = 0; y < gridSizeY; y++)
             {
                 Vector3 spawnPos = new Vector3(grid[x, y].worldPos.x, grid[x, y].worldPos.y, grid[x, y].worldPos.z);
-                Vector3 spawnPosMarker = new Vector3(grid[x, y].worldPos.x, grid[x, y].worldPos.y + tileHeight, grid[x, y].worldPos.z);
+                /*Vector3 spawnPosMarker = new Vector3(grid[x, y].worldPos.x, grid[x, y].worldPos.y + tileHeight, grid[x, y].worldPos.z);
                 if (path != null && path.Contains(grid[x, y]))
                 {
                     pathMarkerPrefab.name = "Tile " + x + "," + y;
@@ -208,7 +208,7 @@ public class Grid : MonoBehaviour
                     var tile = Instantiate(visitedMarkerPrefab, spawnPosMarker, Quaternion.identity);
                     frontierObjects.Add(tile);
                     //grid[x, y].prefab = tile;
-                }
+                }*/
                 if (grid[x, y] == startNode)
                 {
                     startPrefab.name = "Tile " + x + "," + y;
@@ -255,6 +255,86 @@ public class Grid : MonoBehaviour
         sw.Stop();
         Debug.Log("Time to UpdateTiles(): " + sw.ElapsedMilliseconds + "ms");
     }
+
+    public void ShowPathAndFrontier()
+    {
+        foreach (GameObject g in pathObjects)
+        {
+            Destroy(g);
+        }
+
+        foreach (GameObject g in frontierObjects)
+        {
+            Destroy(g);
+        }
+
+        if (pathObjects != null)
+        {
+            pathObjects.Clear();
+        }
+
+        if (frontierObjects != null)
+        {
+            frontierObjects.Clear();
+        }
+
+        /*for (int x = 0; x < gridSizeX; x++)
+        {
+            for (int y = 0; y < gridSizeY; y++)
+            {
+                //Vector3 spawnPos = new Vector3(grid[x, y].worldPos.x, grid[x, y].worldPos.y, grid[x, y].worldPos.z);
+                Vector3 spawnPosMarker = new Vector3(grid[x, y].worldPos.x, grid[x, y].worldPos.y + tileHeight, grid[x, y].worldPos.z);
+                if (path != null && path.Contains(grid[x, y]))
+                {
+                    pathMarkerPrefab.name = "Tile " + x + "," + y;
+                    pathMarkerPrefab.transform.localScale = new Vector3(nodeDiameter * 0.5f, tileHeight, nodeDiameter * 0.5f);
+                    var tile = Instantiate(pathMarkerPrefab, spawnPosMarker, Quaternion.identity);
+                    pathObjects.Add(tile);
+                    //grid[x, y].prefab = tile;
+                }
+                if (showfrontier && frontierList != null && frontierList.Contains(grid[x, y]))
+                {
+                    visitedMarkerPrefab.name = "Tile " + x + "," + y;
+                    visitedMarkerPrefab.transform.localScale = new Vector3(nodeDiameter * 0.5f, tileHeight, nodeDiameter * 0.5f);
+                    var tile = Instantiate(visitedMarkerPrefab, spawnPosMarker, Quaternion.identity);
+                    frontierObjects.Add(tile);
+                    //grid[x, y].prefab = tile;
+                }
+            }
+        }*/
+
+        
+        if (path != null)
+        {
+            foreach (Node n in path)
+            {
+                Vector3 spawnPosMarker = new Vector3(n.worldPos.x, n.worldPos.y + tileHeight, n.worldPos.z);
+                pathMarkerPrefab.name = "Tile " + n.x + "," + n.y;
+                pathMarkerPrefab.transform.localScale = new Vector3(nodeDiameter * 0.5f, tileHeight, nodeDiameter * 0.5f);
+                var tile = Instantiate(pathMarkerPrefab, spawnPosMarker, Quaternion.identity);
+                pathObjects.Add(tile);
+            }
+        }
+        
+        if (frontierList != null)
+        {
+            foreach (Node n in frontierList)
+            {
+                Vector3 spawnPosMarker = new Vector3(n.worldPos.x, n.worldPos.y + tileHeight, n.worldPos.z);
+                visitedMarkerPrefab.name = "Tile " + n.x + "," + n.y;
+                visitedMarkerPrefab.transform.localScale = new Vector3(nodeDiameter * 0.5f, tileHeight, nodeDiameter * 0.5f);
+                var tile = Instantiate(visitedMarkerPrefab, spawnPosMarker, Quaternion.identity);
+                frontierObjects.Add(tile);
+            }
+        }
+    }
+    /*
+     for each node n in path
+        place marker
+    for each node n in frontier
+        place marker
+     
+     */
 
     public Node GetGridPosFromWorldPos(Vector3 worldPos)
     {

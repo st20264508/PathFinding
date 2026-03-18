@@ -472,6 +472,69 @@ public class Pathfinding : MonoBehaviour
         return path.ToList();
     }
 
+    public List<Node> AstarAlgorithmCross(Node start, Node end)
+    {
+        int count = 0;
+        grid.frontierList.Clear();
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+        PriorityQueue<Node> frontier = new PriorityQueue<Node>(); //class taken from C# .net
+        Dictionary<Node, int> costToTile = new Dictionary<Node, int>();
+
+        frontier.Enqueue(end, 0);
+        costToTile[end] = 0;
+
+        while (frontier.Count > 0)
+        {
+            Node current = frontier.Dequeue();
+            if (current == start)
+            {
+                break;
+            }
+
+            foreach (Node neighbour in current.neighboursCross)
+            {
+                int newCost = DistanceBetweenNodes(end, current) + neighbour.cost;
+                if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
+                {
+                    if (neighbour.walkable)
+                    {
+                        if (grid.showfrontier)
+                        {
+                            grid.frontierList.Add(neighbour);
+                        }
+                        costToTile[neighbour] = newCost;
+                        int priority = newCost + DistanceBetweenNodes(start, neighbour);
+                        frontier.Enqueue(neighbour, priority);
+                        neighbour.parent = current;
+                    }
+                }
+            }
+            count++;
+        }
+
+        if (!costToTile.ContainsKey(start))
+        {
+            Debug.Log("Path not found - AstarAlgorithmCross");
+            return null;
+        }
+        sw.Stop();
+
+        Queue<Node> path = new Queue<Node>();
+        Node currentNode = start;
+
+        while (currentNode != end)
+        {
+            currentNode = currentNode.parent;
+            path.Enqueue(currentNode);
+        }
+
+
+        Debug.Log("Time to AstarAlgorithmCross(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+        Debug.Log("While loop iterations: " + count);
+        return path.ToList();
+    }
+
     int DistanceBetweenNodes(Node nodeA, Node nodeB)
     {
         int Xdist = Mathf.Abs(nodeA.x - nodeB.x);
