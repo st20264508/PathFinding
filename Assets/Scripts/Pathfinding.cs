@@ -434,7 +434,7 @@ public class Pathfinding : MonoBehaviour
                 }
                 int newCost = costToTile[current] + neighbour.cost + DistanceBetweenNodes(current, neighbour);
                 //int newCost = DistanceBetweenNodes(end, current) + neighbour.cost + DistanceBetweenNodes(current, neighbour);
-                if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
+                if (newCost < costToTile[neighbour] || !costToTile.ContainsKey(neighbour)) //WHEN SWAPPED CAUSES ERROR, INVESTIGATE, cant check cost to neighbour as it hasnt been set yet
                 {
                     if (grid.showfrontier && !grid.frontierList.Contains(neighbour))
                     {
@@ -503,8 +503,8 @@ public class Pathfinding : MonoBehaviour
                     continue;
                 } 
 
-                int newCost = costToTile[current] + neighbour.cost + DistanceBetweenNodes(current, neighbour);
-                if (!costToTile.ContainsKey(neighbour) || newCost < DistanceBetweenNodes(end, current))
+                int newCost = DistanceBetweenNodes(end, current) + neighbour.cost + DistanceBetweenNodes(current, neighbour);
+                if (newCost < costToTile[current] /*DistanceBetweenNodes(end, current)*/ || !costToTile.ContainsKey(neighbour)) 
                 {
                     if (grid.showfrontier && !grid.frontierList.Contains(neighbour))
                     {
