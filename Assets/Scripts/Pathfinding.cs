@@ -158,15 +158,15 @@ public class Pathfinding : MonoBehaviour
         //Dictionary<Node, int> costToTile = new Dictionary<Node, int>();
         List<Node> visited = new List<Node>();
 
-        frontier.Enqueue(end, 0);
+        frontier.Enqueue(start, 0);
         
 
         while (frontier.Count > 0)
         {
             Node current = frontier.Dequeue();
-            if (current == start)
+            if (current == end)
             {
-                visited.Add(current);
+                visited.Add(end);
                 break;
             }
 
@@ -181,7 +181,7 @@ public class Pathfinding : MonoBehaviour
                         {
                             grid.frontierList.Add(neighbour);
                         }
-                        int priority = DistanceBetweenNodes(neighbour, start);
+                        int priority = DistanceBetweenNodes(neighbour, end);
                         frontier.Enqueue(neighbour, priority);
                         neighbour.parent = current;
                     }
@@ -191,7 +191,7 @@ public class Pathfinding : MonoBehaviour
             count++;
         }
 
-        if (!visited.Contains(start))
+        if (!visited.Contains(end))
         {
             Debug.Log("Path not found - GreedyBFSAlgorithm");
             return null;
@@ -199,9 +199,9 @@ public class Pathfinding : MonoBehaviour
         sw.Stop();
 
         Queue<Node> path = new Queue<Node>();
-        Node currentNode = start;
+        Node currentNode = end;
 
-        while (currentNode != end)
+        while (currentNode != start)
         {
             currentNode = currentNode.parent;
             path.Enqueue(currentNode);
@@ -428,22 +428,22 @@ public class Pathfinding : MonoBehaviour
 
             foreach (Node neighbour in current.neighboursDiagSafe)
             {
-                //int newCost = costToTile[current] + neighbour.cost + DistanceBetweenNodes(current, neighbour);
-                int newCost = DistanceBetweenNodes(end, current) + neighbour.cost + DistanceBetweenNodes(current, neighbour);
+                if (!neighbour.walkable)
+                {
+                    continue;
+                }
+                int newCost = costToTile[current] + neighbour.cost + DistanceBetweenNodes(current, neighbour);
+                //int newCost = DistanceBetweenNodes(end, current) + neighbour.cost + DistanceBetweenNodes(current, neighbour);
                 if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
                 {
-                    if (neighbour.walkable)
+                    if (grid.showfrontier && !grid.frontierList.Contains(neighbour))
                     {
-                        if (grid.showfrontier && !grid.frontierList.Contains(neighbour))
-                        {
-                            grid.frontierList.Add(neighbour);
-                        }
-                        costToTile[neighbour] = newCost;
-                        int priority = newCost + DistanceBetweenNodes(start, neighbour);
-                        frontier.Enqueue(neighbour, priority);
-                        neighbour.parent = current;
-
+                        grid.frontierList.Add(neighbour);
                     }
+                    costToTile[neighbour] = newCost;
+                    int priority = newCost + DistanceBetweenNodes(start, neighbour);
+                    frontier.Enqueue(neighbour, priority);
+                    neighbour.parent = current;
                 }
             }
             count++;
@@ -467,6 +467,76 @@ public class Pathfinding : MonoBehaviour
 
 
         Debug.Log("Time to AstarAlgorithmFiltered(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+        Debug.Log("While loop iterations: " + count);
+
+        return path.ToList();
+    }
+
+    public List<Node> AstarAlgorithmFiltered2(Node start, Node end)
+    {
+        grid.PopulateNeighboursDiagExcept();
+        grid.frontierList.Clear();
+        int count = 0;
+
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+        PriorityQueue<Node> frontier = new PriorityQueue<Node>(); //class taken from C# .net
+        Dictionary<Node, int> costToTile = new Dictionary<Node, int>();
+
+        frontier.Enqueue(end, 0);
+        costToTile[end] = 0;
+        
+
+        while (frontier.Count > 0)
+        {
+            Node current = frontier.Dequeue();
+           
+            if (current == start)
+            {
+                break;
+            }
+
+            foreach (Node neighbour in current.neighboursDiagSafe)
+            {
+                if (!neighbour.walkable)
+                {
+                    continue;
+                } 
+
+                int newCost = costToTile[current] + neighbour.cost + DistanceBetweenNodes(current, neighbour);
+                if (!costToTile.ContainsKey(neighbour) || newCost < DistanceBetweenNodes(end, current))
+                {
+                    if (grid.showfrontier && !grid.frontierList.Contains(neighbour))
+                    {
+                        grid.frontierList.Add(neighbour);
+                    }
+                    costToTile[neighbour] = newCost;
+                    int priority = newCost + DistanceBetweenNodes(start, neighbour);
+                    frontier.Enqueue(neighbour, priority);
+                    neighbour.parent = current;
+                }
+            }
+            count++;
+        }
+
+        if (!costToTile.ContainsKey(start))
+        {
+            Debug.Log("Path not found - AstarAlgorithmFiltered2");
+            return null;
+        }
+        sw.Stop();
+
+        Queue<Node> path = new Queue<Node>();
+        Node currentNode = start;
+
+        while (currentNode != end)
+        {
+            currentNode = currentNode.parent;
+            path.Enqueue(currentNode);
+        }
+
+
+        Debug.Log("Time to AstarAlgorithmFiltered2(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
         Debug.Log("While loop iterations: " + count);
 
         return path.ToList();

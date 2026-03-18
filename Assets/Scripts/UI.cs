@@ -61,6 +61,11 @@ public class UI : MonoBehaviour
             RunAstarCross();
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            RunAstarFiltered2();
+        }
+
         if (Input.GetKeyDown(KeyCode.Q))
         {
             SetUnwalkable();
@@ -474,6 +479,26 @@ public class UI : MonoBehaviour
         if (grid.startNode != null && grid.endNode != null)
         {
             grid.path = pathfinder.AstarAlgorithmCross(grid.startNode, grid.endNode);
+            if (grid.path != null)
+            {
+                string result = "List contents: ";
+                foreach (var item in grid.path)
+                {
+                    result += item.x.ToString() + "," + item.y.ToString() + " ";
+                }
+                Debug.Log(result);
+                Debug.Log("Path length in Nodes: " + grid.path.Count);
+                Debug.Log("Path cost: " + CalculatePathCost());
+                grid.ShowPathAndFrontier();
+            }
+        }
+    }
+
+    public void RunAstarFiltered2()
+    {
+        if (grid.startNode != null && grid.endNode != null)
+        {
+            grid.path = pathfinder.AstarAlgorithmFiltered2(grid.startNode, grid.endNode);
             if (grid.path != null)
             {
                 string result = "List contents: ";
