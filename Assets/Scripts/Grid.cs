@@ -50,8 +50,8 @@ public class Grid : MonoBehaviour
 
     private void Awake()
     {
-        //slowcost *= 10;
-        //normalcost *= 10;
+        slowcost *= 10;
+        normalcost *= 10;
         TileList = new List<GameObject>();
         frontierList = new List<Node>();
         nodeDiameter = nodeRadius * 2;
