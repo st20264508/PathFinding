@@ -95,11 +95,11 @@ public class Pathfinding : MonoBehaviour
         Queue<Node> frontier = new Queue<Node>();
         List<Node> visited = new List<Node>();
 
-        frontier.Enqueue(end);
+        frontier.Enqueue(start);
         while (frontier.Count > 0)
         {
             Node current = frontier.Dequeue();
-            if (current == start)
+            if (current == end)
             {
                 visited.Add(current);
                 Debug.Log("broke");
@@ -126,7 +126,7 @@ public class Pathfinding : MonoBehaviour
             count++;
         }
 
-        if (!visited.Contains(start))
+        if (!visited.Contains(end))
         {
             Debug.Log("Path not found - BFSAlgorithmCROSS");
             return null;
@@ -135,9 +135,9 @@ public class Pathfinding : MonoBehaviour
         sw.Stop();
         
         Queue<Node> path = new Queue<Node>();
-        Node currentNode = start;
+        Node currentNode = end;
 
-        while (currentNode != end)
+        while (currentNode != start)
         {
             currentNode = currentNode.parent;
             path.Enqueue(currentNode);
@@ -222,13 +222,13 @@ public class Pathfinding : MonoBehaviour
         PriorityQueue<Node> frontier = new PriorityQueue<Node>(); //class taken from C# .net
         Dictionary<Node, int> costToTile = new Dictionary<Node, int>(); 
         
-        frontier.Enqueue(end, 0);
-        costToTile[end] = 0;
+        frontier.Enqueue(start, 0);
+        costToTile[start] = 0;
 
         while (frontier.Count > 0)
         {
             Node current = frontier.Dequeue();
-            if (current == start)
+            if (current == end)
             { 
                 break;
             }
@@ -253,7 +253,7 @@ public class Pathfinding : MonoBehaviour
             count++;
         }
 
-        if (!costToTile.ContainsKey(start))
+        if (!costToTile.ContainsKey(end))
         {
             Debug.Log("Path not found - DijkstraAlgorithmCROSS");
             return null;
@@ -261,9 +261,9 @@ public class Pathfinding : MonoBehaviour
         sw.Stop();
 
         Queue<Node> path = new Queue<Node>();
-        Node currentNode = start;
+        Node currentNode = end;
 
-        while (currentNode != end)
+        while (currentNode != start)
         {
             currentNode = currentNode.parent;
             path.Enqueue(currentNode);
@@ -284,13 +284,13 @@ public class Pathfinding : MonoBehaviour
         PriorityQueue<Node> frontier = new PriorityQueue<Node>(); //class taken from C# .net
         Dictionary<Node, int> costToTile = new Dictionary<Node, int>();
 
-        frontier.Enqueue(end, 0);
-        costToTile[end] = 0;
+        frontier.Enqueue(start, 0);
+        costToTile[start] = 0;
 
         while (frontier.Count > 0)
         {
             Node current = frontier.Dequeue();
-            if (current == start)
+            if (current == end)
             {
                 break;
             }
@@ -315,7 +315,7 @@ public class Pathfinding : MonoBehaviour
             count++;
         }
 
-        if (!costToTile.ContainsKey(start))
+        if (!costToTile.ContainsKey(end))
         {
             Debug.Log("Path not found - DijkstraAlgorithm");
             return null;
@@ -323,9 +323,9 @@ public class Pathfinding : MonoBehaviour
         sw.Stop();
 
         Queue<Node> path = new Queue<Node>();
-        Node currentNode = start;
+        Node currentNode = end;
 
-        while (currentNode != end)
+        while (currentNode != start)
         {
             currentNode = currentNode.parent;
             path.Enqueue(currentNode);
@@ -349,13 +349,13 @@ public class Pathfinding : MonoBehaviour
         PriorityQueue<Node> frontier = new PriorityQueue<Node>(); //class taken from C# .net
         Dictionary<Node, int> costToTile = new Dictionary<Node, int>();
 
-        frontier.Enqueue(end, 0);
-        costToTile[end] = 0;
+        frontier.Enqueue(start, 0);
+        costToTile[start] = 0;
 
         while (frontier.Count > 0)
         {
             Node current = frontier.Dequeue();
-            if (current == start)
+            if (current == end)
             {
                 break;
             }
@@ -381,7 +381,7 @@ public class Pathfinding : MonoBehaviour
             count++;
         }
 
-        if (!costToTile.ContainsKey(start))
+        if (!costToTile.ContainsKey(end))
         {
             Debug.Log("Path not found - DijkstraAlgorithmFiltered");
             return null;
@@ -389,9 +389,9 @@ public class Pathfinding : MonoBehaviour
         sw.Stop();
 
         Queue<Node> path = new Queue<Node>();
-        Node currentNode = start;
+        Node currentNode = end;
 
-        while (currentNode != end)
+        while (currentNode != start)
         {
             currentNode = currentNode.parent;
             path.Enqueue(currentNode);
@@ -415,13 +415,13 @@ public class Pathfinding : MonoBehaviour
         PriorityQueue<Node> frontier = new PriorityQueue<Node>(); //class taken from C# .net
         Dictionary<Node, int> costToTile = new Dictionary<Node, int>();
 
-        frontier.Enqueue(end, 0);
-        costToTile[end] = 0;
+        frontier.Enqueue(start, 0);
+        costToTile[start] = 0;
 
         while (frontier.Count > 0)
         {
             Node current = frontier.Dequeue();
-            if (current == start)
+            if (current == end)
             {
                 break;
             }
@@ -442,7 +442,7 @@ public class Pathfinding : MonoBehaviour
                         grid.frontierList.Add(neighbour);
                     }
                     costToTile[neighbour] = newCost;
-                    int priority = newCost + DistanceBetweenNodes(neighbour, start); //times 10 for the fact costs are times 10
+                    int priority = newCost + DistanceBetweenNodes(neighbour, end); //times 10 for the fact costs are times 10
                     frontier.Enqueue(neighbour, priority);
                     neighbour.parent = current;
                 }
@@ -450,7 +450,7 @@ public class Pathfinding : MonoBehaviour
             count++;
         }
 
-        if (!costToTile.ContainsKey(start))
+        if (!costToTile.ContainsKey(end))
         {
             Debug.Log("Path not found - AstarAlgorithmFiltered");
             return null;
@@ -458,9 +458,9 @@ public class Pathfinding : MonoBehaviour
         sw.Stop();
 
         Queue<Node> path = new Queue<Node>();
-        Node currentNode = start;
+        Node currentNode = end;
 
-        while (currentNode != end)
+        while (currentNode != start)
         {
             currentNode = currentNode.parent;
             path.Enqueue(currentNode);
@@ -484,15 +484,15 @@ public class Pathfinding : MonoBehaviour
         PriorityQueue<Node> frontier = new PriorityQueue<Node>(); //class taken from C# .net
         Dictionary<Node, int> costToTile = new Dictionary<Node, int>();
 
-        frontier.Enqueue(end, 0);
-        costToTile[end] = 0;
+        frontier.Enqueue(start, 0);
+        costToTile[start] = 0;
         
 
         while (frontier.Count > 0)
         {
             Node current = frontier.Dequeue();
            
-            if (current == start)
+            if (current == end)
             {
                 break;
             }
@@ -513,7 +513,7 @@ public class Pathfinding : MonoBehaviour
                         grid.frontierList.Add(neighbour);
                     }
                     costToTile[neighbour] = newCost;
-                    int priority = newCost + (ManhattanDistance(neighbour, start) * 10); //times 10 for the fact costs are times 10
+                    int priority = newCost + (ManhattanDistance(neighbour, end) * 10); //times 10 for the fact costs are times 10
                     frontier.Enqueue(neighbour, priority);
                     neighbour.parent = current;
                 }
@@ -521,7 +521,7 @@ public class Pathfinding : MonoBehaviour
             count++;
         }
 
-        if (!costToTile.ContainsKey(start))
+        if (!costToTile.ContainsKey(end))
         {
             Debug.Log("Path not found - AstarAlgorithmFiltered2");
             return null;
@@ -529,9 +529,9 @@ public class Pathfinding : MonoBehaviour
         sw.Stop();
 
         Queue<Node> path = new Queue<Node>();
-        Node currentNode = start;
+        Node currentNode = end;
 
-        while (currentNode != end)
+        while (currentNode != start)
         {
             currentNode = currentNode.parent;
             path.Enqueue(currentNode);
