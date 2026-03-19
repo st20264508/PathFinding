@@ -553,13 +553,13 @@ public class Pathfinding : MonoBehaviour
         PriorityQueue<Node> frontier = new PriorityQueue<Node>(); //class taken from C# .net
         Dictionary<Node, int> costToTile = new Dictionary<Node, int>();
 
-        frontier.Enqueue(end, 0);
-        costToTile[end] = 0;
+        frontier.Enqueue(start, 0);
+        costToTile[start] = 0;
 
         while (frontier.Count > 0)
         {
             Node current = frontier.Dequeue();
-            if (current == start)
+            if (current == end)
             {
                 break;
             }
@@ -576,7 +576,7 @@ public class Pathfinding : MonoBehaviour
                             grid.frontierList.Add(neighbour);
                         }
                         costToTile[neighbour] = newCost;
-                        int priority = newCost + DistanceBetweenNodes(start, neighbour);
+                        int priority = newCost + (ManhattanDistance(end, neighbour) * 10);
                         frontier.Enqueue(neighbour, priority);
                         neighbour.parent = current;
                     }
@@ -585,7 +585,7 @@ public class Pathfinding : MonoBehaviour
             count++;
         }
 
-        if (!costToTile.ContainsKey(start))
+        if (!costToTile.ContainsKey(end))
         {
             Debug.Log("Path not found - AstarAlgorithmCross");
             return null;
@@ -593,9 +593,9 @@ public class Pathfinding : MonoBehaviour
         sw.Stop();
 
         Queue<Node> path = new Queue<Node>();
-        Node currentNode = start;
+        Node currentNode = end;
 
-        while (currentNode != end)
+        while (currentNode != start)
         {
             currentNode = currentNode.parent;
             path.Enqueue(currentNode);
