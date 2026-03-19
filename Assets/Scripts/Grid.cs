@@ -33,7 +33,7 @@ public class Grid : MonoBehaviour
     public int gridSizeY; //size of the grid in grid space y dimension
 
     public int slowcost;
-    public int normalcost;
+    //public int normalcost;
     public Node[,] grid; //node array for the grid
     //Tile[,] tileGrid;
 
@@ -51,7 +51,7 @@ public class Grid : MonoBehaviour
     private void Awake()
     {
         slowcost *= 10;
-        normalcost *= 10;
+        //normalcost *= 10;
         TileList = new List<GameObject>();
         frontierList = new List<Node>();
         nodeDiameter = nodeRadius * 2;
@@ -95,7 +95,7 @@ public class Grid : MonoBehaviour
             for (int y = 0; y < gridSizeY; y++)
             {
                 Vector3 initPoint = bottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
-                grid[x, y] = new Node(initPoint, true, x, y, normalcost); //for now all are walkable update in the future
+                grid[x, y] = new Node(initPoint, true, x, y, 0); //for now all are walkable update in the future
             }
         }
         sw.Stop();
@@ -320,11 +320,15 @@ public class Grid : MonoBehaviour
         {
             foreach (Node n in frontierList)
             {
-                Vector3 spawnPosMarker = new Vector3(n.worldPos.x, n.worldPos.y + tileHeight, n.worldPos.z);
-                visitedMarkerPrefab.name = "Tile " + n.x + "," + n.y;
-                visitedMarkerPrefab.transform.localScale = new Vector3(nodeDiameter * 0.5f, tileHeight, nodeDiameter * 0.5f);
-                var tile = Instantiate(visitedMarkerPrefab, spawnPosMarker, Quaternion.identity);
-                frontierObjects.Add(tile);
+                if (path != null && !path.Contains(n))
+                {
+                    Vector3 spawnPosMarker = new Vector3(n.worldPos.x, n.worldPos.y + tileHeight, n.worldPos.z);
+                    visitedMarkerPrefab.name = "Tile " + n.x + "," + n.y;
+                    visitedMarkerPrefab.transform.localScale = new Vector3(nodeDiameter * 0.5f, tileHeight, nodeDiameter * 0.5f);
+                    var tile = Instantiate(visitedMarkerPrefab, spawnPosMarker, Quaternion.identity);
+                    frontierObjects.Add(tile);
+                }
+                
             }
         }
     }
@@ -558,7 +562,7 @@ public class Grid : MonoBehaviour
             else
             {
                 n.walkable = true;
-                n.cost = normalcost;
+                n.cost = 0; //normalcost;
             }
         }
     }

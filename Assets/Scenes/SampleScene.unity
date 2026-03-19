@@ -180,7 +180,6 @@ MonoBehaviour:
   gridSizeX: 0
   gridSizeY: 0
   slowcost: 5
-  normalcost: 1
   TileList: []
   frontierObjects: []
   pathObjects: []

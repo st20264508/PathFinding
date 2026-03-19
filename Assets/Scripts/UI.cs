@@ -155,7 +155,7 @@ public class UI : MonoBehaviour
                 Destroy(hit.transform.gameObject);
                 grid.PlaceTile(grid.tilePrefab, hitNode.x, hitNode.y);
                 grid.GetNode(hitNode.x, hitNode.y).walkable = true;
-                grid.GetNode(hitNode.x, hitNode.y).cost = grid.normalcost;
+                grid.GetNode(hitNode.x, hitNode.y).cost = 0; //grid.normalcost;
             }
         }
     }
@@ -177,7 +177,7 @@ public class UI : MonoBehaviour
                 Destroy(hit.transform.gameObject);
                 grid.PlaceTile(grid.unwalkabletilePrefab, hitNode.x, hitNode.y);
                 grid.GetNode(hitNode.x, hitNode.y).walkable = false;
-                grid.GetNode(hitNode.x, hitNode.y).cost = grid.normalcost;
+                grid.GetNode(hitNode.x, hitNode.y).cost = 0;//grid.normalcost;
             }
         }
     }
