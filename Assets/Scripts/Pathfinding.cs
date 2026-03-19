@@ -404,7 +404,7 @@ public class Pathfinding : MonoBehaviour
         return path.ToList();
     }
 
-    public List<Node> AstarAlgorithmFiltered(Node start, Node end)
+    public List<Node> AstarAlgorithmFiltered(Node start, Node end) //feels like its exploring to many nodes
     {
         grid.PopulateNeighboursDiagExcept();
         grid.frontierList.Clear();
@@ -434,14 +434,15 @@ public class Pathfinding : MonoBehaviour
                 }
                 int newCost = costToTile[current] + neighbour.cost + DistanceBetweenNodes(current, neighbour);
                 //int newCost = DistanceBetweenNodes(end, current) + neighbour.cost + DistanceBetweenNodes(current, neighbour);
-                if (newCost < costToTile[neighbour] || !costToTile.ContainsKey(neighbour)) //WHEN SWAPPED CAUSES ERROR, INVESTIGATE, cant check cost to neighbour as it hasnt been set yet
+                //if (newCost < costToTile[neighbour] || !costToTile.ContainsKey(neighbour)) //WHEN SWAPPED CAUSES ERROR, INVESTIGATE, cant check cost to neighbour as it hasnt been set yet
+                if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour] )
                 {
                     if (grid.showfrontier && !grid.frontierList.Contains(neighbour))
                     {
                         grid.frontierList.Add(neighbour);
                     }
                     costToTile[neighbour] = newCost;
-                    int priority = newCost + DistanceBetweenNodes(start, neighbour);
+                    int priority = newCost + DistanceBetweenNodes(neighbour, start); //times 10 for the fact costs are times 10
                     frontier.Enqueue(neighbour, priority);
                     neighbour.parent = current;
                 }
@@ -501,17 +502,18 @@ public class Pathfinding : MonoBehaviour
                 if (!neighbour.walkable)
                 {
                     continue;
-                } 
-
-                int newCost = DistanceBetweenNodes(end, current) + neighbour.cost + DistanceBetweenNodes(current, neighbour);
-                if (newCost < costToTile[current] /*DistanceBetweenNodes(end, current)*/ || !costToTile.ContainsKey(neighbour)) 
+                }
+                int newCost = costToTile[current] + neighbour.cost + (ManhattanDistance(current, neighbour) * 10);
+                //int newCost = DistanceBetweenNodes(end, current) + neighbour.cost + DistanceBetweenNodes(current, neighbour);
+                //if (newCost < costToTile[neighbour] || !costToTile.ContainsKey(neighbour)) //WHEN SWAPPED CAUSES ERROR, INVESTIGATE, cant check cost to neighbour as it hasnt been set yet
+                if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
                 {
                     if (grid.showfrontier && !grid.frontierList.Contains(neighbour))
                     {
                         grid.frontierList.Add(neighbour);
                     }
                     costToTile[neighbour] = newCost;
-                    int priority = newCost + DistanceBetweenNodes(start, neighbour);
+                    int priority = newCost + (ManhattanDistance(neighbour, start) * 10); //times 10 for the fact costs are times 10
                     frontier.Enqueue(neighbour, priority);
                     neighbour.parent = current;
                 }
@@ -564,7 +566,7 @@ public class Pathfinding : MonoBehaviour
 
             foreach (Node neighbour in current.neighboursCross)
             {
-                int newCost = DistanceBetweenNodes(end, current) + neighbour.cost;
+                int newCost = costToTile[current] + neighbour.cost;
                 if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
                 {
                     if (neighbour.walkable)
@@ -610,22 +612,26 @@ public class Pathfinding : MonoBehaviour
         int Xdist = Mathf.Abs(nodeA.x - nodeB.x);
         int Ydist = Mathf.Abs(nodeA.y - nodeB.y);
 
+        int distance = 0;
+
         if (Xdist > Ydist)
         {
-            return 14 * Ydist + 10 * (Xdist - Ydist);
+            distance = 14 * Ydist + 10 * (Xdist - Ydist);
         }
         else
         {
-            return 14 * Xdist + 10 * (Ydist - Xdist);
+            distance = 14 * Xdist + 10 * (Ydist - Xdist);
         }
+
+        return distance;
     }
 
-    /*int ManhattanDistance(Node nodeA, Node nodeB)
+    int ManhattanDistance(Node nodeA, Node nodeB)
     {
         int distance = Mathf.Abs(nodeA.x - nodeB.x) + Mathf.Abs(nodeA.y - nodeB.y);
 
         return distance; 
-    }*/
+    }
 
     /*private void OnDrawGizmos()
     {
