@@ -654,7 +654,14 @@ public class UI : MonoBehaviour
         int pathCost = 0;
         foreach (var node in grid.path)
         {
-            pathCost += node.cost;
+            if (node.cost == 0)
+            {
+                pathCost += 10;
+            }
+            else
+            {
+                pathCost += node.cost;
+            }
         }
         return pathCost;
     }
