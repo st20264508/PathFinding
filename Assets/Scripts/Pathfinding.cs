@@ -235,7 +235,7 @@ public class Pathfinding : MonoBehaviour
 
             foreach (Node neighbour in current.neighboursCross)
             {
-                int newCost = costToTile[current] + neighbour.cost;
+                int newCost = costToTile[current] + neighbour.cost + 1; //+1 due to removal of base cost for other algorithms fixes bugged path
                 if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
                 {
                     if (neighbour.walkable)
@@ -482,16 +482,15 @@ public class Pathfinding : MonoBehaviour
         Stopwatch sw = new Stopwatch();
         sw.Start();
         PriorityQueue<Node> frontier = new PriorityQueue<Node>(); //class taken from C# .net
-        Dictionary<Node, int> costToTile = new Dictionary<Node, int>();
+        Dictionary<Node, int> gCost = new Dictionary<Node, int>();
 
         frontier.Enqueue(start, 0);
-        costToTile[start] = 0;
-        
+        gCost[start] = 0;
 
         while (frontier.Count > 0)
         {
             Node current = frontier.Dequeue();
-           
+            
             if (current == end)
             {
                 break;
@@ -499,29 +498,30 @@ public class Pathfinding : MonoBehaviour
 
             foreach (Node neighbour in current.neighboursDiagSafe)
             {
+                if (grid.showfrontier && !grid.frontierList.Contains(neighbour))
+                {
+                    grid.frontierList.Add(neighbour);
+                }
                 if (!neighbour.walkable)
                 {
                     continue;
                 }
-                int newCost = costToTile[current] + neighbour.cost + (ManhattanDistance(current, neighbour) * 10);
+                int newGcost = gCost[current] + neighbour.cost + DistanceBetweenNodes(current, neighbour);
                 //int newCost = DistanceBetweenNodes(end, current) + neighbour.cost + DistanceBetweenNodes(current, neighbour);
                 //if (newCost < costToTile[neighbour] || !costToTile.ContainsKey(neighbour)) //WHEN SWAPPED CAUSES ERROR, INVESTIGATE, cant check cost to neighbour as it hasnt been set yet
-                if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
+                if (!gCost.ContainsKey(neighbour) || newGcost < gCost[neighbour])
                 {
-                    if (grid.showfrontier && !grid.frontierList.Contains(neighbour))
-                    {
-                        grid.frontierList.Add(neighbour);
-                    }
-                    costToTile[neighbour] = newCost;
-                    int priority = newCost + (ManhattanDistance(neighbour, end) * 10); //times 10 for the fact costs are times 10
-                    frontier.Enqueue(neighbour, priority);
+                   
+                    gCost[neighbour] = newGcost;
+                    int fCost = newGcost + DistanceBetweenNodes(neighbour, end); //times 10 for the fact costs are times 10
+                    frontier.Enqueue(neighbour, fCost);
                     neighbour.parent = current;
                 }
             }
             count++;
         }
 
-        if (!costToTile.ContainsKey(end))
+        if (!gCost.ContainsKey(end))
         {
             Debug.Log("Path not found - AstarAlgorithmFiltered2");
             return null;
