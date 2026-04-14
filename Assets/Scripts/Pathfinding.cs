@@ -607,6 +607,68 @@ public class Pathfinding : MonoBehaviour
         return path.ToList();
     }
 
+    public List<Node> DepthFirstSearchAlgorithm(Node start, Node end)
+    {
+        int count = 0;
+        grid.frontierList.Clear();
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+        HashSet<Node> visited = new HashSet<Node>();
+        Stack<Node> stack = new Stack<Node>();
+
+        stack.Push(start);
+        //start.parent = start; //fixes retracing memory error?
+        while (stack.Count > 0)
+        {
+            Node current = stack.Pop();
+            if (current == end)
+            {
+                visited.Add(current);
+                break;
+            }
+
+            if (!visited.Contains(current))
+            {
+                visited.Add(current);
+
+                foreach (Node neighbour in current.neighboursCross)
+                {
+                    if (neighbour.walkable && !visited.Contains(neighbour))
+                    {
+                        if (grid.showfrontier)
+                        {
+                            grid.frontierList.Add(neighbour);
+                        }
+                        stack.Push(neighbour);
+                        neighbour.parent = current;
+                    }
+                }
+            }
+            count++;
+        }
+
+        if (!visited.Contains(end))
+        {
+            Debug.Log("Path not found - DepthFirstSearchAlgorithm");
+            return null;
+        }
+        sw.Stop();
+
+        Queue<Node> path = new Queue<Node>();
+        Node currentNode = end;
+
+        while (currentNode != start)
+        {
+            currentNode = currentNode.parent;
+            path.Enqueue(currentNode);
+        }
+
+        Debug.Log("Time to DepthFirstSearchAlgorithm(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+        Debug.Log("While loop iterations: " + count);
+        return path.ToList();
+        //return null;
+    }
+
     int DistanceBetweenNodes(Node nodeA, Node nodeB)
     {
         int Xdist = Mathf.Abs(nodeA.x - nodeB.x);

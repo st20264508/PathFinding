@@ -65,6 +65,11 @@ public class UI : MonoBehaviour
         {
             RunAstarFiltered2();
         }
+        
+        if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            RunDFS();
+        }
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -499,6 +504,26 @@ public class UI : MonoBehaviour
         if (grid.startNode != null && grid.endNode != null)
         {
             grid.path = pathfinder.AstarAlgorithmFiltered2(grid.startNode, grid.endNode);
+            if (grid.path != null)
+            {
+                string result = "List contents: ";
+                foreach (var item in grid.path)
+                {
+                    result += item.x.ToString() + "," + item.y.ToString() + " ";
+                }
+                Debug.Log(result);
+                Debug.Log("Path length in Nodes: " + grid.path.Count);
+                Debug.Log("Path cost: " + CalculatePathCost());
+                grid.ShowPathAndFrontier();
+            }
+        }
+    }
+
+    public void RunDFS()
+    {
+        if (grid.startNode != null && grid.endNode != null)
+        {
+            grid.path = pathfinder.DepthFirstSearchAlgorithm(grid.startNode, grid.endNode);
             if (grid.path != null)
             {
                 string result = "List contents: ";
