@@ -108,7 +108,7 @@ public class UI : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             //grid.GenerateNewLevel(0.2f, 0.5f);
-            TestAlgorithms(0.2f, 0f);
+            TestAlgorithms(0.2f, 0f, 10);
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -591,8 +591,12 @@ public class UI : MonoBehaviour
         }
     }
 
-    void TestAlgorithms(float wallchance, float slowchance)
+    void TestAlgorithms(float wallchance, float slowchance, int runs)
     {
+        if (runs <= 0)
+        {
+            return;
+        }
         /*public List<Node> path;
         public int pathLength;
         public int pathCost;
@@ -608,7 +612,7 @@ public class UI : MonoBehaviour
 
         //average = results/10
         Pathfinding.Results results = new Pathfinding.Results();
-        
+        //int iterations = 10;
 
         /*List<Node> path = new List<Node>();
         int length = 0;
@@ -622,7 +626,7 @@ public class UI : MonoBehaviour
         results.iterations = 0;
         results.time = 0;*/
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < runs; i++)
         {
             //var tempresults = new Pathfinding.Results();
             grid.GenerateNewLevel(wallchance, slowchance);
@@ -634,6 +638,8 @@ public class UI : MonoBehaviour
         }
 
         Debug.Log("Result totals: " + " cost= " + results.pathCost + " length= " + results.pathLength + " iterations= " + results.iterations + " time= " + results.time);
+        Debug.Log("Result Average: " + " cost= " + results.pathCost/runs + " length= " + results.pathLength / runs + " iterations= " + results.iterations / runs + " time= " + results.time / runs);
+
         //generate two ints within grid size, if int !walkable or is end/start generate a new one else set start node end node x,y
     }
 
