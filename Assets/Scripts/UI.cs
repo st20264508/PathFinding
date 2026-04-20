@@ -629,23 +629,39 @@ public class UI : MonoBehaviour
         results.pathCost = 0;
         results.iterations = 0;
         results.time = 0;*/
-
+        int test = 0;
         for (int i = 0; i < runs; i++)
         {
+            test++;
             //var tempresults = new Pathfinding.Results();
             grid.GenerateNewLevel(wallchance, slowchance);
-            var tempresults = RunAstarFilteredTEST();
+           
+
+            for (int x = 0; x <3; x++)
+            {
+                grid.GenerateNewStartandEnd();
+                var tempresults = RunAstarFilteredTEST();
+                results.pathLength += tempresults.pathLength;
+                results.pathCost += tempresults.pathCost;
+                results.iterations += tempresults.iterations;
+                results.time += tempresults.time;
+
+                test++;
+            }
+
+            /*var tempresults = RunAstarFilteredTEST();
             results.pathLength += tempresults.pathLength;
             results.pathCost += tempresults.pathCost;
             results.iterations += tempresults.iterations;
-            results.time += tempresults.time;
+            results.time += tempresults.time;*/
         }
 
         Debug.Log("Result totals: " + " cost= " + results.pathCost + " length= " + results.pathLength + " iterations= " + results.iterations + " time= " + results.time);
         Debug.Log("Result Average: " + " cost= " + results.pathCost/runs + " length= " + results.pathLength / runs + " iterations= " + results.iterations / runs + " time= " + results.time / runs);
-
+        grid.GenerateNewLevel(wallchance, slowchance);
         sw.Stop();
         Debug.Log("TestAlgorithms time to complete = " + sw.ElapsedMilliseconds + "ms");
+        Debug.Log("Test = " + test);
         //generate two ints within grid size, if int !walkable or is end/start generate a new one else set start node end node x,y
     }
 

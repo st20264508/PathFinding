@@ -652,4 +652,42 @@ public class Grid : MonoBehaviour
         }
         UpdateTiles();
     }
+
+    public void GenerateNewStartandEnd()
+    {
+        while (true)
+        {
+            int rndx = (int)UnityEngine.Random.Range(0f, gridSizeX);
+            int rndy = (int)UnityEngine.Random.Range(0f, gridSizeY);
+            if (!grid[rndx, rndy].walkable)
+            {
+                rndx = (int)UnityEngine.Random.Range(0f, gridSizeX);
+                rndy = (int)UnityEngine.Random.Range(0f, gridSizeY);
+            }
+            else
+            {
+                startNode = grid[rndx, rndy];
+                break;
+            }
+
+        }
+        while (true)
+        {
+            int rndx = (int)UnityEngine.Random.Range(0f, gridSizeX);
+            int rndy = (int)UnityEngine.Random.Range(0f, gridSizeY);
+            if (!grid[rndx, rndy].walkable || grid[rndx, rndy] == startNode)
+            {
+                rndx = (int)UnityEngine.Random.Range(0f, gridSizeX);
+                rndy = (int)UnityEngine.Random.Range(0f, gridSizeY);
+            }
+            else
+            {
+                endNode = grid[rndx, rndy];
+                break;
+            }
+
+        }
+        Debug.Log("new start " + startNode.x + startNode.y + " new end " + endNode.x + endNode.y);
+        //UpdateTiles(); //waste of resource to call where this is used
+    }
 }
