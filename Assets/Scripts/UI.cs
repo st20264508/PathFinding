@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Unity.VisualScripting;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 public class UI : MonoBehaviour
 {
@@ -593,6 +595,8 @@ public class UI : MonoBehaviour
 
     void TestAlgorithms(float wallchance, float slowchance, int runs)
     {
+        Stopwatch sw = Stopwatch.StartNew();
+        sw.Start();
         if (runs <= 0)
         {
             return;
@@ -640,6 +644,8 @@ public class UI : MonoBehaviour
         Debug.Log("Result totals: " + " cost= " + results.pathCost + " length= " + results.pathLength + " iterations= " + results.iterations + " time= " + results.time);
         Debug.Log("Result Average: " + " cost= " + results.pathCost/runs + " length= " + results.pathLength / runs + " iterations= " + results.iterations / runs + " time= " + results.time / runs);
 
+        sw.Stop();
+        Debug.Log("TestAlgorithms time to complete = " + sw.ElapsedMilliseconds + "ms");
         //generate two ints within grid size, if int !walkable or is end/start generate a new one else set start node end node x,y
     }
 
