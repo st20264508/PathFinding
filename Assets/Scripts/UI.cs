@@ -91,6 +91,11 @@ public class UI : MonoBehaviour
             DebugFilter();
         }
 
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            grid.GenerateNewLevel(0.2f,0.2f);
+        }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             DebugNode();
@@ -374,6 +379,8 @@ public class UI : MonoBehaviour
             }
         }
         
+        //grid.path = pathfinder.BFSAlgorithmCROSSTEST(grid.startNode, grid.endNode).path;
+
     }
 
     public void RunDijkstraCROSS()

@@ -550,7 +550,7 @@ public class Grid : MonoBehaviour
 
     public void RandomWalls()
     {
-        ResetGrid(); //for use in UI
+        //ResetGrid(); //for use in UI
         
         foreach (Node n in grid)
         {
@@ -572,6 +572,7 @@ public class Grid : MonoBehaviour
         foreach (Node n in grid)
         {
             n.walkable = true;
+            n.cost = 0;
         }
     }
 
@@ -587,5 +588,30 @@ public class Grid : MonoBehaviour
             Destroy(go);
         }
         TileList.Clear();
+    }
+
+    public void GenerateNewLevel(float wallchance, float slowchance)
+    {
+        ResetGrid();
+        ResetTiles();
+
+        foreach(Node n in grid)
+        {
+            float rndslow = UnityEngine.Random.Range(0f, 1f);
+            if(rndslow < slowchance)
+            {
+                n.walkable = true;
+                n.cost = slowcost;
+            }
+
+            float rndwall = UnityEngine.Random.Range(0f, 1f);
+            if (rndwall < wallchance)
+            {
+                n.walkable = false;
+                n.cost = 0;
+            }
+        }
+
+        UpdateTiles();
     }
 }

@@ -22,7 +22,14 @@ public class Pathfinding : MonoBehaviour
         
     }
 
-   
+    public struct Results
+    {
+        public List<Node> path;
+        public int pathLength;
+        public int pathCost;
+        public long time;
+    }
+
 
     public List<Node> BFSAlgorithmALL(Node start, Node end)
     {
@@ -146,6 +153,73 @@ public class Pathfinding : MonoBehaviour
         Debug.Log("Time to BFSAlgorithmCROSS(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
         Debug.Log("While loop iterations: " + count);
         return path.ToList();
+    }
+
+    public Results BFSAlgorithmCROSSTEST(Node start, Node end)
+    {
+        int count = 0;
+        grid.frontierList.Clear();
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+        Queue<Node> frontier = new Queue<Node>();
+        List<Node> visited = new List<Node>();
+        Results returnres = new Results();
+
+        frontier.Enqueue(start);
+        while (frontier.Count > 0)
+        {
+            Node current = frontier.Dequeue();
+            if (current == end)
+            {
+                visited.Add(current);
+                Debug.Log("broke");
+                break;
+            }
+
+            foreach (Node neighbour in current.neighboursCross)
+            {
+                if (!visited.Contains(neighbour) && !frontier.Contains(neighbour))
+                {
+                    if (neighbour.walkable)
+                    {
+                        if (grid.showfrontier)
+                        {
+                            grid.frontierList.Add(neighbour);
+                        }
+                        frontier.Enqueue(neighbour);
+                        neighbour.parent = current;
+                    }
+
+                }
+            }
+            visited.Add(current);
+            count++;
+        }
+
+        if (!visited.Contains(end))
+        {
+            Debug.Log("Path not found - BFSAlgorithmCROSS");
+            
+            return returnres;
+        }
+
+        sw.Stop();
+
+        Queue<Node> path = new Queue<Node>();
+        Node currentNode = end;
+
+        while (currentNode != start)
+        {
+            currentNode = currentNode.parent;
+            path.Enqueue(currentNode);
+        }
+
+        Debug.Log("Time to BFSAlgorithmCROSS(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+        Debug.Log("While loop iterations: " + count);
+        returnres.path = path.ToList();
+        returnres.time = sw.ElapsedMilliseconds;
+        
+        return returnres;
     }
 
     public List<Node> GreedyBFSAlgorithm(Node start, Node end)
@@ -704,4 +778,6 @@ public class Pathfinding : MonoBehaviour
         }
         
     }*/
+
+    
 }
