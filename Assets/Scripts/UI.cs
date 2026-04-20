@@ -10,6 +10,15 @@ public class UI : MonoBehaviour
     public GameObject test;
     public Pathfinding pathfinder;
     int defualtLayer;
+    Pathfinding.Results results;
+    /*public struct Results
+    {
+        public List<Node> path;
+        public int length;
+        public int cost;
+        public int iterations;
+        public long time;
+    }*/
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -71,6 +80,11 @@ public class UI : MonoBehaviour
             RunDFS();
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            RunAstarFilteredTEST();
+        }
+
         if (Input.GetKeyDown(KeyCode.Q))
         {
             SetUnwalkable();
@@ -93,7 +107,8 @@ public class UI : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            grid.GenerateNewLevel(0.2f,0.2f);
+            //grid.GenerateNewLevel(0.2f, 0.5f);
+            TestAlgorithms(0.2f, 0f);
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -466,6 +481,36 @@ public class UI : MonoBehaviour
         }
     }
 
+    public Pathfinding.Results RunAstarFilteredTEST()
+    {
+        
+        if (grid.startNode != null && grid.endNode != null)
+        {
+            results = pathfinder.AstarAlgorithmFilteredTEST(grid.startNode, grid.endNode);
+            grid.path = results.path;
+            if (grid.path != null)
+            {
+                /*string result = "List contents: ";
+                foreach (var item in grid.path)
+                {
+                    result += item.x.ToString() + "," + item.y.ToString() + " ";
+                }
+                Debug.Log(result);*/
+
+                results.pathLength = results.path.Count;
+                results.pathCost = CalculatePathCost();
+                
+
+                //Debug.Log("Path length in Nodes: " + grid.path.Count);
+                //Debug.Log("Path cost: " + CalculatePathCost());
+
+                
+                grid.ShowPathAndFrontier();
+            }
+        }
+        return results;
+    }
+
     public void RunGreedyBFS()
     {
         if (grid.startNode != null && grid.endNode != null)
@@ -544,6 +589,52 @@ public class UI : MonoBehaviour
                 grid.ShowPathAndFrontier();
             }
         }
+    }
+
+    void TestAlgorithms(float wallchance, float slowchance)
+    {
+        /*public List<Node> path;
+        public int pathLength;
+        public int pathCost;
+        public int iterations;
+        public long time;*/
+        //average be a struct += last 10 results and then average
+
+        //for 10 times
+        //generate new level
+        //set start and end (cant be on unwalkable)
+        //run algorithm
+        //set results += last result
+
+        //average = results/10
+        Pathfinding.Results results = new Pathfinding.Results();
+        
+
+        /*List<Node> path = new List<Node>();
+        int length = 0;
+        int cost = 0;
+        int iterations = 0;
+        long time = 0;*/
+
+        /*results.path = new List<Node>();
+        results.pathLength = 0;
+        results.pathCost = 0;
+        results.iterations = 0;
+        results.time = 0;*/
+
+        for (int i = 0; i < 10; i++)
+        {
+            //var tempresults = new Pathfinding.Results();
+            grid.GenerateNewLevel(wallchance, slowchance);
+            var tempresults = RunAstarFilteredTEST();
+            results.pathLength += tempresults.pathLength;
+            results.pathCost += tempresults.pathCost;
+            results.iterations += tempresults.iterations;
+            results.time += tempresults.time;
+        }
+
+        Debug.Log("Result totals: " + " cost= " + results.pathCost + " length= " + results.pathLength + " iterations= " + results.iterations + " time= " + results.time);
+        //generate two ints within grid size, if int !walkable or is end/start generate a new one else set start node end node x,y
     }
 
     List<Node> FilteredNeighbours(Node cur) //make temp list an remove the non accessible so it doesnt effect the neighbours

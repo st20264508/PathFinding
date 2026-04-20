@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
 using System.Runtime.ConstrainedExecution;
 using Unity.VisualScripting;
 using UnityEditor.Search;
@@ -592,6 +593,12 @@ public class Grid : MonoBehaviour
 
     public void GenerateNewLevel(float wallchance, float slowchance)
     {
+        if (wallchance > 1.0f || slowchance > 1.0f)
+        {
+            Debug.Log("chance too high");
+            return;
+        }
+
         ResetGrid();
         ResetTiles();
 
@@ -611,7 +618,38 @@ public class Grid : MonoBehaviour
                 n.cost = 0;
             }
         }
+        while (true)
+        {
+            int rndx = (int)UnityEngine.Random.Range(0f, gridSizeX);
+            int rndy = (int)UnityEngine.Random.Range(0f, gridSizeY);
+            if (!grid[rndx, rndy].walkable)
+            {
+                rndx = (int)UnityEngine.Random.Range(0f, gridSizeX);
+                rndy = (int)UnityEngine.Random.Range(0f, gridSizeY);
+            }
+            else
+            {
+                startNode = grid[rndx, rndy];
+                break;
+            }
 
+        }
+        while (true)
+        {
+            int rndx = (int)UnityEngine.Random.Range(0f, gridSizeX);
+            int rndy = (int)UnityEngine.Random.Range(0f, gridSizeY);
+            if (!grid[rndx, rndy].walkable || grid[rndx, rndy] == startNode)
+            {
+                rndx = (int)UnityEngine.Random.Range(0f, gridSizeX);
+                rndy = (int)UnityEngine.Random.Range(0f, gridSizeY);
+            }
+            else
+            {
+                endNode = grid[rndx, rndy];
+                break;
+            }
+
+        }
         UpdateTiles();
     }
 }

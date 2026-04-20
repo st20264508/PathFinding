@@ -27,6 +27,7 @@ public class Pathfinding : MonoBehaviour
         public List<Node> path;
         public int pathLength;
         public int pathCost;
+        public int iterations;
         public long time;
     }
 
@@ -545,6 +546,79 @@ public class Pathfinding : MonoBehaviour
         Debug.Log("While loop iterations: " + count);
 
         return path.ToList();
+    }
+
+    public Results AstarAlgorithmFilteredTEST(Node start, Node end) //feels like its exploring to many nodes
+    {
+        grid.PopulateNeighboursDiagExcept();
+        grid.frontierList.Clear();
+        int count = 0;
+        Results results = new Results();
+
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+        PriorityQueue<Node> frontier = new PriorityQueue<Node>(); //class taken from C# .net
+        Dictionary<Node, int> gCost = new Dictionary<Node, int>();
+
+        frontier.Enqueue(start, 0);
+        gCost[start] = 0;
+
+        while (frontier.Count > 0)
+        {
+            Node current = frontier.Dequeue();
+            if (current == end)
+            {
+                break;
+            }
+
+            foreach (Node neighbour in current.neighboursDiagSafe)
+            {
+                if (!neighbour.walkable)
+                {
+                    continue;
+                }
+                int newGcost = gCost[current] + neighbour.cost + DistanceBetweenNodes(current, neighbour);
+                //int newCost = DistanceBetweenNodes(end, current) + neighbour.cost + DistanceBetweenNodes(current, neighbour);
+                //if (newCost < costToTile[neighbour] || !costToTile.ContainsKey(neighbour)) //WHEN SWAPPED CAUSES ERROR, INVESTIGATE, cant check cost to neighbour as it hasnt been set yet
+                if (!gCost.ContainsKey(neighbour) || newGcost < gCost[neighbour])
+                {
+                    if (grid.showfrontier && !grid.frontierList.Contains(neighbour))
+                    {
+                        grid.frontierList.Add(neighbour);
+                    }
+                    gCost[neighbour] = newGcost;
+                    int fCost = newGcost + DistanceBetweenNodes(neighbour, end); //times 10 for the fact costs are times 10
+                    frontier.Enqueue(neighbour, fCost);
+                    neighbour.parent = current;
+                }
+            }
+            count++;
+        }
+
+        if (!gCost.ContainsKey(end))
+        {
+            Debug.Log("Path not found - AstarAlgorithmFiltered");
+            return results;
+        }
+        sw.Stop();
+
+        Queue<Node> path = new Queue<Node>();
+        Node currentNode = end;
+
+        while (currentNode != start)
+        {
+            currentNode = currentNode.parent;
+            path.Enqueue(currentNode);
+        }
+
+
+        Debug.Log("Time to AstarAlgorithmFiltered(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+        Debug.Log("While loop iterations: " + count);
+
+        results.path = path.ToList();
+        results.time = sw.ElapsedMilliseconds;
+        results.iterations = count;
+        return results;
     }
 
     public List<Node> AstarAlgorithmFiltered2(Node start, Node end)
