@@ -597,7 +597,7 @@ public class Pathfinding : MonoBehaviour
 
         if (!gCost.ContainsKey(end))
         {
-            Debug.Log("Path not found - AstarAlgorithmFiltered");
+            Debug.Log("Path not found - AstarAlgorithmFilteredTEST");
             return results;
         }
         sw.Stop();
@@ -612,7 +612,7 @@ public class Pathfinding : MonoBehaviour
         }
 
 
-        Debug.Log("Time to AstarAlgorithmFiltered(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+        Debug.Log("Time to AstarAlgorithmFilteredTEST(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
         Debug.Log("While loop iterations: " + count);
 
         results.path = path.ToList();
