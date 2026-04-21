@@ -168,13 +168,14 @@ public class Pathfinding : MonoBehaviour
 
     public Results BFSAlgorithmCROSSTEST(Node start, Node end)
     {
+        Results results = new Results();
         int count = 0;
         grid.frontierList.Clear();
         Stopwatch sw = new Stopwatch();
         sw.Start();
         Queue<Node> frontier = new Queue<Node>();
         List<Node> visited = new List<Node>();
-        Results returnres = new Results();
+        
 
         frontier.Enqueue(start);
         while (frontier.Count > 0)
@@ -209,9 +210,9 @@ public class Pathfinding : MonoBehaviour
 
         if (!visited.Contains(end))
         {
-            Debug.Log("Path not found - BFSAlgorithmCROSS");
+            Debug.Log("Path not found - BFSAlgorithmCROSSTEST");
             
-            return returnres;
+            return results;
         }
 
         sw.Stop();
@@ -225,12 +226,13 @@ public class Pathfinding : MonoBehaviour
             path.Enqueue(currentNode);
         }
 
-        Debug.Log("Time to BFSAlgorithmCROSS(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+        Debug.Log("Time to BFSAlgorithmCROSSTEST(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
         Debug.Log("While loop iterations: " + count);
-        returnres.path = path.ToList();
-        returnres.time = sw.ElapsedMilliseconds;
-        
-        return returnres;
+        results.path = path.ToList();
+        results.time = sw.ElapsedMilliseconds;
+        results.iterations = count;
+
+        return results;
     }
 
     public List<Node> GreedyBFSAlgorithm(Node start, Node end)
