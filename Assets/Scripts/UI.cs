@@ -641,10 +641,11 @@ public class UI : MonoBehaviour
             {
                 grid.GenerateNewStartandEnd();
                 var tempresults = RunAstarFilteredTEST();
-                results.pathLength += tempresults.pathLength;
+                results = pathfinder.IncrementResult(results, tempresults);
+                /*results.pathLength += tempresults.pathLength;
                 results.pathCost += tempresults.pathCost;
                 results.iterations += tempresults.iterations;
-                results.time += tempresults.time;
+                results.time += tempresults.time;*/
 
                 test++;
             }
@@ -665,6 +666,7 @@ public class UI : MonoBehaviour
         //generate two ints within grid size, if int !walkable or is end/start generate a new one else set start node end node x,y
     }
 
+    
     List<Node> FilteredNeighbours(Node cur) //make temp list an remove the non accessible so it doesnt effect the neighbours
     {
         //cur.neighboursDiagSafe.AddRange(cur.neighboursAll);

@@ -9,6 +9,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.Rendering;
+using static Pathfinding;
 using Debug = UnityEngine.Debug;
 
 public class Pathfinding : MonoBehaviour
@@ -31,6 +32,15 @@ public class Pathfinding : MonoBehaviour
         public long time;
     }
 
+    public Results IncrementResult(Results currentresults, Results newresults)
+    {
+        currentresults.pathLength += newresults.pathLength;
+        currentresults.pathCost += newresults.pathCost;
+        currentresults.iterations += newresults.iterations;
+        currentresults.time += newresults.time;
+
+        return currentresults;
+    }
 
     public List<Node> BFSAlgorithmALL(Node start, Node end)
     {
