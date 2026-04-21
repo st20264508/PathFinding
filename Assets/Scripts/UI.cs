@@ -482,6 +482,22 @@ public class UI : MonoBehaviour
 
     }
 
+    public Pathfinding.Results RunDijkstraAlgorithmFilteredTEST()
+    {
+        if (grid.startNode != null && grid.endNode != null)
+        {
+            results = pathfinder.DijkstraAlgorithmFilteredTEST(grid.startNode, grid.endNode);
+            grid.path = results.path;
+            if (grid.path != null)
+            {
+                results.pathLength = results.path.Count;
+                results.pathCost = CalculatePathCost();
+                grid.ShowPathAndFrontier();
+            }
+        }
+        return results;
+    }
+
     public void RunAstarFiltered()
     {
         if (grid.startNode != null && grid.endNode != null)
@@ -550,6 +566,22 @@ public class UI : MonoBehaviour
                 grid.ShowPathAndFrontier();
             }
         }
+    }
+
+    public Pathfinding.Results RunGreedyBFSTEST()
+    {
+        if (grid.startNode != null && grid.endNode != null)
+        {
+            results = pathfinder.GreedyBFSAlgorithmTEST(grid.startNode, grid.endNode);
+            grid.path = results.path;
+            if (grid.path != null)
+            {
+                results.pathLength = results.path.Count;
+                results.pathCost = CalculatePathCost();
+                grid.ShowPathAndFrontier();
+            }
+        }
+        return results;
     }
 
     public void RunAstarCross()
@@ -687,11 +719,11 @@ public class UI : MonoBehaviour
                 tempresults = RunBFSCROSSTEST();
                 BFSResults = pathfinder.IncrementResult(BFSResults, tempresults);
 
-                /*tempresults = RunGreedyBFSTEST();
-                BFSResults = pathfinder.IncrementResult(GBFSResults, tempresults);
+                tempresults = RunGreedyBFSTEST();
+                GBFSResults = pathfinder.IncrementResult(GBFSResults, tempresults);
 
-                tempresults = RunDijkstraFilteredTest();
-                BFSResults = pathfinder.IncrementResult(DijkstraResults, tempresults);*/
+                tempresults = RunDijkstraAlgorithmFilteredTEST();
+                DijkstraResults = pathfinder.IncrementResult(DijkstraResults, tempresults);
 
                 tempresults = RunAstarFilteredTEST();
                 AStarResults = pathfinder.IncrementResult(AStarResults, tempresults);
@@ -710,7 +742,7 @@ public class UI : MonoBehaviour
             results.time += tempresults.time;*/
         }
 
-        
+        float runsfloat = (float)runs;
 
         Debug.Log("Result DFS totals: " + " cost= " + DFSResults.pathCost + " length= " + DFSResults.pathLength + " iterations= " + DFSResults.iterations + " time= " + DFSResults.time);
         Debug.Log("Result DFS Average: " + " cost= " + DFSResults.pathCost / runs + " length= " + DFSResults.pathLength / runs + " iterations= " + DFSResults.iterations / runs + " time= " + DFSResults.time / runs);
@@ -718,8 +750,16 @@ public class UI : MonoBehaviour
         Debug.Log("Result BFS totals: " + " cost= " + BFSResults.pathCost + " length= " + BFSResults.pathLength + " iterations= " + BFSResults.iterations + " time= " + BFSResults.time);
         Debug.Log("Result BFS Average: " + " cost= " + BFSResults.pathCost / runs + " length= " + BFSResults.pathLength / runs + " iterations= " + BFSResults.iterations / runs + " time= " + BFSResults.time / runs);
 
+        Debug.Log("Result GBFS totals: " + " cost= " + GBFSResults.pathCost + " length= " + GBFSResults.pathLength + " iterations= " + GBFSResults.iterations + " time= " + GBFSResults.time);
+        Debug.Log("Result GBFS Average: " + " cost= " + GBFSResults.pathCost / runs + " length= " + GBFSResults.pathLength / runs + " iterations= " + GBFSResults.iterations / runs + " time= " + GBFSResults.time / runs);
+
+        Debug.Log("Result Dijkstra totals: " + " cost= " + DijkstraResults.pathCost + " length= " + DijkstraResults.pathLength + " iterations= " + DijkstraResults.iterations + " time= " + DijkstraResults.time);
+        Debug.Log("Result Dijkstra Average: " + " cost= " + DijkstraResults.pathCost / runs + " length= " + DijkstraResults.pathLength / runs + " iterations= " + DijkstraResults.iterations / runs + " time= " + DijkstraResults.time / runs);
+
         Debug.Log("Result Astar totals: " + " cost= " + AStarResults.pathCost + " length= " + AStarResults.pathLength + " iterations= " + AStarResults.iterations + " time= " + AStarResults.time);
         Debug.Log("Result Astar Average: " + " cost= " + AStarResults.pathCost / runs + " length= " + AStarResults.pathLength / runs + " iterations= " + AStarResults.iterations / runs + " time= " + AStarResults.time / runs);
+
+        Debug.Log("Astar time TEST " + (float)AStarResults.time / runsfloat);
 
         grid.GenerateNewLevel(wallchance, slowchance);
         sw.Stop();
