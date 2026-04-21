@@ -593,6 +593,22 @@ public class UI : MonoBehaviour
         }
     }
 
+    public Pathfinding.Results RunDFSTEST()
+    {
+        if (grid.startNode != null && grid.endNode != null)
+        {
+            results = pathfinder.DepthFirstSearchAlgorithmTEST(grid.startNode, grid.endNode);
+            grid.path = results.path;
+            if (grid.path != null)
+            {
+                results.pathLength = results.path.Count;
+                results.pathCost = CalculatePathCost();
+                grid.ShowPathAndFrontier();
+            }
+        }
+        return results;
+    }
+
     void TestAlgorithms(float wallchance, float slowchance, int runs)
     {
         Stopwatch sw = Stopwatch.StartNew();
@@ -615,7 +631,8 @@ public class UI : MonoBehaviour
         //set results += last result
 
         //average = results/10
-        Pathfinding.Results results = new Pathfinding.Results();
+        Pathfinding.Results AStarResults = new Pathfinding.Results();
+        Pathfinding.Results DFSResults = new Pathfinding.Results();
         //int iterations = 10;
 
         /*List<Node> path = new List<Node>();
@@ -641,7 +658,9 @@ public class UI : MonoBehaviour
             {
                 grid.GenerateNewStartandEnd();
                 var tempresults = RunAstarFilteredTEST();
-                results = pathfinder.IncrementResult(results, tempresults);
+                AStarResults = pathfinder.IncrementResult(AStarResults, tempresults);
+                tempresults = RunDFSTEST();
+                DFSResults = pathfinder.IncrementResult(DFSResults, tempresults);
                 /*results.pathLength += tempresults.pathLength;
                 results.pathCost += tempresults.pathCost;
                 results.iterations += tempresults.iterations;
@@ -657,8 +676,12 @@ public class UI : MonoBehaviour
             results.time += tempresults.time;*/
         }
 
-        Debug.Log("Result totals: " + " cost= " + results.pathCost + " length= " + results.pathLength + " iterations= " + results.iterations + " time= " + results.time);
-        Debug.Log("Result Average: " + " cost= " + results.pathCost/runs + " length= " + results.pathLength / runs + " iterations= " + results.iterations / runs + " time= " + results.time / runs);
+        Debug.Log("Result Astar totals: " + " cost= " + AStarResults.pathCost + " length= " + AStarResults.pathLength + " iterations= " + AStarResults.iterations + " time= " + AStarResults.time);
+        Debug.Log("Result Astar Average: " + " cost= " + AStarResults.pathCost/runs + " length= " + AStarResults.pathLength / runs + " iterations= " + AStarResults.iterations / runs + " time= " + AStarResults.time / runs);
+
+        Debug.Log("Result DFS totals: " + " cost= " + DFSResults.pathCost + " length= " + DFSResults.pathLength + " iterations= " + DFSResults.iterations + " time= " + DFSResults.time);
+        Debug.Log("Result DFS Average: " + " cost= " + DFSResults.pathCost / runs + " length= " + DFSResults.pathLength / runs + " iterations= " + DFSResults.iterations / runs + " time= " + DFSResults.time / runs);
+
         grid.GenerateNewLevel(wallchance, slowchance);
         sw.Stop();
         Debug.Log("TestAlgorithms time to complete = " + sw.ElapsedMilliseconds + "ms");
