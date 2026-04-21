@@ -172,7 +172,7 @@ MonoBehaviour:
   slowPrefab: {fileID: 7054105202854107338, guid: af90d4a3c42d1a24781f86affbe8e97e, type: 3}
   visitedMarkerPrefab: {fileID: 7054105202854107338, guid: d334dbcdaf5f1924d8c4ad55b4c9c7c7, type: 3}
   tileHeight: 0.2
-  nodeRadius: 0.2
+  nodeRadius: 0.1
   drawGizmos: 1
   randomWallsOnStart: 0
   showfrontier: 1

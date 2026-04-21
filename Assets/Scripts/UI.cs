@@ -110,7 +110,7 @@ public class UI : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             //grid.GenerateNewLevel(0.2f, 0.5f);
-            TestAlgorithms(0.2f, 0f, 10);
+            TestAlgorithms(0.2f, 0.4f, 10);
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
