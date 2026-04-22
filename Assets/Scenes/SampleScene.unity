@@ -172,7 +172,7 @@ MonoBehaviour:
   slowPrefab: {fileID: 7054105202854107338, guid: af90d4a3c42d1a24781f86affbe8e97e, type: 3}
   visitedMarkerPrefab: {fileID: 7054105202854107338, guid: d334dbcdaf5f1924d8c4ad55b4c9c7c7, type: 3}
   tileHeight: 0.2
-  nodeRadius: 0.15
+  nodeRadius: 0.05
   drawGizmos: 1
   randomWallsOnStart: 1
   showfrontier: 0
@@ -646,6 +646,11 @@ MonoBehaviour:
   grid: {fileID: 200884358}
   test: {fileID: 2737446628098912658, guid: e29088745aee4c84eab5c096b85ab70c, type: 3}
   pathfinder: {fileID: 2005837050}
+  testDFS: 0
+  testBFS: 0
+  testGBFS: 1
+  testDijkstra: 0
+  testAstar: 0
 --- !u!1 &2005837048
 GameObject:
   m_ObjectHideFlags: 0
