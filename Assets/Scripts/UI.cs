@@ -742,6 +742,8 @@ public class UI : MonoBehaviour
             results.time += tempresults.time;*/
         }
 
+        //grid.UpdateTiles();
+
         float runsfloat = (float)runs;
 
         Debug.Log("Result DFS totals: " + " cost= " + DFSResults.pathCost + " length= " + DFSResults.pathLength + " iterations= " + DFSResults.iterations + " time= " + DFSResults.time);

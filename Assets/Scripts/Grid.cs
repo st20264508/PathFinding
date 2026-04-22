@@ -228,11 +228,12 @@ public class Grid : MonoBehaviour
                 }
                 else if (grid[x, y].walkable && grid[x, y].cost == slowcost)
                 {
-                    tilePrefab.name = "Tile " + x + "," + y;
-                    tilePrefab.transform.localScale = new Vector3(nodeDiameter, tileHeight, nodeDiameter);
+                    slowPrefab.name = "Tile " + x + "," + y;
+                    slowPrefab.transform.localScale = new Vector3(nodeDiameter, tileHeight, nodeDiameter);
                     var tile = Instantiate(slowPrefab, spawnPos, Quaternion.identity);
                     TileList.Add(tile);
                     //for now all are walkable update in the future
+                    grid[x, y].prefab = tile;//added
                 }
                 else if (grid[x, y].walkable)
                 {
@@ -241,6 +242,7 @@ public class Grid : MonoBehaviour
                     var tile = Instantiate(tilePrefab, spawnPos, Quaternion.identity);
                     TileList.Add(tile);
                     //for now all are walkable update in the future
+                    grid[x, y].prefab = tile;//added
                 }
                 else if (!grid[x, y].walkable)
                 {
