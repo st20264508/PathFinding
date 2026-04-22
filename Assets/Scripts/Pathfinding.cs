@@ -170,7 +170,7 @@ public class Pathfinding : MonoBehaviour
     {
         Results results = new Results();
         int count = 0;
-        grid.frontierList.Clear();
+        //grid.frontierList.Clear();
         Stopwatch sw = new Stopwatch();
         sw.Start();
         Queue<Node> frontier = new Queue<Node>();
@@ -194,10 +194,10 @@ public class Pathfinding : MonoBehaviour
                 {
                     if (neighbour.walkable)
                     {
-                        if (grid.showfrontier)
+                        /*if (grid.showfrontier)
                         {
                             grid.frontierList.Add(neighbour);
-                        }
+                        }*/
                         frontier.Enqueue(neighbour);
                         neighbour.parent = current;
                     }
@@ -304,7 +304,7 @@ public class Pathfinding : MonoBehaviour
     {
         Results results = new Results();
         int count = 0;
-        grid.frontierList.Clear();
+        //grid.frontierList.Clear();
         Stopwatch sw = new Stopwatch();
         sw.Start();
         PriorityQueue<Node> frontier = new PriorityQueue<Node>(); //class taken from C# .net
@@ -330,10 +330,10 @@ public class Pathfinding : MonoBehaviour
                 {
                     if (neighbour.walkable)
                     {
-                        if (grid.showfrontier)
+                        /*if (grid.showfrontier)
                         {
                             grid.frontierList.Add(neighbour);
-                        }
+                        }*/
                         int priority = DistanceBetweenNodes(neighbour, end);
                         frontier.Enqueue(neighbour, priority);
                         neighbour.parent = current;
@@ -565,7 +565,7 @@ public class Pathfinding : MonoBehaviour
     {
         Results results = new Results();
         grid.PopulateNeighboursDiagExcept();
-        grid.frontierList.Clear();
+        //grid.frontierList.Clear();
         int count = 0;
 
         Stopwatch sw = new Stopwatch();
@@ -591,10 +591,10 @@ public class Pathfinding : MonoBehaviour
                 {
                     if (neighbour.walkable)
                     {
-                        if (grid.showfrontier)
+                        /*if (grid.showfrontier)
                         {
                             grid.frontierList.Add(neighbour);
-                        }
+                        }*/
                         costToTile[neighbour] = newCost;
                         frontier.Enqueue(neighbour, newCost);
                         neighbour.parent = current;
@@ -703,7 +703,7 @@ public class Pathfinding : MonoBehaviour
     public Results AstarAlgorithmFilteredTEST(Node start, Node end) //feels like its exploring to many nodes
     {
         grid.PopulateNeighboursDiagExcept();
-        grid.frontierList.Clear();
+        //grid.frontierList.Clear();
         int count = 0;
         Results results = new Results();
 
@@ -734,10 +734,10 @@ public class Pathfinding : MonoBehaviour
                 //if (newCost < costToTile[neighbour] || !costToTile.ContainsKey(neighbour)) //WHEN SWAPPED CAUSES ERROR, INVESTIGATE, cant check cost to neighbour as it hasnt been set yet
                 if (!gCost.ContainsKey(neighbour) || newGcost < gCost[neighbour])
                 {
-                    if (grid.showfrontier && !grid.frontierList.Contains(neighbour))
+                    /*if (grid.showfrontier && !grid.frontierList.Contains(neighbour))
                     {
                         grid.frontierList.Add(neighbour);
-                    }
+                    }*/
                     gCost[neighbour] = newGcost;
                     int fCost = newGcost + DistanceBetweenNodes(neighbour, end); //times 10 for the fact costs are times 10
                     frontier.Enqueue(neighbour, fCost);
@@ -973,7 +973,7 @@ public class Pathfinding : MonoBehaviour
     {
         Results results = new Results();
         int count = 0;
-        grid.frontierList.Clear();
+        //grid.frontierList.Clear();
         Stopwatch sw = new Stopwatch();
         sw.Start();
         HashSet<Node> visited = new HashSet<Node>();
@@ -998,10 +998,10 @@ public class Pathfinding : MonoBehaviour
                 {
                     if (neighbour.walkable && !visited.Contains(neighbour))
                     {
-                        if (grid.showfrontier)
+                        /*if (grid.showfrontier)
                         {
                             grid.frontierList.Add(neighbour);
-                        }
+                        }*/
                         stack.Push(neighbour);
                         neighbour.parent = current;
                     }
