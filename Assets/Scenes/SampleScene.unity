@@ -175,6 +175,7 @@ MonoBehaviour:
   nodeRadius: 0.1
   drawGizmos: 1
   randomWallsOnStart: 1
+  generateLevelOnStart: 1
   showfrontier: 0
   nodeDiameter: 0
   gridSizeX: 0
@@ -183,6 +184,8 @@ MonoBehaviour:
   TileList: []
   frontierObjects: []
   pathObjects: []
+  wallchanceonstart: 0
+  slowchanceonstart: 0
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -653,9 +656,9 @@ MonoBehaviour:
   testAstar: 0
   testDijkstraCROSS: 1
   testAstarCROSS: 1
-  wallchance: 0
+  wallchance: 0.3
   slowchance: 0
-  runs: 0
+  runs: 5
 --- !u!1 &2005837048
 GameObject:
   m_ObjectHideFlags: 0

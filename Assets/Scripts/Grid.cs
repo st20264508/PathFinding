@@ -9,6 +9,7 @@ using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Debug = UnityEngine.Debug;
+using RangeAttribute = UnityEngine.RangeAttribute;
 
 public class Grid : MonoBehaviour
 {
@@ -27,6 +28,7 @@ public class Grid : MonoBehaviour
 
     [SerializeField] bool drawGizmos; //for drawing the grid
     [SerializeField] bool randomWallsOnStart;
+    [SerializeField] bool generateLevelOnStart;
     [SerializeField] public bool showfrontier;
     public float nodeDiameter; //radius * 2
 
@@ -46,6 +48,11 @@ public class Grid : MonoBehaviour
     public List<Node> frontierList;
     public List<GameObject> frontierObjects;
     public List<GameObject> pathObjects;
+
+    [Range(0, 1)]
+    [SerializeField] float wallchanceonstart;
+    [Range(0, 1)]
+    [SerializeField] float slowchanceonstart;
 
     Vector3 bottomLeft; //bottom left of the grid
 
@@ -67,7 +74,11 @@ public class Grid : MonoBehaviour
         }
         
         InitTileGrid();
-        GenerateNewLevel(0.2f, 0.5f);//added
+        if (generateLevelOnStart)
+        {
+            GenerateNewLevel(wallchanceonstart, slowchanceonstart);//added
+        }
+
         PopulateNeighboursAll();//order shouldnt matter but if bugs could check
         PopulateNeighboursCross();
     }
