@@ -392,7 +392,7 @@ public class Pathfinding : MonoBehaviour
 
             foreach (Node neighbour in current.neighboursCross)
             {
-                int newCost = costToTile[current] + neighbour.cost + 1; //+1 due to removal of base cost for other algorithms fixes bugged path
+                int newCost = costToTile[current] + neighbour.cost + 10; //+ 1; //+10 due to removal of base cost for other algorithms fixes bugged path
                 if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
                 {
                     if (neighbour.walkable)
@@ -455,7 +455,7 @@ public class Pathfinding : MonoBehaviour
 
             foreach (Node neighbour in current.neighboursCross)
             {
-                int newCost = costToTile[current] + neighbour.cost + 1; //+1 due to removal of base cost for other algorithms fixes bugged path
+                int newCost = costToTile[current] + neighbour.cost + 10; //+10 due to removal of base cost for other algorithms fixes bugged path
                 if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
                 {
                     if (neighbour.walkable)

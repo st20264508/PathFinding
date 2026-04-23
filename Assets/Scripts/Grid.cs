@@ -67,6 +67,7 @@ public class Grid : MonoBehaviour
         }
         
         InitTileGrid();
+        GenerateNewLevel(0.2f, 0.5f);//added
         PopulateNeighboursAll();//order shouldnt matter but if bugs could check
         PopulateNeighboursCross();
     }

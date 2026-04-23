@@ -22,7 +22,9 @@ public class UI : MonoBehaviour
     [SerializeField] bool testDijkstraCROSS;
     [SerializeField] bool testAstarCROSS;
 
+    [Range(0,1)]
     [SerializeField] float wallchance;
+    [Range(0, 1)]
     [SerializeField] float slowchance;
     [SerializeField] int runs;
     /*public struct Results
