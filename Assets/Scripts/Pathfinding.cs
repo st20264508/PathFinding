@@ -432,6 +432,72 @@ public class Pathfinding : MonoBehaviour
         return path.ToList();
     }
 
+    public Results DijkstraAlgorithmCROSSTEST(Node start, Node end)
+    {
+        Results results = new Results();
+        int count = 0;
+        grid.frontierList.Clear();
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+        PriorityQueue<Node> frontier = new PriorityQueue<Node>(); //class taken from C# .net
+        Dictionary<Node, int> costToTile = new Dictionary<Node, int>();
+
+        frontier.Enqueue(start, 0);
+        costToTile[start] = 0;
+
+        while (frontier.Count > 0)
+        {
+            Node current = frontier.Dequeue();
+            if (current == end)
+            {
+                break;
+            }
+
+            foreach (Node neighbour in current.neighboursCross)
+            {
+                int newCost = costToTile[current] + neighbour.cost + 1; //+1 due to removal of base cost for other algorithms fixes bugged path
+                if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
+                {
+                    if (neighbour.walkable)
+                    {
+                        if (grid.showfrontier)
+                        {
+                            grid.frontierList.Add(neighbour);
+                        }
+                        costToTile[neighbour] = newCost;
+                        frontier.Enqueue(neighbour, newCost);
+                        neighbour.parent = current;
+                    }
+                }
+            }
+            count++;
+        }
+
+        if (!costToTile.ContainsKey(end))
+        {
+            Debug.Log("Path not found - DijkstraAlgorithmCROSS");
+            return results;
+        }
+        sw.Stop();
+
+        Queue<Node> path = new Queue<Node>();
+        Node currentNode = end;
+
+        while (currentNode != start)
+        {
+            currentNode = currentNode.parent;
+            path.Enqueue(currentNode);
+        }
+
+
+        Debug.Log("Time to DijkstraAlgorithmCROSS(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+        Debug.Log("While loop iterations: " + count);
+        results.path = path.ToList();
+        results.time = sw.ElapsedMilliseconds;
+        results.iterations = count;
+        return results;
+    }
+
     public List<Node> DijkstraAlgorithm(Node start, Node end)
     {
         grid.frontierList.Clear();
@@ -866,7 +932,7 @@ public class Pathfinding : MonoBehaviour
 
             foreach (Node neighbour in current.neighboursCross)
             {
-                int newCost = costToTile[current] + neighbour.cost;
+                int newCost = costToTile[current] + neighbour.cost /*+ DistanceBetweenNodes(current, neighbour);*/ + (ManhattanDistance(current, neighbour) * 10); //added + manhattan
                 if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
                 {
                     if (neighbour.walkable)
@@ -876,7 +942,7 @@ public class Pathfinding : MonoBehaviour
                             grid.frontierList.Add(neighbour);
                         }
                         costToTile[neighbour] = newCost;
-                        int priority = newCost + (ManhattanDistance(end, neighbour) * 10);
+                        int priority = newCost + (ManhattanDistance(end, neighbour) * 10); //removed * 10
                         frontier.Enqueue(neighbour, priority);
                         neighbour.parent = current;
                     }
@@ -904,7 +970,75 @@ public class Pathfinding : MonoBehaviour
 
         Debug.Log("Time to AstarAlgorithmCross(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
         Debug.Log("While loop iterations: " + count);
+
         return path.ToList();
+    }
+
+    public Results AstarAlgorithmCrossTEST(Node start, Node end)
+    {
+        Results results = new Results();
+        int count = 0;
+        grid.frontierList.Clear();
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+        PriorityQueue<Node> frontier = new PriorityQueue<Node>(); //class taken from C# .net
+        Dictionary<Node, int> costToTile = new Dictionary<Node, int>();
+
+        frontier.Enqueue(start, 0);
+        costToTile[start] = 0;
+
+        while (frontier.Count > 0)
+        {
+            Node current = frontier.Dequeue();
+            if (current == end)
+            {
+                break;
+            }
+
+            foreach (Node neighbour in current.neighboursCross)
+            {
+                int newCost = costToTile[current] + neighbour.cost /*+ DistanceBetweenNodes(current, neighbour);*/ + (ManhattanDistance(current, neighbour)*10); //added + manhattan
+                if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
+                {
+                    if (neighbour.walkable)
+                    {
+                        if (grid.showfrontier)
+                        {
+                            grid.frontierList.Add(neighbour);
+                        }
+                        costToTile[neighbour] = newCost;
+                        int priority = newCost + (ManhattanDistance(end, neighbour) * 10); //removed * 10
+                        frontier.Enqueue(neighbour, priority);
+                        neighbour.parent = current;
+                    }
+                }
+            }
+            count++;
+        }
+
+        if (!costToTile.ContainsKey(end))
+        {
+            Debug.Log("Path not found - AstarAlgorithmCross");
+            return results;
+        }
+        sw.Stop();
+
+        Queue<Node> path = new Queue<Node>();
+        Node currentNode = end;
+
+        while (currentNode != start)
+        {
+            currentNode = currentNode.parent;
+            path.Enqueue(currentNode);
+        }
+
+
+        Debug.Log("Time to AstarAlgorithmCross(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+        Debug.Log("While loop iterations: " + count);
+        results.path = path.ToList();
+        results.time = sw.ElapsedMilliseconds;
+        results.iterations = count;
+        return results;
     }
 
     public List<Node> DepthFirstSearchAlgorithm(Node start, Node end)

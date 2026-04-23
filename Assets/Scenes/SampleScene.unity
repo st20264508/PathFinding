@@ -648,9 +648,14 @@ MonoBehaviour:
   pathfinder: {fileID: 2005837050}
   testDFS: 0
   testBFS: 0
-  testGBFS: 1
+  testGBFS: 0
   testDijkstra: 0
   testAstar: 0
+  testDijkstraCROSS: 1
+  testAstarCROSS: 1
+  wallchance: 0
+  slowchance: 0
+  runs: 0
 --- !u!1 &2005837048
 GameObject:
   m_ObjectHideFlags: 0

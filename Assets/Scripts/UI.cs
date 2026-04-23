@@ -19,6 +19,12 @@ public class UI : MonoBehaviour
     [SerializeField] bool testGBFS;
     [SerializeField] bool testDijkstra;
     [SerializeField] bool testAstar;
+    [SerializeField] bool testDijkstraCROSS;
+    [SerializeField] bool testAstarCROSS;
+
+    [SerializeField] float wallchance;
+    [SerializeField] float slowchance;
+    [SerializeField] int runs;
     /*public struct Results
     {
         public List<Node> path;
@@ -116,7 +122,7 @@ public class UI : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             //grid.GenerateNewLevel(0.2f, 0.5f);
-            TestAlgorithms(0.2f, 0.4f, 10);
+            TestAlgorithms(wallchance, slowchance, runs);
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -446,6 +452,22 @@ public class UI : MonoBehaviour
 
     }
 
+    public Pathfinding.Results RunDijkstraCROSSTEST()
+    {
+        if (grid.startNode != null && grid.endNode != null)
+        {
+            results = pathfinder.DijkstraAlgorithmCROSSTEST(grid.startNode, grid.endNode);
+            grid.path = results.path;
+            if (grid.path != null)
+            {
+                results.pathLength = results.path.Count;
+                results.pathCost = CalculatePathCost();
+                grid.ShowPathAndFrontier(); //?
+            }
+        }
+        return results;
+    }
+
     public void RunDijkstra()
     {
         if (grid.startNode != null && grid.endNode != null)
@@ -610,6 +632,22 @@ public class UI : MonoBehaviour
         }
     }
 
+    public Pathfinding.Results RunAstarCrossTEST()
+    {
+        if (grid.startNode != null && grid.endNode != null)
+        {
+            results = pathfinder.AstarAlgorithmCrossTEST(grid.startNode, grid.endNode);
+            grid.path = results.path;
+            if (grid.path != null)
+            {
+                results.pathLength = results.path.Count;
+                results.pathCost = CalculatePathCost();
+                grid.ShowPathAndFrontier();
+            }
+        }
+        return results;
+    }
+
     public void RunAstarFiltered2()
     {
         if (grid.startNode != null && grid.endNode != null)
@@ -693,7 +731,9 @@ public class UI : MonoBehaviour
         Pathfinding.Results GBFSResults = new Pathfinding.Results();
         Pathfinding.Results DijkstraResults = new Pathfinding.Results();
         Pathfinding.Results AStarResults = new Pathfinding.Results();
-        
+        Pathfinding.Results DijkstraResultsCROSS = new Pathfinding.Results();
+        Pathfinding.Results AStarResultsCROSS = new Pathfinding.Results();
+
         //int iterations = 10;
 
         /*List<Node> path = new List<Node>();
@@ -744,7 +784,16 @@ public class UI : MonoBehaviour
                     var tempresults = RunAstarFilteredTEST();
                     AStarResults = pathfinder.IncrementResult(AStarResults, tempresults);
                 }
-
+                if (testDijkstraCROSS)
+                {
+                    var tempresults = RunDijkstraCROSSTEST();
+                    DijkstraResultsCROSS = pathfinder.IncrementResult(DijkstraResultsCROSS, tempresults);
+                }
+                if (testAstarCROSS)
+                {
+                    var tempresults = RunAstarCrossTEST();
+                    AStarResultsCROSS = pathfinder.IncrementResult(AStarResultsCROSS, tempresults);
+                }
                 /*results.pathLength += tempresults.pathLength;
                 results.pathCost += tempresults.pathCost;
                 results.iterations += tempresults.iterations;
@@ -789,7 +838,16 @@ public class UI : MonoBehaviour
             Debug.Log("Result Astar totals: " + " cost= " + AStarResults.pathCost + " length= " + AStarResults.pathLength + " iterations= " + AStarResults.iterations + " time= " + AStarResults.time);
             Debug.Log("Result Astar Average: " + " cost= " + AStarResults.pathCost / runs + " length= " + AStarResults.pathLength / runs + " iterations= " + AStarResults.iterations / runs + " time= " + (float)AStarResults.time / runsfloat);
         }
-
+        if (testDijkstraCROSS)
+        {
+            Debug.Log("Result DijkstraCROSS totals: " + " cost= " + DijkstraResultsCROSS.pathCost + " length= " + DijkstraResultsCROSS.pathLength + " iterations= " + DijkstraResultsCROSS.iterations + " time= " + DijkstraResultsCROSS.time);
+            Debug.Log("Result DijkstraCROSS Average: " + " cost= " + DijkstraResultsCROSS.pathCost / runs + " length= " + DijkstraResultsCROSS.pathLength / runs + " iterations= " + DijkstraResultsCROSS.iterations / runs + " time= " + (float)DijkstraResultsCROSS.time / runsfloat);
+        }
+        if (testAstarCROSS)
+        {
+            Debug.Log("Result AstarCROSS totals: " + " cost= " + AStarResultsCROSS.pathCost + " length= " + AStarResultsCROSS.pathLength + " iterations= " + AStarResultsCROSS.iterations + " time= " + AStarResultsCROSS.time);
+            Debug.Log("Result AstarCROSS Average: " + " cost= " + AStarResultsCROSS.pathCost / runs + " length= " + AStarResultsCROSS.pathLength / runs + " iterations= " + AStarResultsCROSS.iterations / runs + " time= " + (float)AStarResultsCROSS.time / runsfloat);
+        }
         //Debug.Log("Astar time TEST " + (float)AStarResults.time / runsfloat);
 
         grid.GenerateNewLevel(wallchance, slowchance);

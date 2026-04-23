@@ -307,7 +307,7 @@ public class Grid : MonoBehaviour
         }*/
 
         
-        if (path != null)
+        if (path != null || path.Count == 0)
         {
             foreach (Node n in path)
             {
@@ -319,7 +319,7 @@ public class Grid : MonoBehaviour
             }
         }
         
-        if (frontierList != null)
+        if (frontierList != null || frontierList.Count ==0)
         {
             foreach (Node n in frontierList)
             {
