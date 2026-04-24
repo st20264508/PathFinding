@@ -651,11 +651,11 @@ MonoBehaviour:
   pathfinder: {fileID: 2005837050}
   testDFS: 0
   testBFS: 0
-  testGBFS: 0
+  testGBFS: 1
   testDijkstra: 0
   testAstar: 0
-  testDijkstraCROSS: 1
-  testAstarCROSS: 1
+  testDijkstraCROSS: 0
+  testAstarCROSS: 0
   wallchance: 0.3
   slowchance: 0
   runs: 5

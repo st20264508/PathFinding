@@ -49,7 +49,7 @@ public class Pathfinding : MonoBehaviour
         Stopwatch sw = new Stopwatch();
         sw.Start();
         Queue<Node> frontier = new Queue<Node>();
-        List<Node> visited = new List<Node>();
+        HashSet<Node> visited = new HashSet<Node>();
 
         frontier.Enqueue(end);
 
@@ -111,7 +111,8 @@ public class Pathfinding : MonoBehaviour
         Stopwatch sw = new Stopwatch();
         sw.Start();
         Queue<Node> frontier = new Queue<Node>();
-        List<Node> visited = new List<Node>();
+        //List<Node> visited = new List<Node>();
+        HashSet<Node> visited = new HashSet<Node>();
 
         frontier.Enqueue(start);
         while (frontier.Count > 0)
@@ -174,7 +175,7 @@ public class Pathfinding : MonoBehaviour
         Stopwatch sw = new Stopwatch();
         sw.Start();
         Queue<Node> frontier = new Queue<Node>();
-        List<Node> visited = new List<Node>();
+        HashSet<Node> visited = new HashSet<Node>();
         
 
         frontier.Enqueue(start);
@@ -243,8 +244,8 @@ public class Pathfinding : MonoBehaviour
         sw.Start();
         PriorityQueue<Node> frontier = new PriorityQueue<Node>(); //class taken from C# .net
         //Dictionary<Node, int> costToTile = new Dictionary<Node, int>();
-        List<Node> visited = new List<Node>();
-
+        //List<Node> visited = new List<Node>();
+        HashSet<Node> visited = new HashSet<Node>();
         frontier.Enqueue(start, 0);
         
 
@@ -309,7 +310,8 @@ public class Pathfinding : MonoBehaviour
         sw.Start();
         PriorityQueue<Node> frontier = new PriorityQueue<Node>(); //class taken from C# .net
         //Dictionary<Node, int> costToTile = new Dictionary<Node, int>();
-        List<Node> visited = new List<Node>();
+        //List<Node> visited = new List<Node>();
+        HashSet<Node> visited = new HashSet<Node>();
 
         frontier.Enqueue(start, 0);
 
@@ -367,6 +369,9 @@ public class Pathfinding : MonoBehaviour
         results.time = sw.ElapsedMilliseconds;
         results.iterations = count;
 
+        
+        //visited = null;
+        //frontier = null;
         return results;
     }
 
