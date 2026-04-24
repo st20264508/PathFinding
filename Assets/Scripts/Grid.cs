@@ -701,7 +701,7 @@ public class Grid : MonoBehaviour
             }
 
         }
-        Debug.Log("new start " + startNode.x + startNode.y + " new end " + endNode.x + endNode.y);
+        //Debug.Log("new start " + startNode.x + startNode.y + " new end " + endNode.x + endNode.y);
         //UpdateTiles(); //waste of resource to call where this is used
     }
 }

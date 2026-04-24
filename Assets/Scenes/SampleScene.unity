@@ -176,7 +176,7 @@ MonoBehaviour:
   drawGizmos: 1
   randomWallsOnStart: 1
   generateLevelOnStart: 1
-  showfrontier: 0
+  showfrontier: 1
   nodeDiameter: 0
   gridSizeX: 0
   gridSizeY: 0
@@ -184,7 +184,7 @@ MonoBehaviour:
   TileList: []
   frontierObjects: []
   pathObjects: []
-  wallchanceonstart: 0
+  wallchanceonstart: 0.2
   slowchanceonstart: 0
 --- !u!1 &330585543
 GameObject:
@@ -651,14 +651,14 @@ MonoBehaviour:
   pathfinder: {fileID: 2005837050}
   testDFS: 0
   testBFS: 0
-  testGBFS: 1
+  testGBFS: 0
   testDijkstra: 0
   testAstar: 0
-  testDijkstraCROSS: 0
-  testAstarCROSS: 0
-  wallchance: 0.3
-  slowchance: 0
-  runs: 5
+  testDijkstraCROSS: 1
+  testAstarCROSS: 1
+  wallchance: 0.2
+  slowchance: 0.5
+  runs: 20
 --- !u!1 &2005837048
 GameObject:
   m_ObjectHideFlags: 0

@@ -127,9 +127,9 @@ public class Pathfinding : MonoBehaviour
 
             foreach (Node neighbour in current.neighboursCross)
             {
-                if (!visited.Contains(neighbour) && !frontier.Contains(neighbour))
+                if (neighbour.walkable)
                 {
-                    if (neighbour.walkable)
+                    if (!visited.Contains(neighbour) && !frontier.Contains(neighbour))
                     {
                         if (grid.showfrontier)
                         {
@@ -176,7 +176,7 @@ public class Pathfinding : MonoBehaviour
         sw.Start();
         Queue<Node> frontier = new Queue<Node>();
         HashSet<Node> visited = new HashSet<Node>();
-        
+        //Dictionary<Node, int> visited = new Dictionary<Node, int>();
 
         frontier.Enqueue(start);
         while (frontier.Count > 0)
@@ -191,9 +191,9 @@ public class Pathfinding : MonoBehaviour
 
             foreach (Node neighbour in current.neighboursCross)
             {
-                if (!visited.Contains(neighbour) && !frontier.Contains(neighbour))
+                if (neighbour.walkable)
                 {
-                    if (neighbour.walkable)
+                    if (!visited.Contains(neighbour) && !frontier.Contains(neighbour))
                     {
                         /*if (grid.showfrontier)
                         {
@@ -227,8 +227,8 @@ public class Pathfinding : MonoBehaviour
             path.Enqueue(currentNode);
         }
 
-        Debug.Log("Time to BFSAlgorithmCROSSTEST(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
-        Debug.Log("While loop iterations: " + count);
+        //Debug.Log("Time to BFSAlgorithmCROSSTEST(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+        //Debug.Log("While loop iterations: " + count);
         results.path = path.ToList();
         results.time = sw.ElapsedMilliseconds;
         results.iterations = count;
@@ -261,9 +261,9 @@ public class Pathfinding : MonoBehaviour
             foreach (Node neighbour in current.neighboursCross)
             {
                 //int newCost = costToTile[current] + neighbour.cost;
-                if (!visited.Contains(neighbour))
+                if (neighbour.walkable)
                 {
-                    if (neighbour.walkable)
+                    if (!visited.Contains(neighbour))
                     {
                         if (grid.showfrontier)
                         {
@@ -328,9 +328,9 @@ public class Pathfinding : MonoBehaviour
             foreach (Node neighbour in current.neighboursCross)
             {
                 //int newCost = costToTile[current] + neighbour.cost;
-                if (!visited.Contains(neighbour))
+                if (neighbour.walkable)
                 {
-                    if (neighbour.walkable)
+                    if (!visited.Contains(neighbour))
                     {
                         /*if (grid.showfrontier)
                         {
@@ -363,8 +363,8 @@ public class Pathfinding : MonoBehaviour
         }
 
 
-        Debug.Log("Time to GreedyBFSAlgorithm(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
-        Debug.Log("While loop iterations: " + count);
+        //Debug.Log("Time to GreedyBFSAlgorithm(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+        //Debug.Log("While loop iterations: " + count);
         results.path = path.ToList();
         results.time = sw.ElapsedMilliseconds;
         results.iterations = count;
@@ -397,10 +397,10 @@ public class Pathfinding : MonoBehaviour
 
             foreach (Node neighbour in current.neighboursCross)
             {
-                int newCost = costToTile[current] + neighbour.cost + 10; //+ 1; //+10 due to removal of base cost for other algorithms fixes bugged path
-                if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
+                if (neighbour.walkable)
                 {
-                    if (neighbour.walkable)
+                    int newCost = costToTile[current] + neighbour.cost + 10; //+ 1; //+10 due to removal of base cost for other algorithms fixes bugged path
+                    if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
                     {
                         if (grid.showfrontier)
                         {
@@ -411,6 +411,7 @@ public class Pathfinding : MonoBehaviour
                         neighbour.parent = current;
                     }
                 }
+                
             }   
             count++;
         }
@@ -460,10 +461,10 @@ public class Pathfinding : MonoBehaviour
 
             foreach (Node neighbour in current.neighboursCross)
             {
-                int newCost = costToTile[current] + neighbour.cost + 10; //+10 due to removal of base cost for other algorithms fixes bugged path
-                if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
+                if (neighbour.walkable)
                 {
-                    if (neighbour.walkable)
+                    int newCost = costToTile[current] + neighbour.cost + 10; //+ 1; //+10 due to removal of base cost for other algorithms fixes bugged path
+                    if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
                     {
                         /*if (grid.showfrontier)
                         {
@@ -495,8 +496,8 @@ public class Pathfinding : MonoBehaviour
         }
 
 
-        Debug.Log("Time to DijkstraAlgorithmCROSS(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
-        Debug.Log("While loop iterations: " + count);
+        //Debug.Log("Time to DijkstraAlgorithmCROSS(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+        //Debug.Log("While loop iterations: " + count);
         results.path = path.ToList();
         results.time = sw.ElapsedMilliseconds;
         results.iterations = count;
@@ -525,10 +526,10 @@ public class Pathfinding : MonoBehaviour
 
             foreach (Node neighbour in current.neighboursAll)
             {
-                int newCost = costToTile[current] + neighbour.cost + DistanceBetweenNodes(current, neighbour);
-                if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
+                if (neighbour.walkable)
                 {
-                    if (neighbour.walkable)
+                    int newCost = costToTile[current] + neighbour.cost + DistanceBetweenNodes(current, neighbour); 
+                    if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
                     {
                         if (grid.showfrontier)
                         {
@@ -590,10 +591,10 @@ public class Pathfinding : MonoBehaviour
 
             foreach (Node neighbour in current.neighboursDiagSafe)
             {
-                int newCost = costToTile[current] + neighbour.cost + DistanceBetweenNodes(current, neighbour);
-                if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
+                if (neighbour.walkable)
                 {
-                    if (neighbour.walkable)
+                    int newCost = costToTile[current] + neighbour.cost + DistanceBetweenNodes(current, neighbour);
+                    if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
                     {
                         if (grid.showfrontier)
                         {
@@ -602,7 +603,6 @@ public class Pathfinding : MonoBehaviour
                         costToTile[neighbour] = newCost;
                         frontier.Enqueue(neighbour, newCost);
                         neighbour.parent = current;
-                        
                     }
                 }
             }
@@ -657,10 +657,10 @@ public class Pathfinding : MonoBehaviour
 
             foreach (Node neighbour in current.neighboursDiagSafe)
             {
-                int newCost = costToTile[current] + neighbour.cost + DistanceBetweenNodes(current, neighbour);
-                if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
+                if (neighbour.walkable)
                 {
-                    if (neighbour.walkable)
+                    int newCost = costToTile[current] + neighbour.cost + DistanceBetweenNodes(current, neighbour);
+                    if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
                     {
                         /*if (grid.showfrontier)
                         {
@@ -669,7 +669,6 @@ public class Pathfinding : MonoBehaviour
                         costToTile[neighbour] = newCost;
                         frontier.Enqueue(neighbour, newCost);
                         neighbour.parent = current;
-
                     }
                 }
             }
@@ -693,8 +692,8 @@ public class Pathfinding : MonoBehaviour
         }
 
 
-        Debug.Log("Time to DijkstraAlgorithmFiltered(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
-        Debug.Log("While loop iterations " + count);
+        //Debug.Log("Time to DijkstraAlgorithmFiltered(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+        //Debug.Log("While loop iterations " + count);
 
         results.path = path.ToList();
         results.time = sw.ElapsedMilliseconds;
@@ -835,8 +834,8 @@ public class Pathfinding : MonoBehaviour
         }
 
 
-        Debug.Log("Time to AstarAlgorithmFilteredTEST(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
-        Debug.Log("While loop iterations: " + count);
+        //Debug.Log("Time to AstarAlgorithmFilteredTEST(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+        //Debug.Log("While loop iterations: " + count);
 
         results.path = path.ToList();
         results.time = sw.ElapsedMilliseconds;
@@ -937,11 +936,15 @@ public class Pathfinding : MonoBehaviour
 
             foreach (Node neighbour in current.neighboursCross)
             {
-                int newCost = costToTile[current] + neighbour.cost /*+ DistanceBetweenNodes(current, neighbour);*/ + (ManhattanDistance(current, neighbour) * 10); //added + manhattan
-                if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
+                if (neighbour.walkable)
                 {
-                    if (neighbour.walkable)
+                    /*int md = ManhattanDistance(current, neighbour) * 10;
+                    Debug.Log("md = " + md);*/
+                    int newCost = costToTile[current] + neighbour.cost /*+ DistanceBetweenNodes(current, neighbour);*/ /*+ (ManhattanDistance(current, neighbour) * 10);*/ + 10; //added + manhattan, neighbours cross md will always be 10?
+                    if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
                     {
+
+
                         if (grid.showfrontier)
                         {
                             grid.frontierList.Add(neighbour);
@@ -950,8 +953,10 @@ public class Pathfinding : MonoBehaviour
                         int priority = newCost + (ManhattanDistance(end, neighbour) * 10); //removed * 10
                         frontier.Enqueue(neighbour, priority);
                         neighbour.parent = current;
+
                     }
                 }
+                
             }
             count++;
         }
@@ -1002,10 +1007,11 @@ public class Pathfinding : MonoBehaviour
 
             foreach (Node neighbour in current.neighboursCross)
             {
-                int newCost = costToTile[current] + neighbour.cost /*+ DistanceBetweenNodes(current, neighbour);*/ + (ManhattanDistance(current, neighbour)*10); //added + manhattan
-                if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
+                if (neighbour.walkable)
                 {
-                    if (neighbour.walkable)
+
+                    int newCost = costToTile[current] + neighbour.cost /*+ DistanceBetweenNodes(current, neighbour);*/ /*+ (ManhattanDistance(current, neighbour) * 10);*/ + 10; //added + manhattan, neighbours cross md will always be 10?
+                    if (!costToTile.ContainsKey(neighbour) || newCost < costToTile[neighbour])
                     {
                         /*if (grid.showfrontier)
                         {
@@ -1015,6 +1021,7 @@ public class Pathfinding : MonoBehaviour
                         int priority = newCost + (ManhattanDistance(end, neighbour) * 10); //removed * 10
                         frontier.Enqueue(neighbour, priority);
                         neighbour.parent = current;
+
                     }
                 }
             }
@@ -1038,8 +1045,8 @@ public class Pathfinding : MonoBehaviour
         }
 
 
-        Debug.Log("Time to AstarAlgorithmCross(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
-        Debug.Log("While loop iterations: " + count);
+        //Debug.Log("Time to AstarAlgorithmCross(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+        //Debug.Log("While loop iterations: " + count);
         results.path = path.ToList();
         results.time = sw.ElapsedMilliseconds;
         results.iterations = count;
@@ -1165,8 +1172,8 @@ public class Pathfinding : MonoBehaviour
             path.Enqueue(currentNode);
         }
 
-        Debug.Log("Time to DepthFirstSearchAlgorithm(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
-        Debug.Log("While loop iterations: " + count);
+        //Debug.Log("Time to DepthFirstSearchAlgorithm(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+        //Debug.Log("While loop iterations: " + count);
         results.path = path.ToList();
         results.time = sw.ElapsedMilliseconds;
         results.iterations = count;
@@ -1197,7 +1204,7 @@ public class Pathfinding : MonoBehaviour
     int ManhattanDistance(Node nodeA, Node nodeB)
     {
         int distance = Mathf.Abs(nodeA.x - nodeB.x) + Mathf.Abs(nodeA.y - nodeB.y);
-
+        //Debug.Log("distance = " + distance);
         return distance; 
     }
 
