@@ -465,10 +465,10 @@ public class Pathfinding : MonoBehaviour
                 {
                     if (neighbour.walkable)
                     {
-                        if (grid.showfrontier)
+                        /*if (grid.showfrontier)
                         {
                             grid.frontierList.Add(neighbour);
-                        }
+                        }*/
                         costToTile[neighbour] = newCost;
                         frontier.Enqueue(neighbour, newCost);
                         neighbour.parent = current;
@@ -1007,10 +1007,10 @@ public class Pathfinding : MonoBehaviour
                 {
                     if (neighbour.walkable)
                     {
-                        if (grid.showfrontier)
+                        /*if (grid.showfrontier)
                         {
                             grid.frontierList.Add(neighbour);
-                        }
+                        }*/
                         costToTile[neighbour] = newCost;
                         int priority = newCost + (ManhattanDistance(end, neighbour) * 10); //removed * 10
                         frontier.Enqueue(neighbour, priority);
