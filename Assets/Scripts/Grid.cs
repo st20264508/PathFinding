@@ -664,7 +664,7 @@ public class Grid : MonoBehaviour
             }
 
         }
-        UpdateTiles();
+        //UpdateTiles();
     }
 
     public void GenerateNewStartandEnd()

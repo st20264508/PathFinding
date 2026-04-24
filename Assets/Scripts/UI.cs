@@ -856,6 +856,7 @@ public class UI : MonoBehaviour
         sw.Stop();
         Debug.Log("TestAlgorithms time to complete = " + sw.ElapsedMilliseconds + "ms");
         Debug.Log("Test = " + test);
+        grid.UpdateTiles();
         //generate two ints within grid size, if int !walkable or is end/start generate a new one else set start node end node x,y
     }
 
@@ -1008,6 +1009,7 @@ public class UI : MonoBehaviour
             {
                 pathCost += node.cost;
             }
+            //Debug.Log(pathCost);
         }
         return pathCost;
     }
