@@ -268,7 +268,7 @@ public class Grid : MonoBehaviour
             }
         }
         sw.Stop();
-        Debug.Log("Time to UpdateTiles(): " + sw.ElapsedMilliseconds + "ms");
+        //Debug.Log("Time to UpdateTiles(): " + sw.ElapsedMilliseconds + "ms");
     }
 
     public void ShowPathAndFrontier()

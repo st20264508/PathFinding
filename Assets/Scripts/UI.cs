@@ -818,37 +818,37 @@ public class UI : MonoBehaviour
         if (testDFS)
         {
             Debug.Log("Result DFS totals: " + " cost= " + DFSResults.pathCost + " length= " + DFSResults.pathLength + " iterations= " + DFSResults.iterations + " time= " + DFSResults.time);
-            Debug.Log("Result DFS Average: " + " cost= " + DFSResults.pathCost / runs + " length= " + DFSResults.pathLength / runs + " iterations= " + DFSResults.iterations / runs + " time= " + (float)DFSResults.time / runsfloat);
+            Debug.Log("Result DFS Average: " + " cost= " + (float)DFSResults.pathCost / runsfloat + " length= " + (float)DFSResults.pathLength / runsfloat + " iterations= " + (float)DFSResults.iterations / runsfloat + " time= " + (float)DFSResults.time / runsfloat);
         }
         if (testBFS)
         {
             Debug.Log("Result BFS totals: " + " cost= " + BFSResults.pathCost + " length= " + BFSResults.pathLength + " iterations= " + BFSResults.iterations + " time= " + BFSResults.time);
-            Debug.Log("Result BFS Average: " + " cost= " + BFSResults.pathCost / runs + " length= " + BFSResults.pathLength / runs + " iterations= " + BFSResults.iterations / runs + " time= " + (float)BFSResults.time / runsfloat);
+            Debug.Log("Result BFS Average: " + " cost= " + (float)BFSResults.pathCost / runsfloat + " length= " + (float)BFSResults.pathLength / runsfloat + " iterations= " + (float)BFSResults.iterations / runsfloat + " time= " + (float)BFSResults.time / runsfloat);
         }
         if (testGBFS)
         {
             Debug.Log("Result GBFS totals: " + " cost= " + GBFSResults.pathCost + " length= " + GBFSResults.pathLength + " iterations= " + GBFSResults.iterations + " time= " + GBFSResults.time);
-            Debug.Log("Result GBFS Average: " + " cost= " + GBFSResults.pathCost / runs + " length= " + GBFSResults.pathLength / runs + " iterations= " + GBFSResults.iterations / runs + " time= " + (float)GBFSResults.time / runsfloat);
+            Debug.Log("Result GBFS Average: " + " cost= " + (float)GBFSResults.pathCost / runsfloat + " length= " + (float)GBFSResults.pathLength / runsfloat + " iterations= " + (float)GBFSResults.iterations / runsfloat + " time= " + (float)GBFSResults.time / runsfloat);
         }
         if (testDijkstra)
         {
             Debug.Log("Result Dijkstra totals: " + " cost= " + DijkstraResults.pathCost + " length= " + DijkstraResults.pathLength + " iterations= " + DijkstraResults.iterations + " time= " + DijkstraResults.time);
-            Debug.Log("Result Dijkstra Average: " + " cost= " + DijkstraResults.pathCost / runs + " length= " + DijkstraResults.pathLength / runs + " iterations= " + DijkstraResults.iterations / runs + " time= " + (float)DijkstraResults.time / runsfloat);
+            Debug.Log("Result Dijkstra Average: " + " cost= " + (float)DijkstraResults.pathCost / runsfloat + " length= " + (float)DijkstraResults.pathLength / runsfloat + " iterations= " + (float)DijkstraResults.iterations / runsfloat + " time= " + (float)DijkstraResults.time / runsfloat);
         }
         if (testAstar)
         {
             Debug.Log("Result Astar totals: " + " cost= " + AStarResults.pathCost + " length= " + AStarResults.pathLength + " iterations= " + AStarResults.iterations + " time= " + AStarResults.time);
-            Debug.Log("Result Astar Average: " + " cost= " + AStarResults.pathCost / runs + " length= " + AStarResults.pathLength / runs + " iterations= " + AStarResults.iterations / runs + " time= " + (float)AStarResults.time / runsfloat);
+            Debug.Log("Result Astar Average: " + " cost= " + (float)AStarResults.pathCost / runsfloat + " length= " + (float)AStarResults.pathLength / runsfloat + " iterations= " + (float)AStarResults.iterations / runsfloat + " time= " + (float)AStarResults.time / runsfloat);
         }
         if (testDijkstraCROSS)
         {
             Debug.Log("Result DijkstraCROSS totals: " + " cost= " + DijkstraResultsCROSS.pathCost + " length= " + DijkstraResultsCROSS.pathLength + " iterations= " + DijkstraResultsCROSS.iterations + " time= " + DijkstraResultsCROSS.time);
-            Debug.Log("Result DijkstraCROSS Average: " + " cost= " + DijkstraResultsCROSS.pathCost / runs + " length= " + DijkstraResultsCROSS.pathLength / runs + " iterations= " + DijkstraResultsCROSS.iterations / runs + " time= " + (float)DijkstraResultsCROSS.time / runsfloat);
+            Debug.Log("Result DijkstraCROSS Average: " + " cost= " + (float)DijkstraResultsCROSS.pathCost / runsfloat + " length= " + (float)DijkstraResultsCROSS.pathLength / runsfloat + " iterations= " + (float)DijkstraResultsCROSS.iterations / runsfloat + " time= " + (float)DijkstraResultsCROSS.time / runsfloat);
         }
         if (testAstarCROSS)
         {
             Debug.Log("Result AstarCROSS totals: " + " cost= " + AStarResultsCROSS.pathCost + " length= " + AStarResultsCROSS.pathLength + " iterations= " + AStarResultsCROSS.iterations + " time= " + AStarResultsCROSS.time);
-            Debug.Log("Result AstarCROSS Average: " + " cost= " + AStarResultsCROSS.pathCost / runs + " length= " + AStarResultsCROSS.pathLength / runs + " iterations= " + AStarResultsCROSS.iterations / runs + " time= " + (float)AStarResultsCROSS.time / runsfloat);
+            Debug.Log("Result AstarCROSS Average: " + " cost= " + (float)AStarResultsCROSS.pathCost / runsfloat + " length= " + (float)AStarResultsCROSS.pathLength / runsfloat + " iterations= " + (float)AStarResultsCROSS.iterations / runsfloat + " time= " + (float)AStarResultsCROSS.time / runsfloat);
         }
         //Debug.Log("Astar time TEST " + (float)AStarResults.time / runsfloat);
 
