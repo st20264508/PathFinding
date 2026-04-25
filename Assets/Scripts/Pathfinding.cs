@@ -185,7 +185,7 @@ public class Pathfinding : MonoBehaviour
             if (current == end)
             {
                 visited.Add(current);
-                Debug.Log("broke");
+                //Debug.Log("broke");
                 break;
             }
 

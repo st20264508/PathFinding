@@ -475,8 +475,8 @@ public class Grid : MonoBehaviour
     public void PopulateNeighboursDiagExcept()
     {
         //List<Node> filteredlist = new List<Node> ();
-        Stopwatch sw = new Stopwatch();
-        sw.Start();
+        //Stopwatch sw = new Stopwatch();
+        //sw.Start();
 
         foreach (Node cur in grid)
         {
@@ -531,14 +531,14 @@ public class Grid : MonoBehaviour
                 }
             }
         }
-        sw.Stop();
-        Debug.Log("Time to PopulateNeighboursDiagExcept(): " + sw.ElapsedMilliseconds + "ms");
+        //sw.Stop();
+        //Debug.Log("Time to PopulateNeighboursDiagExcept(): " + sw.ElapsedMilliseconds + "ms");
     }
 
     public void PopulateNeighboursCross() //x+1,y x-1,y x,y+1 x,y-1 //for use with unweighted due to diag, only considers N S E W
     {
-        Stopwatch sw = new Stopwatch();
-        sw.Start();
+        //Stopwatch sw = new Stopwatch();
+        //sw.Start();
 
         foreach (Node node in grid)
         {
@@ -559,8 +559,8 @@ public class Grid : MonoBehaviour
                 node.neighboursCross.Add(grid[node.x, node.y + 1]);
             }
         }
-        sw.Stop();
-        Debug.Log("Time to PopulateNeighboursCross(): " + sw.ElapsedMilliseconds + "ms");
+        //sw.Stop();
+        //Debug.Log("Time to PopulateNeighboursCross(): " + sw.ElapsedMilliseconds + "ms");
     }
 
     public void RandomWalls()
