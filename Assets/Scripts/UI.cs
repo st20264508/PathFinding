@@ -22,8 +22,8 @@ public class UI : MonoBehaviour
     public Color OnColour, OffColour;
 
     [SerializeField] Slider WallSlider, SlowSlider, RunsSlider, NodeRadiusSlider;
-    [SerializeField] TextMeshProUGUI NodeRadiusInput;
-    
+    //[SerializeField] TextMeshProUGUI NodeRadiusInput;
+    [SerializeField] TextMeshProUGUI OutputText;
 
     [Range(0,1)]
     [SerializeField] float wallchance;
@@ -38,6 +38,7 @@ public class UI : MonoBehaviour
         cam = Camera.main;
         defualtLayer = LayerMask.GetMask("Default");
         SetAllButtonColours();
+        OutputText.text = "hello";
         //OnColour = Color.green; 
         //OffColour = Color.red;
     }
@@ -630,7 +631,8 @@ public class UI : MonoBehaviour
     {
         if (grid.startNode != null && grid.endNode != null)
         {
-            grid.path = pathfinder.AstarAlgorithmCross(grid.startNode, grid.endNode);
+            results = pathfinder.AstarAlgorithmCross(grid.startNode, grid.endNode);
+            grid.path = results.path;
             if (grid.path != null)
             {
                 string result = "List contents: ";
@@ -642,6 +644,7 @@ public class UI : MonoBehaviour
                 Debug.Log("Path length in Nodes: " + grid.path.Count);
                 Debug.Log("Path cost: " + CalculatePathCost());
                 grid.ShowPathAndFrontier();
+                OutputText.text = "Pathcost: " + CalculatePathCost() + "\n" + "Path length in Nodes: " + grid.path.Count + "\n" + "Time: " + results.time + "ms" + "\n";
             }
         }
     }
@@ -686,7 +689,8 @@ public class UI : MonoBehaviour
     {
         if (grid.startNode != null && grid.endNode != null)
         {
-            grid.path = pathfinder.DepthFirstSearchAlgorithm(grid.startNode, grid.endNode);
+            results = pathfinder.DepthFirstSearchAlgorithm(grid.startNode, grid.endNode);
+            grid.path = results.path;
             if (grid.path != null)
             {
                 string result = "List contents: ";
@@ -698,6 +702,7 @@ public class UI : MonoBehaviour
                 Debug.Log("Path length in Nodes: " + grid.path.Count);
                 Debug.Log("Path cost: " + CalculatePathCost());
                 grid.ShowPathAndFrontier();
+                OutputText.text = "Pathcost: " + CalculatePathCost() + "\n" + "Path length in Nodes: " + grid.path.Count + "\n" + "Time: " + results.time + "ms" + "\n";
             }
         }
     }
@@ -1116,26 +1121,8 @@ public class UI : MonoBehaviour
 
     public void NewGridButton()
     {
-        Debug.Log("pressed");
-        /*float result;
-        if (float.TryParse(NodeRadiusInput.text, out result))
-        {
-            float newvalue = result;
-            Debug.Log("new value = " + newvalue);
-            grid.nodeRadius = newvalue;
-            grid.NewNodeGrid();
-        }
-        else
-        {
-            Debug.Log("cant parse");
-            Debug.Log("result = " + result);
-            Debug.Log("noderadius.text = " + NodeRadiusInput.text);
-        }*/
-
         grid.nodeRadius = NodeRadiusSlider.value; 
         grid.NewNodeGrid();
-        
-
     }
 
     public void FixTilesButton()
