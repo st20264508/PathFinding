@@ -408,7 +408,8 @@ public class UI : MonoBehaviour
     {
         if (grid.startNode != null && grid.endNode != null)
         {
-            grid.path = pathfinder.BFSAlgorithmCROSS(grid.startNode, grid.endNode);
+            results = pathfinder.BFSAlgorithmCROSS(grid.startNode, grid.endNode);
+            grid.path = results.path;
             if (grid.path != null)
             {
                 string result = "List contents: ";
@@ -420,9 +421,10 @@ public class UI : MonoBehaviour
                 Debug.Log("Path length in Nodes: " + grid.path.Count);
                 Debug.Log("Path cost: " + CalculatePathCost());
                 grid.ShowPathAndFrontier();
+                OutputText.text = "Pathcost: " + CalculatePathCost() + "\n" + "Path length in Nodes: " + grid.path.Count + "\n" + "Time: " + results.time + "ms" + "\n";
             }
         }
-        
+
         //grid.path = pathfinder.BFSAlgorithmCROSSTEST(grid.startNode, grid.endNode).path;
 
     }
@@ -450,7 +452,8 @@ public class UI : MonoBehaviour
     {
         if (grid.startNode != null && grid.endNode != null)
         {
-            grid.path = pathfinder.DijkstraAlgorithmCROSS(grid.startNode, grid.endNode);
+            results = pathfinder.DijkstraAlgorithmCROSS(grid.startNode, grid.endNode);
+            grid.path = results.path;
             if (grid.path != null)
             {
                 string result = "List contents: ";
@@ -462,6 +465,7 @@ public class UI : MonoBehaviour
                 Debug.Log("Path length in Nodes: " + grid.path.Count);
                 Debug.Log("Path cost: " + CalculatePathCost());
                 grid.ShowPathAndFrontier();
+                OutputText.text = "Pathcost: " + CalculatePathCost() + "\n" + "Path length in Nodes: " + grid.path.Count + "\n" + "Time: " + results.time + "ms" + "\n";
             }
         }
 
@@ -508,7 +512,8 @@ public class UI : MonoBehaviour
     {
         if (grid.startNode != null && grid.endNode != null)
         {
-            grid.path = pathfinder.DijkstraAlgorithmFiltered(grid.startNode, grid.endNode);
+            results = pathfinder.DijkstraAlgorithmFiltered(grid.startNode, grid.endNode);
+            grid.path = results.path;
             if (grid.path != null)
             {
                 string result = "List contents: ";
@@ -520,6 +525,7 @@ public class UI : MonoBehaviour
                 Debug.Log("Path length in Nodes: " + grid.path.Count);
                 Debug.Log("Path cost: " + CalculatePathCost());
                 grid.ShowPathAndFrontier();
+                OutputText.text = "Pathcost: " + CalculatePathCost() + "\n" + "Path length in Nodes: " + grid.path.Count + "\n" + "Time: " + results.time + "ms" + "\n";
             }
         }
 
@@ -1068,6 +1074,7 @@ public class UI : MonoBehaviour
         SetButtonColor(testAstarCROSSButton, testAstarCROSS);
         SetButtonColor(testDijkstraButton, testDijkstra);
         SetButtonColor(testAstarButton, testAstar);
+        SetButtonColor(FrontierButton, grid.showfrontier);
     }
 
     public void ToggleDFSButton()

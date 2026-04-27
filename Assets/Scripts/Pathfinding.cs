@@ -113,8 +113,9 @@ public class Pathfinding : MonoBehaviour
         return path.ToList();
     }
 
-    public List<Node> BFSAlgorithmCROSS(Node start, Node end)
+    public Results BFSAlgorithmCROSS(Node start, Node end)
     {
+        Results results = new Results();
         int count = 0;
         grid.frontierList.Clear();
         Stopwatch sw = new Stopwatch();
@@ -157,7 +158,7 @@ public class Pathfinding : MonoBehaviour
         if (!visited.Contains(end))
         {
             Debug.Log("Path not found - BFSAlgorithmCROSS");
-            return null;
+            return results;
         }
 
         sw.Stop();
@@ -173,7 +174,11 @@ public class Pathfinding : MonoBehaviour
 
         Debug.Log("Time to BFSAlgorithmCROSS(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
         Debug.Log("While loop iterations: " + count);
-        return path.ToList();
+        results.path = path.ToList();
+        results.time = sw.ElapsedMilliseconds;
+        results.iterations = count;
+
+        return results;
     }
 
     public Results BFSAlgorithmCROSSTEST(Node start, Node end)
@@ -389,8 +394,9 @@ public class Pathfinding : MonoBehaviour
         return results;
     }
 
-    public List<Node> DijkstraAlgorithmCROSS(Node start, Node end)
+    public Results DijkstraAlgorithmCROSS(Node start, Node end)
     {
+        Results results = new Results();
         int count = 0;
         grid.frontierList.Clear();
         Stopwatch sw = new Stopwatch();
@@ -433,7 +439,7 @@ public class Pathfinding : MonoBehaviour
         if (!costToTile.ContainsKey(end))
         {
             Debug.Log("Path not found - DijkstraAlgorithmCROSS");
-            return null;
+            return results;
         }
         sw.Stop();
 
@@ -449,7 +455,10 @@ public class Pathfinding : MonoBehaviour
         
         Debug.Log("Time to DijkstraAlgorithmCROSS(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
         Debug.Log("While loop iterations: " + count);
-        return path.ToList();
+        results.path = path.ToList();
+        results.time = sw.ElapsedMilliseconds;
+        results.iterations = count;
+        return results;
     }
 
     public Results DijkstraAlgorithmCROSSTEST(Node start, Node end)
@@ -581,8 +590,9 @@ public class Pathfinding : MonoBehaviour
         return path.ToList();
     }
 
-    public List<Node> DijkstraAlgorithmFiltered(Node start, Node end)
+    public Results DijkstraAlgorithmFiltered(Node start, Node end)
     {
+        Results results = new Results();
         grid.PopulateNeighboursDiagExcept();
         grid.frontierList.Clear();
         int count = 0;
@@ -626,7 +636,7 @@ public class Pathfinding : MonoBehaviour
         if (!costToTile.ContainsKey(end))
         {
             Debug.Log("Path not found - DijkstraAlgorithmFiltered");
-            return null;
+            return results;
         }
         sw.Stop();
 
@@ -643,7 +653,10 @@ public class Pathfinding : MonoBehaviour
         Debug.Log("Time to DijkstraAlgorithmFiltered(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
         Debug.Log("While loop iterations " + count);
 
-        return path.ToList();
+        results.path = path.ToList();
+        results.time = sw.ElapsedMilliseconds;
+        results.iterations = count;
+        return results;
     }
 
     public Results DijkstraAlgorithmFilteredTEST(Node start, Node end)

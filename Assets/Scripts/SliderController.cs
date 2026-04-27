@@ -1,5 +1,7 @@
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
+
 public class SliderController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI sliderText = null;
@@ -13,8 +15,9 @@ public class SliderController : MonoBehaviour
         if (integer)
         {
             sliderText.text = value.ToString("0");
+            
         }
-        if (multiply)
+        else if (multiply)
         {
             float localValue = value * maxSliderAmount;
             sliderText.text = localValue.ToString("0.00");
