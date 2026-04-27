@@ -98,7 +98,14 @@ public class UI : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha9))
         {
-            RunAstarFilteredTEST();
+            //RunAstarFilteredTEST();
+            grid.UpdateTiles();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            //RunAstarFilteredTEST();
+            grid.NewNodeGrid();
         }
 
         if (Input.GetKeyDown(KeyCode.Q))

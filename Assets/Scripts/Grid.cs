@@ -115,6 +115,31 @@ public class Grid : MonoBehaviour
         Debug.Log("Time to InitGrid(): " + sw.ElapsedMilliseconds + "ms");
     }
 
+    public void NewNodeGrid()
+    {
+        startNode = null;
+        endNode = null;
+        nodeDiameter = nodeRadius * 2;
+        gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
+        gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
+        bottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
+        grid = null;
+        grid = new Node[gridSizeX, gridSizeY];
+       
+        for (int x = 0; x < gridSizeX; x++)
+        {
+            for (int y = 0; y < gridSizeY; y++)
+            {
+                Vector3 initPoint = bottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
+                grid[x, y] = new Node(initPoint, true, x, y, 0); //for now all are walkable update in the future
+            }
+        }
+        //UpdateTiles();
+        PopulateNeighboursAll();//order shouldnt matter but if bugs could check
+        PopulateNeighboursCross();
+        UpdateTiles();
+    }
+
     void InitTileGrid()
     {
         Stopwatch sw = new Stopwatch();

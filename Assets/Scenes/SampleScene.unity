@@ -172,11 +172,11 @@ MonoBehaviour:
   slowPrefab: {fileID: 7054105202854107338, guid: af90d4a3c42d1a24781f86affbe8e97e, type: 3}
   visitedMarkerPrefab: {fileID: 7054105202854107338, guid: d334dbcdaf5f1924d8c4ad55b4c9c7c7, type: 3}
   tileHeight: 0.2
-  nodeRadius: 0.1
+  nodeRadius: 0.2
   drawGizmos: 1
   randomWallsOnStart: 0
-  generateLevelOnStart: 0
-  showfrontier: 0
+  generateLevelOnStart: 1
+  showfrontier: 1
   nodeDiameter: 0
   gridSizeX: 0
   gridSizeY: 0
@@ -184,8 +184,8 @@ MonoBehaviour:
   TileList: []
   frontierObjects: []
   pathObjects: []
-  wallchanceonstart: 0
-  slowchanceonstart: 0.2
+  wallchanceonstart: 0.2
+  slowchanceonstart: 0
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -656,8 +656,8 @@ MonoBehaviour:
   testAstar: 1
   testDijkstraCROSS: 1
   testAstarCROSS: 1
-  wallchance: 0.2
-  slowchance: 0.4
+  wallchance: 0.4
+  slowchance: 0.6
   runs: 25
 --- !u!1 &2005837048
 GameObject:

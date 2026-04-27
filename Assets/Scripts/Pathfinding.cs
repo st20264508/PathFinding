@@ -23,13 +23,22 @@ public class Pathfinding : MonoBehaviour
         
     }
 
-    public struct Results
+    public class Results
     {
         public List<Node> path;
         public int pathLength;
         public int pathCost;
         public int iterations;
         public long time;
+
+        public Results()
+        {
+            this.path = new List<Node>();
+            this.pathLength = 0;
+            this.pathCost = 0;
+            this.iterations = 0;
+            this.time = 0;
+        }
     }
 
     public Results IncrementResult(Results currentresults, Results newresults)
