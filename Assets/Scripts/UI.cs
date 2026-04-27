@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
 public class UI : MonoBehaviour
@@ -14,33 +15,25 @@ public class UI : MonoBehaviour
     int defualtLayer;
     Pathfinding.Results results;
 
-    [SerializeField] bool testDFS;
-    [SerializeField] bool testBFS;
-    [SerializeField] bool testGBFS;
-    [SerializeField] bool testDijkstra;
-    [SerializeField] bool testAstar;
-    [SerializeField] bool testDijkstraCROSS;
-    [SerializeField] bool testAstarCROSS;
+    public bool testDFS, testBFS, testGBFS, testDijkstra, testAstar, testDijkstraCROSS, testAstarCROSS;
+    public Button testDFSButton, testBFSButton, testGBFSButton, testDijkstraButton, testAstarButton, testDijkstraCROSSButton, testAstarCROSSButton;
+    public Color OnColour, OffColour;
 
     [Range(0,1)]
     [SerializeField] float wallchance;
     [Range(0, 1)]
     [SerializeField] float slowchance;
     [SerializeField] int runs;
-    /*public struct Results
-    {
-        public List<Node> path;
-        public int length;
-        public int cost;
-        public int iterations;
-        public long time;
-    }*/
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         cam = Camera.main;
         defualtLayer = LayerMask.GetMask("Default");
+        SetAllButtonColours();
+        //OnColour = Color.green; 
+        //OffColour = Color.red;
     }
 
     // Update is called once per frame
@@ -1025,5 +1018,81 @@ public class UI : MonoBehaviour
             //Debug.Log(pathCost);
         }
         return pathCost;
+    }
+
+    void SetButtonColor(Button button, bool testBool)
+    {
+        ColorBlock cb = button.colors;
+        if (testBool)
+        {
+            cb.normalColor = OnColour;
+            cb.highlightedColor = OnColour;
+            cb.pressedColor = OnColour;
+            cb.selectedColor = OnColour;
+            cb.disabledColor = OnColour;
+            button.colors = cb;
+        }
+        else
+        {
+            cb.normalColor = OffColour;
+            cb.highlightedColor = OffColour;
+            cb.pressedColor = OffColour;
+            cb.selectedColor = OffColour;
+            cb.disabledColor = OffColour;
+            button.colors = cb;
+        }
+    }
+
+    void SetAllButtonColours()
+    {
+        SetButtonColor(testDFSButton, testDFS);
+        SetButtonColor(testBFSButton, testBFS);
+        SetButtonColor(testGBFSButton, testGBFS);
+        SetButtonColor(testDijkstraCROSSButton, testDijkstraCROSS);
+        SetButtonColor(testAstarCROSSButton, testAstarCROSS);
+        SetButtonColor(testDijkstraButton, testDijkstra);
+        SetButtonColor(testAstarButton, testAstar);
+    }
+
+    public void ToggleDFSButton()
+    {
+        testDFS = !testDFS;
+        SetButtonColor(testDFSButton, testDFS);
+    }
+
+    public void ToggleBFSButton()
+    {
+        testBFS = !testBFS;
+        SetButtonColor(testBFSButton, testBFS);
+    }
+
+    public void ToggleGBFSButton()
+    {
+        testGBFS = !testGBFS;
+        SetButtonColor(testGBFSButton, testGBFS);
+    }
+
+    public void ToggleDijkstraCrossButton()
+    {
+        testDijkstraCROSS = !testDijkstraCROSS;
+        SetButtonColor(testDijkstraCROSSButton, testDijkstraCROSS);
+    }
+
+    public void ToggleAstarCrossButton()
+    {
+        testAstarCROSS = !testAstarCROSS;
+        SetButtonColor(testAstarCROSSButton, testAstarCROSS);
+    }
+
+    public void ToggleDIjkstraButton()
+    {
+        testDijkstra = !testDijkstra;
+        SetButtonColor(testDijkstraButton, testDijkstra);
+    }
+
+    public void ToggleAstarButton()
+    {
+        testAstar = !testAstar;
+        SetButtonColor(testAstarButton, testAstar);
     }
 }
