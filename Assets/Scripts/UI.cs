@@ -5,6 +5,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
+using TMPro;
+using Unity.Collections.LowLevel.Unsafe;
 
 public class UI : MonoBehaviour
 {
@@ -18,6 +20,10 @@ public class UI : MonoBehaviour
     public bool testDFS, testBFS, testGBFS, testDijkstra, testAstar, testDijkstraCROSS, testAstarCROSS;
     public Button testDFSButton, testBFSButton, testGBFSButton, testDijkstraButton, testAstarButton, testDijkstraCROSSButton, testAstarCROSSButton;
     public Color OnColour, OffColour;
+
+    [SerializeField] Slider WallSlider, SlowSlider, RunsSlider, NodeRadiusSlider;
+    [SerializeField] TextMeshProUGUI NodeRadiusInput;
+    
 
     [Range(0,1)]
     [SerializeField] float wallchance;
@@ -130,7 +136,7 @@ public class UI : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             //grid.GenerateNewLevel(0.2f, 0.5f);
-            TestAlgorithms(wallchance, slowchance, runs);
+            TestAlgorithms(WallSlider.value, SlowSlider.value, runs);
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -761,7 +767,8 @@ public class UI : MonoBehaviour
             test++;
             //var tempresults = new Pathfinding.Results();
             grid.GenerateNewLevel(wallchance, slowchance);
-           
+            //grid.GenerateNewLevel(WallSlider.value, SlowSlider.value);
+
 
             for (int x = 0; x <3; x++)
             {
@@ -1094,5 +1101,45 @@ public class UI : MonoBehaviour
     {
         testAstar = !testAstar;
         SetButtonColor(testAstarButton, testAstar);
+    }
+
+    public void NewLevelButton()
+    {
+        grid.GenerateNewLevel(WallSlider.value / 100f, SlowSlider.value / 100f);
+        grid.UpdateTiles();
+    }
+
+    public void RunTestButton()
+    {
+        TestAlgorithms(WallSlider.value / 100f, SlowSlider.value / 100f, (int)RunsSlider.value);
+    }
+
+    public void NewGridButton()
+    {
+        Debug.Log("pressed");
+        /*float result;
+        if (float.TryParse(NodeRadiusInput.text, out result))
+        {
+            float newvalue = result;
+            Debug.Log("new value = " + newvalue);
+            grid.nodeRadius = newvalue;
+            grid.NewNodeGrid();
+        }
+        else
+        {
+            Debug.Log("cant parse");
+            Debug.Log("result = " + result);
+            Debug.Log("noderadius.text = " + NodeRadiusInput.text);
+        }*/
+
+        grid.nodeRadius = NodeRadiusSlider.value; 
+        grid.NewNodeGrid();
+        
+
+    }
+
+    public void FixTilesButton()
+    {
+        grid.UpdateTiles();
     }
 }
