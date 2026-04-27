@@ -62,6 +62,7 @@ public class Grid : MonoBehaviour
         //normalcost *= 10;
         TileList = new List<GameObject>();
         frontierList = new List<Node>();
+        nodeRadius = 0.5f;
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
