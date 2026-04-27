@@ -38,7 +38,7 @@ public class UI : MonoBehaviour
         cam = Camera.main;
         defualtLayer = LayerMask.GetMask("Default");
         SetAllButtonColours();
-        OutputText.text = "hello";
+        //OutputText.text = "hello";
         //OnColour = Color.green; 
         //OffColour = Color.red;
     }
@@ -105,13 +105,13 @@ public class UI : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha9))
         {
             //RunAstarFilteredTEST();
-            grid.UpdateTiles();
+            //grid.UpdateTiles();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             //RunAstarFilteredTEST();
-            grid.NewNodeGrid();
+            //grid.NewNodeGrid();
         }
 
         if (Input.GetKeyDown(KeyCode.Q))
@@ -137,7 +137,7 @@ public class UI : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             //grid.GenerateNewLevel(0.2f, 0.5f);
-            TestAlgorithms(WallSlider.value, SlowSlider.value, runs);
+            //TestAlgorithms(WallSlider.value, SlowSlider.value, runs);
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -440,7 +440,7 @@ public class UI : MonoBehaviour
                 results.pathLength = results.path.Count;
                 results.pathCost = CalculatePathCost();
 
-                grid.ShowPathAndFrontier();
+                //grid.ShowPathAndFrontier();
             }
         }
         return results;
@@ -481,7 +481,7 @@ public class UI : MonoBehaviour
             {
                 results.pathLength = results.path.Count;
                 results.pathCost = CalculatePathCost();
-                grid.ShowPathAndFrontier(); //?
+                //grid.ShowPathAndFrontier(); //?
             }
         }
         return results;
@@ -541,7 +541,7 @@ public class UI : MonoBehaviour
             {
                 results.pathLength = results.path.Count;
                 results.pathCost = CalculatePathCost();
-                grid.ShowPathAndFrontier();
+                //grid.ShowPathAndFrontier();
             }
         }
         return results;
@@ -593,7 +593,7 @@ public class UI : MonoBehaviour
                 //Debug.Log("Path cost: " + CalculatePathCost());
 
                 
-                grid.ShowPathAndFrontier();
+                //grid.ShowPathAndFrontier();
             }
         }
         return results;
@@ -631,7 +631,7 @@ public class UI : MonoBehaviour
             {
                 results.pathLength = results.path.Count;
                 results.pathCost = CalculatePathCost();
-                grid.ShowPathAndFrontier();
+                //grid.ShowPathAndFrontier();
             }
         }
         return results;
@@ -669,7 +669,7 @@ public class UI : MonoBehaviour
             {
                 results.pathLength = results.path.Count;
                 results.pathCost = CalculatePathCost();
-                grid.ShowPathAndFrontier();
+                //grid.ShowPathAndFrontier();
             }
         }
         return results;
@@ -727,7 +727,7 @@ public class UI : MonoBehaviour
             {
                 results.pathLength = results.path.Count;
                 results.pathCost = CalculatePathCost();
-                grid.ShowPathAndFrontier();
+                //grid.ShowPathAndFrontier();
             }
         }
         return results;
