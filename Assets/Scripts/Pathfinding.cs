@@ -245,8 +245,9 @@ public class Pathfinding : MonoBehaviour
         return results;
     }
 
-    public List<Node> GreedyBFSAlgorithm(Node start, Node end)
+    public Results GreedyBFSAlgorithm(Node start, Node end)
     {
+        Results results = new Results();
         int count = 0;
         grid.frontierList.Clear();
         Stopwatch sw = new Stopwatch();
@@ -291,7 +292,7 @@ public class Pathfinding : MonoBehaviour
         if (!visited.Contains(end))
         {
             Debug.Log("Path not found - GreedyBFSAlgorithm");
-            return null;
+            return results;
         }
         sw.Stop();
 
@@ -307,7 +308,11 @@ public class Pathfinding : MonoBehaviour
 
         Debug.Log("Time to GreedyBFSAlgorithm(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
         Debug.Log("While loop iterations: " + count);
-        return path.ToList();
+        results.path = path.ToList();
+        results.time = sw.ElapsedMilliseconds;
+        results.iterations = count;
+
+        return results;
     }
 
     public Results GreedyBFSAlgorithmTEST(Node start, Node end)
@@ -710,8 +715,9 @@ public class Pathfinding : MonoBehaviour
         return results;
     }
 
-    public List<Node> AstarAlgorithmFiltered(Node start, Node end) //feels like its exploring to many nodes
+    public Results AstarAlgorithmFiltered(Node start, Node end) //feels like its exploring to many nodes
     {
+        Results results = new Results();
         grid.PopulateNeighboursDiagExcept();
         grid.frontierList.Clear();
         int count = 0;
@@ -759,7 +765,7 @@ public class Pathfinding : MonoBehaviour
         if (!gCost.ContainsKey(end))
         {
             Debug.Log("Path not found - AstarAlgorithmFiltered");
-            return null;
+            return results;
         }
         sw.Stop();
 
@@ -776,7 +782,10 @@ public class Pathfinding : MonoBehaviour
         Debug.Log("Time to AstarAlgorithmFiltered(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
         Debug.Log("While loop iterations: " + count);
 
-        return path.ToList();
+        results.path = path.ToList();
+        results.time = sw.ElapsedMilliseconds;
+        results.iterations = count;
+        return results;
     }
 
     public Results AstarAlgorithmFilteredTEST(Node start, Node end) //feels like its exploring to many nodes

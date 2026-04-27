@@ -18,7 +18,7 @@ public class UI : MonoBehaviour
     Pathfinding.Results results;
 
     public bool testDFS, testBFS, testGBFS, testDijkstra, testAstar, testDijkstraCROSS, testAstarCROSS;
-    public Button testDFSButton, testBFSButton, testGBFSButton, testDijkstraButton, testAstarButton, testDijkstraCROSSButton, testAstarCROSSButton;
+    public Button testDFSButton, testBFSButton, testGBFSButton, testDijkstraButton, testAstarButton, testDijkstraCROSSButton, testAstarCROSSButton, FrontierButton;
     public Color OnColour, OffColour;
 
     [SerializeField] Slider WallSlider, SlowSlider, RunsSlider, NodeRadiusSlider;
@@ -545,7 +545,8 @@ public class UI : MonoBehaviour
     {
         if (grid.startNode != null && grid.endNode != null)
         {
-            grid.path = pathfinder.AstarAlgorithmFiltered(grid.startNode, grid.endNode);
+            results = pathfinder.AstarAlgorithmFiltered(grid.startNode, grid.endNode);
+            grid.path = results.path;
             if (grid.path != null)
             {
                 string result = "List contents: ";
@@ -557,6 +558,7 @@ public class UI : MonoBehaviour
                 Debug.Log("Path length in Nodes: " + grid.path.Count);
                 Debug.Log("Path cost: " + CalculatePathCost());
                 grid.ShowPathAndFrontier();
+                OutputText.text = "Pathcost: " + CalculatePathCost() + "\n" + "Path length in Nodes: " + grid.path.Count + "\n" + "Time: " + results.time + "ms" + "\n";
             }
         }
     }
@@ -595,7 +597,8 @@ public class UI : MonoBehaviour
     {
         if (grid.startNode != null && grid.endNode != null)
         {
-            grid.path = pathfinder.GreedyBFSAlgorithm(grid.startNode, grid.endNode);
+            results = pathfinder.GreedyBFSAlgorithm(grid.startNode, grid.endNode);
+            grid.path = results.path;
             if (grid.path != null)
             {
                 string result = "List contents: ";
@@ -607,6 +610,7 @@ public class UI : MonoBehaviour
                 Debug.Log("Path length in Nodes: " + grid.path.Count);
                 Debug.Log("Path cost: " + CalculatePathCost());
                 grid.ShowPathAndFrontier();
+                OutputText.text = "Pathcost: " + CalculatePathCost() + "\n" + "Path length in Nodes: " + grid.path.Count + "\n" + "Time: " + results.time + "ms" + "\n";
             }
         }
     }
@@ -1128,5 +1132,11 @@ public class UI : MonoBehaviour
     public void FixTilesButton()
     {
         grid.UpdateTiles();
+    }
+
+    public void ShowFrontierButton()
+    {
+        grid.showfrontier = !grid.showfrontier;
+        SetButtonColor(FrontierButton, grid.showfrontier);
     }
 }
