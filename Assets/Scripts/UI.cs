@@ -58,12 +58,14 @@ public class UI : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            RunBFSCROSS(); 
+            //RunBFSCROSS(); 
+            RunDFS();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            RunDijkstraCROSS();
+            // RunDijkstraCROSS();
+            RunBFSCROSS();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
@@ -73,27 +75,31 @@ public class UI : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            RunDijkstraFiltered();
+            //RunDijkstraFiltered();
+            RunDijkstraCROSS();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            RunAstarFiltered();
+            //RunAstarFiltered();
+            RunAstarCross();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
-            RunAstarCross();
+            //RunAstarCross();
+            RunDijkstraFiltered();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha7))
         {
-            RunAstarFiltered2();
+            //RunAstarFiltered2();
+            RunAstarFiltered();
         }
         
         if (Input.GetKeyDown(KeyCode.Alpha8))
         {
-            RunDFS();
+            //RunDFS();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha9))
