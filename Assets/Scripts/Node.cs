@@ -14,10 +14,10 @@ public class Node
 
     public int cost;
 
-    public GameObject prefab; //prefab to display in game world
-    public Node parent; //used for parenting nodes to create a path
+    public GameObject prefab; 
+    public Node parent;
 
-    public List<Node> neighboursAll; //could be used if neighbours are pre calculated in grid init, could be a hashset? 
+    public List<Node> neighboursAll; 
     public List<Node> neighboursCross;
     public List<Node> neighboursDiagSafe;
 

@@ -1148,7 +1148,9 @@ public class UI : MonoBehaviour
 
     public void NewGridButton()
     {
-        grid.nodeRadius = NodeRadiusSlider.value; 
+        float value = NodeRadiusSlider.value / 100f;
+        grid.nodeRadius = value;
+        Debug.Log("nrslider / 100 = " + value);
         grid.NewNodeGrid();
     }
 

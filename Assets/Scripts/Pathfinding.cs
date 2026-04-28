@@ -121,7 +121,6 @@ public class Pathfinding : MonoBehaviour
         Stopwatch sw = new Stopwatch();
         sw.Start();
         Queue<Node> frontier = new Queue<Node>();
-        //List<Node> visited = new List<Node>();
         HashSet<Node> visited = new HashSet<Node>();
 
         frontier.Enqueue(start);
@@ -131,7 +130,6 @@ public class Pathfinding : MonoBehaviour
             if (current == end)
             {
                 visited.Add(current);
-                Debug.Log("broke");
                 break;
             }
 
@@ -154,7 +152,7 @@ public class Pathfinding : MonoBehaviour
             visited.Add(current);
             count++;
         }
-
+        
         if (!visited.Contains(end))
         {
             Debug.Log("Path not found - BFSAlgorithmCROSS");
@@ -172,7 +170,7 @@ public class Pathfinding : MonoBehaviour
             path.Enqueue(currentNode);
         }
 
-        Debug.Log("Time to BFSAlgorithmCROSS(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+        Debug.Log("Time to BFSAlgorithmCROSS(): " + sw.ElapsedMilliseconds + "ms"); 
         Debug.Log("While loop iterations: " + count);
         results.path = path.ToList();
         results.time = sw.ElapsedMilliseconds;
@@ -185,13 +183,11 @@ public class Pathfinding : MonoBehaviour
     {
         Results results = new Results();
         int count = 0;
-        //grid.frontierList.Clear();
         Stopwatch sw = new Stopwatch();
         sw.Start();
         Queue<Node> frontier = new Queue<Node>();
         HashSet<Node> visited = new HashSet<Node>();
-        //Dictionary<Node, int> visited = new Dictionary<Node, int>();
-
+        
         frontier.Enqueue(start);
         while (frontier.Count > 0)
         {
@@ -258,8 +254,6 @@ public class Pathfinding : MonoBehaviour
         Stopwatch sw = new Stopwatch();
         sw.Start();
         PriorityQueue<Node> frontier = new PriorityQueue<Node>(); //class taken from C# .net
-        //Dictionary<Node, int> costToTile = new Dictionary<Node, int>();
-        //List<Node> visited = new List<Node>();
         HashSet<Node> visited = new HashSet<Node>();
         frontier.Enqueue(start, 0);
         
@@ -275,7 +269,6 @@ public class Pathfinding : MonoBehaviour
 
             foreach (Node neighbour in current.neighboursCross)
             {
-                //int newCost = costToTile[current] + neighbour.cost;
                 if (neighbour.walkable)
                 {
                     if (!visited.Contains(neighbour))
@@ -311,7 +304,7 @@ public class Pathfinding : MonoBehaviour
         }
 
 
-        Debug.Log("Time to GreedyBFSAlgorithm(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+        Debug.Log("Time to GreedyBFSAlgorithm(): " + sw.ElapsedMilliseconds + "ms"); 
         Debug.Log("While loop iterations: " + count);
         results.path = path.ToList();
         results.time = sw.ElapsedMilliseconds;
@@ -1100,7 +1093,7 @@ public class Pathfinding : MonoBehaviour
         Stack<Node> stack = new Stack<Node>();
 
         stack.Push(start);
-        //start.parent = start; //fixes retracing memory error?
+       
         while (stack.Count > 0)
         {
             Node current = stack.Pop();
@@ -1146,14 +1139,14 @@ public class Pathfinding : MonoBehaviour
             path.Enqueue(currentNode);
         }
 
-        Debug.Log("Time to DepthFirstSearchAlgorithm(): " + sw.ElapsedMilliseconds + "ms"); //not entirely accurate as path calc is done here now as well
+        Debug.Log("Time to DepthFirstSearchAlgorithm(): " + sw.ElapsedMilliseconds + "ms"); 
         Debug.Log("While loop iterations: " + count);
         results.path = path.ToList();
         results.time = sw.ElapsedMilliseconds;
         results.iterations = count;
 
         return results;
-        //return null;
+  
     }
 
     public Results DepthFirstSearchAlgorithmTEST(Node start, Node end)

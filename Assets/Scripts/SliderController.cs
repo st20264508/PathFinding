@@ -8,7 +8,7 @@ public class SliderController : MonoBehaviour
     [SerializeField] private float maxSliderAmount = 100.0f;
 
     [SerializeField] private bool integer;
-    [SerializeField] private bool multiply;
+    [SerializeField] private bool divide;
 
     public void sliderChange(float value)
     {
@@ -17,9 +17,9 @@ public class SliderController : MonoBehaviour
             sliderText.text = value.ToString("0");
             
         }
-        else if (multiply)
+        else if (divide)
         {
-            float localValue = value * maxSliderAmount;
+            float localValue = value / maxSliderAmount;
             sliderText.text = localValue.ToString("0.00");
         }
         else
