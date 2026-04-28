@@ -21,7 +21,7 @@ public class UI : MonoBehaviour
     public Button testDFSButton, testBFSButton, testGBFSButton, testDijkstraButton, testAstarButton, testDijkstraCROSSButton, testAstarCROSSButton, FrontierButton;
     public Color OnColour, OffColour;
 
-    [SerializeField] Slider WallSlider, SlowSlider, RunsSlider, NodeRadiusSlider;
+    [SerializeField] Slider WallSlider, SlowSlider, RunsSlider, NodeRadiusSlider, CostSlider;
     //[SerializeField] TextMeshProUGUI NodeRadiusInput;
     [SerializeField] TextMeshProUGUI OutputText;
 
@@ -38,10 +38,13 @@ public class UI : MonoBehaviour
         cam = Camera.main;
         defualtLayer = LayerMask.GetMask("Default");
         SetAllButtonColours();
+        
         //OutputText.text = "hello";
         //OnColour = Color.green; 
         //OffColour = Color.red;
     }
+
+
 
     // Update is called once per frame
     void Update()
@@ -145,6 +148,8 @@ public class UI : MonoBehaviour
             DebugNode();
             DebugNeighbours();
         }
+
+        grid.slowcost = (int)CostSlider.value;
     }
 
     void DebugNode()
@@ -199,7 +204,7 @@ public class UI : MonoBehaviour
         if (Physics.Raycast(mousePos, out hit, 200f, defualtLayer))
         {
             Node hitNode = grid.GetGridPosFromWorldPos(hit.point);
-            if (hitNode.walkable && hitNode.cost < grid.slowcost)
+            if (hitNode.walkable && hitNode.cost < 1)//&& hitNode.cost > 0) //< grid.slowcost)
             {
                 Debug.Log("Already Walkable");
             }
@@ -245,7 +250,7 @@ public class UI : MonoBehaviour
             Node hitNode = grid.GetGridPosFromWorldPos(hit.point);
             if (hitNode.cost == grid.slowcost)
             {
-                Debug.Log("Already Slow");
+                Debug.Log("Already Slow Cost");
             }
             else
             {
@@ -741,20 +746,6 @@ public class UI : MonoBehaviour
         {
             return;
         }
-        /*public List<Node> path;
-        public int pathLength;
-        public int pathCost;
-        public int iterations;
-        public long time;*/
-        //average be a struct += last 10 results and then average
-
-        //for 10 times
-        //generate new level
-        //set start and end (cant be on unwalkable)
-        //run algorithm
-        //set results += last result
-
-        //average = results/10
         Pathfinding.Results DFSResults = new Pathfinding.Results();
         Pathfinding.Results BFSResults = new Pathfinding.Results();
         Pathfinding.Results GBFSResults = new Pathfinding.Results();
@@ -762,27 +753,13 @@ public class UI : MonoBehaviour
         Pathfinding.Results AStarResults = new Pathfinding.Results();
         Pathfinding.Results DijkstraResultsCROSS = new Pathfinding.Results();
         Pathfinding.Results AStarResultsCROSS = new Pathfinding.Results();
-
-        //int iterations = 10;
-
-        /*List<Node> path = new List<Node>();
-        int length = 0;
-        int cost = 0;
-        int iterations = 0;
-        long time = 0;*/
-
-        /*results.path = new List<Node>();
-        results.pathLength = 0;
-        results.pathCost = 0;
-        results.iterations = 0;
-        results.time = 0;*/
         int test = 0;
         for (int i = 0; i < runs; i++)
         {
             test++;
-            //var tempresults = new Pathfinding.Results();
+            
             grid.GenerateNewLevel(wallchance, slowchance);
-            //grid.GenerateNewLevel(WallSlider.value, SlowSlider.value);
+            
 
 
             for (int x = 0; x <3; x++)
@@ -824,22 +801,11 @@ public class UI : MonoBehaviour
                     var tempresults = RunAstarCrossTEST();
                     AStarResultsCROSS = pathfinder.IncrementResult(AStarResultsCROSS, tempresults);
                 }
-                /*results.pathLength += tempresults.pathLength;
-                results.pathCost += tempresults.pathCost;
-                results.iterations += tempresults.iterations;
-                results.time += tempresults.time;*/
+                
 
                 test++;
             }
-
-            /*var tempresults = RunAstarFilteredTEST();
-            results.pathLength += tempresults.pathLength;
-            results.pathCost += tempresults.pathCost;
-            results.iterations += tempresults.iterations;
-            results.time += tempresults.time;*/
         }
-
-        //grid.UpdateTiles();
 
         float runsfloat = (float)runs;
 
@@ -894,14 +860,14 @@ public class UI : MonoBehaviour
 
             OutputText.text += "Result A* Cross Average: " + "\n" + "Pathcost: " + (float)AStarResultsCROSS.pathCost / runsfloat + "\n" + "Path length in Nodes: " + (float)AStarResultsCROSS.pathLength / runsfloat + "\n" + "Time: " + (float)AStarResultsCROSS.time / runsfloat + "ms" + "\n";
         }
-        //Debug.Log("Astar time TEST " + (float)AStarResults.time / runsfloat);
+        
 
         grid.GenerateNewLevel(wallchance, slowchance);
         sw.Stop();
         Debug.Log("TestAlgorithms time to complete = " + sw.ElapsedMilliseconds + "ms");
         Debug.Log("Test = " + test);
         grid.UpdateTiles();
-        //generate two ints within grid size, if int !walkable or is end/start generate a new one else set start node end node x,y
+        
     }
 
     
@@ -1163,5 +1129,10 @@ public class UI : MonoBehaviour
     {
         grid.showfrontier = !grid.showfrontier;
         SetButtonColor(FrontierButton, grid.showfrontier);
+    }
+
+    public void ChangeSlowCost()
+    {
+        //grid.slowcost = (int)SlowSlider.value;
     }
 }

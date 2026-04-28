@@ -58,7 +58,7 @@ public class Grid : MonoBehaviour
 
     private void Awake()
     {
-        slowcost *= 10;
+        //slowcost *= 10;
         //normalcost *= 10;
         TileList = new List<GameObject>();
         frontierList = new List<Node>();
@@ -132,11 +132,11 @@ public class Grid : MonoBehaviour
             for (int y = 0; y < gridSizeY; y++)
             {
                 Vector3 initPoint = bottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
-                grid[x, y] = new Node(initPoint, true, x, y, 0); //for now all are walkable update in the future
+                grid[x, y] = new Node(initPoint, true, x, y, 0); 
             }
         }
-        //UpdateTiles();
-        PopulateNeighboursAll();//order shouldnt matter but if bugs could check
+        
+        PopulateNeighboursAll();
         PopulateNeighboursCross();
         UpdateTiles();
     }
@@ -264,7 +264,7 @@ public class Grid : MonoBehaviour
                     TileList.Add(tile);
                     grid[x, y].prefab = tile;
                 }
-                else if (grid[x, y].walkable && grid[x, y].cost == slowcost)
+                else if (grid[x, y].walkable && grid[x, y].cost > 0)//== slowcost)
                 {
                     slowPrefab.name = "Tile " + x + "," + y;
                     slowPrefab.transform.localScale = new Vector3(nodeDiameter, tileHeight, nodeDiameter);
@@ -690,7 +690,7 @@ public class Grid : MonoBehaviour
             }
 
         }
-        //UpdateTiles();
+        
     }
 
     public void GenerateNewStartandEnd()
@@ -730,4 +730,6 @@ public class Grid : MonoBehaviour
         //Debug.Log("new start " + startNode.x + startNode.y + " new end " + endNode.x + endNode.y);
         //UpdateTiles(); //waste of resource to call where this is used
     }
+
+   
 }
